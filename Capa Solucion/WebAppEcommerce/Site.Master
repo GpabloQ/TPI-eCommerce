@@ -47,9 +47,10 @@
                 <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item"><a class="nav-link" runat="server" href="~/">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" runat="server" href="~/About">About</a></li>
-                        <li class="nav-item"><a class="nav-link" runat="server" href="~/Contact">Contact</a></li>
-                    </ul>
+                        <li class="nav-item"><a class="nav-link" runat="server" href="~/Signin.aspx">Iniciar sesion</a></li>
+                        <li class="nav-item"><a class="nav-link" runat="server" href="~/FinDeCompra.aspx">Compra Finalizada</a></li>
+                        <li class="nav-item"><a class="nav-link" runat="server" href="~/Contact.aspx">Contacto</a></li>    
+                        </ul>
                 </div>
             </div>
         </nav>
@@ -57,9 +58,6 @@
             <asp:ContentPlaceHolder ID="MainContent" runat="server">
             </asp:ContentPlaceHolder>
             <hr />
-            <footer>
-                <p>&copy; <%: DateTime.Now.Year %> - My ASP.NET Application</p>
-            </footer>
         </div>
     </form>
     <asp:PlaceHolder runat="server">
