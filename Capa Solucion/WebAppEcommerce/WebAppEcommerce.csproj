@@ -122,6 +122,7 @@
     <Content Include="Default.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="FinDeCompra.aspx" />
+    <Content Include="Gestion.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Registrarse.aspx" />
     <Content Include="Scripts\bootstrap.bundle.js" />
@@ -216,6 +217,13 @@
     </Compile>
     <Compile Include="FinDeCompra.aspx.designer.cs">
       <DependentUpon>FinDeCompra.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Gestion.aspx.cs">
+      <DependentUpon>Gestion.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Gestion.aspx.designer.cs">
+      <DependentUpon>Gestion.aspx</DependentUpon>
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
