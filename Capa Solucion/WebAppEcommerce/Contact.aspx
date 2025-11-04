@@ -78,7 +78,7 @@
 <asp:TextBox ID="txtMensajeContact" runat="server" TextMode="MultiLine" Rows="5" Columns="50" />
             <br />
             <br />
-            <asp:Button ID="btnEnviar" runat="server" Text="Enviar" />
+            <asp:Button ID="btnEnviar" OnClick="btnEnviar_Click" runat="server" Text="Enviar" />
             </div>
 
             </div>
