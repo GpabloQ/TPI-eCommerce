@@ -11,12 +11,13 @@ namespace Dominio
     {
         [DisplayName("ID")]
         public int Id { get; set; }
-        [DisplayName("CATEGORÍA")]
-        public string Descripcion { get; set; }
+       
+        [DisplayName("NOMBRE")]
+        public string Nombre { get; set; }
 
         public override string ToString()
         {
-            return Descripcion;
+            return Nombre;
         }
     }
 }

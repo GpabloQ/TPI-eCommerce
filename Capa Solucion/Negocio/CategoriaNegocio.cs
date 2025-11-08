@@ -16,14 +16,14 @@ namespace Negocio
 
             try
             {
-                datos.setearConsulta("SELECT Id, Descripcion FROM CATEGORIAS");
+                datos.setearConsulta("SELECT Id, Nombre FROM CATEGORIAS");
                 datos.ejecutarLectura();
 
                 while (datos.Lector.Read())
                 {
                     Categoria aux = new Categoria();
                     aux.Id = (int)datos.Lector["Id"];
-                    aux.Descripcion = (string)datos.Lector["Descripcion"];
+                    aux.Nombre = (string)datos.Lector["Nombre"];
                     lista.Add(aux);
                 }
 
@@ -45,8 +45,8 @@ namespace Negocio
 
             try
             {
-                datos.setearConsulta("INSERT INTO CATEGORIAS (Descripcion) VALUES (@Descripcion)");
-                datos.setearParametro("@Descripcion", nueva.Descripcion);
+                datos.setearConsulta("INSERT INTO CATEGORIAS (Nombre) VALUES (@Nombre)");
+                datos.setearParametro("@Nombre", nueva.Nombre);
                 datos.ejecutarAccion();
             }
             catch (Exception ex)
@@ -65,8 +65,8 @@ namespace Negocio
 
             try
             {
-                datos.setearConsulta("UPDATE CATEGORIAS SET Descripcion = @Descripcion WHERE Id = @Id");
-                datos.setearParametro("@Descripcion", modificar.Descripcion);
+                datos.setearConsulta("UPDATE CATEGORIAS SET Nombre = @Nombre WHERE Id = @Id");
+                datos.setearParametro("@Nombre", modificar.Nombre);
                 datos.setearParametro("@Id", modificar.Id);
                 datos.ejecutarAccion();
             }

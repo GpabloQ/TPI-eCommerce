@@ -36,7 +36,7 @@ namespace Negocio
                     aux.Marca.Nombre = (string)datos.Lector["Marca"];
                     aux.tipo = new Categoria();
                     aux.tipo.Id = (int)datos.Lector["IdCategoria"];
-                    aux.tipo.Descripcion = (string)datos.Lector["Tipo"];
+                    aux.tipo.Nombre = (string)datos.Lector["Tipo"];
 
                     if (!(datos.Lector["Descripcion"] is DBNull))
                         aux.descripcion = (string)datos.Lector["Descripcion"];
@@ -91,7 +91,7 @@ namespace Negocio
 
                         aux.tipo = new Categoria();
                         aux.tipo.Id = (int)datos.Lector["IdCategoria"];
-                        aux.tipo.Descripcion = (string)datos.Lector["Tipo"];
+                        aux.tipo.Nombre = (string)datos.Lector["Tipo"];
 
                         if (!(datos.Lector["Descripcion"] is DBNull))
                             aux.descripcion = (string)datos.Lector["Descripcion"];
@@ -160,7 +160,7 @@ namespace Negocio
                     aux.tipo = new Categoria
                     {
                         Id = (int)datos.Lector["IdCategoria"],
-                        Descripcion = (string)datos.Lector["Tipo"]
+                        Nombre = (string)datos.Lector["Tipo"]
                     };
 
                     if (!(datos.Lector["Descripcion"] is DBNull))
@@ -414,7 +414,7 @@ namespace Negocio
 
                     aux.tipo = new Categoria();
                     aux.tipo.Id = (int)datos.Lector["IdCategoria"];
-                    aux.tipo.Descripcion = (string)datos.Lector["Tipo"];
+                    aux.tipo.Nombre = (string)datos.Lector["Tipo"];
 
                     if (!(datos.Lector["Descripcion"] is DBNull))
                         aux.descripcion = (string)datos.Lector["Descripcion"];
@@ -484,7 +484,7 @@ namespace Negocio
                         tipo = new Categoria
                         {
                             Id = (int)datos.Lector["IdCategoria"],
-                            Descripcion = (string)datos.Lector["Tipo"]
+                            Nombre = (string)datos.Lector["Tipo"]
                         }
                     };
 
@@ -539,7 +539,7 @@ namespace Negocio
                         tipo = new Categoria
                         {
                             Id = (int)datos.Lector["IdCategoria"],
-                            Descripcion = (string)datos.Lector["Tipo"]
+                            Nombre = (string)datos.Lector["Tipo"]
                         }
                     };
                 }
