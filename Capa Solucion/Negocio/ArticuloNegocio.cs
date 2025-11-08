@@ -32,8 +32,8 @@ namespace Negocio
                     aux.nombre = (string)datos.Lector["Nombre"];
 
                     aux.Marca = new Marca();
-                    aux.Marca.Id = (int)datos.Lector["IdMarca"];
-                    aux.Marca.Descripcion = (string)datos.Lector["Marca"];
+                    aux.Marca.IdMarca = (int)datos.Lector["IdMarca"];
+                    aux.Marca.Nombre = (string)datos.Lector["Marca"];
                     aux.tipo = new Categoria();
                     aux.tipo.Id = (int)datos.Lector["IdCategoria"];
                     aux.tipo.Descripcion = (string)datos.Lector["Tipo"];
@@ -86,8 +86,8 @@ namespace Negocio
                         aux.nombre = (string)datos.Lector["Nombre"];
 
                         aux.Marca = new Marca();
-                        aux.Marca.Id = (int)datos.Lector["IdMarca"];
-                        aux.Marca.Descripcion = (string)datos.Lector["Marca"];
+                        aux.Marca.IdMarca = (int)datos.Lector["IdMarca"];
+                        aux.Marca.Nombre = (string)datos.Lector["Marca"];
 
                         aux.tipo = new Categoria();
                         aux.tipo.Id = (int)datos.Lector["IdCategoria"];
@@ -153,8 +153,8 @@ namespace Negocio
 
                     aux.Marca = new Marca
                     {
-                        Id = (int)datos.Lector["IdMarca"],
-                        Descripcion = (string)datos.Lector["Marca"]
+                        IdMarca = (int)datos.Lector["IdMarca"],
+                        Nombre = (string)datos.Lector["Marca"]
                     };
 
                     aux.tipo = new Categoria
@@ -195,7 +195,7 @@ namespace Negocio
                 datos.setearConsulta("insert into ARTICULOS (Codigo,Nombre,Descripcion,IdMarca,IdCategoria,Precio) values (@Codigo,@Nombre,@Descripcion,@IdMarca,@IdCategoria,@Precio); insert into IMAGENES (ImagenUrl,IdArticulo) values (@imagen,SCOPE_IDENTITY())");
                 datos.setearParametro("@Codigo", nuevo.codigoArticulo);
                 datos.setearParametro("@Nombre", nuevo.nombre);
-                datos.setearParametro("@IdMarca", nuevo.Marca.Id);
+                datos.setearParametro("@IdMarca", nuevo.Marca.IdMarca);
                 datos.setearParametro("@IdCategoria", nuevo.tipo.Id);
                 datos.setearParametro("@Descripcion", nuevo.descripcion);
                 datos.setearParametro("@Precio", nuevo.precio);
@@ -231,7 +231,7 @@ namespace Negocio
 
                 datos.setearParametro("@cod", articulo.codigoArticulo);
                 datos.setearParametro("@nom", articulo.nombre);
-                datos.setearParametro("@idmarca", articulo.Marca.Id);
+                datos.setearParametro("@idmarca", articulo.Marca.IdMarca);
                 datos.setearParametro("@idcategoria", articulo.tipo.Id);
                 datos.setearParametro("@desc", articulo.descripcion);
                 datos.setearParametro("@precio", articulo.precio);
@@ -288,7 +288,7 @@ namespace Negocio
 
                 datos.setearParametro("@cod", articulo.codigoArticulo);
                 datos.setearParametro("@nom", articulo.nombre);
-                datos.setearParametro("@idmarca", articulo.Marca.Id);
+                datos.setearParametro("@idmarca", articulo.Marca.IdMarca);
                 datos.setearParametro("@idcategoria", articulo.tipo.Id);
                 datos.setearParametro("@desc", articulo.descripcion);
                 datos.setearParametro("@precio", articulo.precio);
@@ -409,8 +409,8 @@ namespace Negocio
                     aux.nombre = (string)datos.Lector["Nombre"];
 
                     aux.Marca = new Marca();
-                    aux.Marca.Id = (int)datos.Lector["IdMarca"];
-                    aux.Marca.Descripcion = (string)datos.Lector["Marca"];
+                    aux.Marca.IdMarca = (int)datos.Lector["IdMarca"];
+                    aux.Marca.Nombre = (string)datos.Lector["Marca"];
 
                     aux.tipo = new Categoria();
                     aux.tipo.Id = (int)datos.Lector["IdCategoria"];
@@ -478,8 +478,8 @@ namespace Negocio
                         UrlImagen = datos.Lector["Imagen"] is DBNull ? null : (string)datos.Lector["Imagen"],
                         Marca = new Marca
                         {
-                            Id = (int)datos.Lector["IdMarca"],
-                            Descripcion = (string)datos.Lector["Marca"]
+                            IdMarca = (int)datos.Lector["IdMarca"],
+                            Nombre = (string)datos.Lector["Marca"]
                         },
                         tipo = new Categoria
                         {
@@ -533,8 +533,8 @@ namespace Negocio
                         precio = (decimal)datos.Lector["Precio"],
                         Marca = new Marca
                         {
-                            Id = (int)datos.Lector["IdMarca"],
-                            Descripcion = (string)datos.Lector["Marca"]
+                            IdMarca = (int)datos.Lector["IdMarca"],
+                            Nombre = (string)datos.Lector["Marca"]
                         },
                         tipo = new Categoria
                         {

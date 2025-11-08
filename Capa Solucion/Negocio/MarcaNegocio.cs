@@ -16,14 +16,14 @@ namespace Negocio
             AccesoDatos datos = new AccesoDatos();
             try
             {
-                datos.setearConsulta("SELECT Id, Descripcion From MARCAS");
+                datos.setearConsulta("SELECT IdMarca, Nombre From MARCAS");
                 datos.ejecutarLectura();
 
                 while (datos.Lector.Read())
                 {
                     Marca aux = new Marca();
-                    aux.Id = (int)datos.Lector["Id"];
-                    aux.Descripcion = (string)datos.Lector["Descripcion"];
+                    aux.IdMarca = (long)datos.Lector["IdMarca"];
+                    aux.Nombre = (string)datos.Lector["Nombre"];
 
                     lista.Add(aux);
 
@@ -47,8 +47,10 @@ namespace Negocio
 
             try
             {
-                datos.setearConsulta("INSERT INTO MARCAS (Descripcion) VALUES (@descripcion)");
-                datos.setearParametro("@descripcion", nueva.Descripcion);
+                datos.setearConsulta("INSERT INTO MARCAS (Nombre, Estado) VALUES (@nombre, @estado)");
+                datos.setearParametro("@nombre", nueva.Nombre);
+                datos.setearParametro("@estado", nueva.Estado);
+                
                 datos.ejecutarAccion();
             }
             catch (Exception )
@@ -67,9 +69,9 @@ namespace Negocio
             AccesoDatos datos = new AccesoDatos();
             try
             {
-                datos.setearConsulta("UPDATE MARCAS SET Descripcion = @descripcion WHERE Id = @id");
-                datos.setearParametro("@id", modificar.Id);
-                datos.setearParametro("@descripcion", modificar.Descripcion);
+                datos.setearConsulta("UPDATE MARCAS SET Nombre = @nombre WHERE IdMarca = @idmarca");
+                datos.setearParametro("@idmarca", modificar.IdMarca);
+                datos.setearParametro("@nombre", modificar.Nombre);
 
                 datos.ejecutarAccion();
             }
@@ -94,8 +96,8 @@ namespace Negocio
             AccesoDatos datos = new AccesoDatos();
             try
             {
-                datos.setearConsulta("DELETE FROM MARCAS WHERE Id = @id");
-                datos.setearParametro("@id", id);
+                datos.setearConsulta("DELETE FROM MARCAS WHERE IdMarca = @idmarca");
+                datos.setearParametro("@idmarca", id);
                 datos.ejecutarAccion();
                 return true;
             }

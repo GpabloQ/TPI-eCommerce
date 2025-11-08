@@ -10,13 +10,15 @@ namespace Dominio
     public class Marca
     {
         [DisplayName("ID")]
-        public int Id { get; set; }
+        public long IdMarca { get; set; }
         [DisplayName("MARCA")]
-        public string Descripcion { get; set; }
+        public string Nombre { get; set; }
+
+        public bool? Estado { get; set; }
 
         public override string ToString()
         {
-            return Descripcion;
+            return Nombre;
         }
     }
 }
