@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,13 +11,25 @@ namespace Negocio
     public class MarcaNegocio
     {
 
-        public List<Marca> listar()
+        public List<Marca> listar(string id = "")
         {
             List<Marca> lista = new List<Marca>();
             AccesoDatos datos = new AccesoDatos();
+            SqlCommand comando = new SqlCommand();
             try
             {
-                datos.setearConsulta("SELECT IdMarca, Nombre From MARCAS");
+                string consulta = "SELECT IdMarca, Nombre FROM MARCAS WHERE Estado = 1 ";
+                if (!string.IsNullOrEmpty(id))
+                {
+                    consulta += "AND IdMarca = @id";
+                }
+
+                datos.setearConsulta(consulta);
+
+                if (!string.IsNullOrEmpty(id))
+                {
+                    datos.setearParametro("@id", id);
+                }
                 datos.ejecutarLectura();
 
                 while (datos.Lector.Read())
@@ -69,9 +82,10 @@ namespace Negocio
             AccesoDatos datos = new AccesoDatos();
             try
             {
-                datos.setearConsulta("UPDATE MARCAS SET Nombre = @nombre WHERE IdMarca = @idmarca");
+                datos.setearConsulta("UPDATE MARCAS SET Nombre = @nombre, Estado = @estado WHERE IdMarca = @idmarca");
                 datos.setearParametro("@idmarca", modificar.IdMarca);
                 datos.setearParametro("@nombre", modificar.Nombre);
+                datos.setearParametro("@estado", modificar.Estado);
 
                 datos.ejecutarAccion();
             }
@@ -86,7 +100,7 @@ namespace Negocio
             }
         }
 
-        public bool eliminar(int id)
+        public bool eliminar(long id)
         {
             if (ExisteMarcaEnArticulos(id))
             {
@@ -109,7 +123,7 @@ namespace Negocio
         }
 
 
-        public bool ExisteMarcaEnArticulos(int idMarca)
+        public bool ExisteMarcaEnArticulos(long idMarca)
         {
             AccesoDatos datos = new AccesoDatos();
             try

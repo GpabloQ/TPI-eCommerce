@@ -9,7 +9,7 @@ namespace Dominio
 {
     public class Marca
     {
-        [DisplayName("ID")]
+        //[DisplayName("ID")]
         public long IdMarca { get; set; }
         [DisplayName("MARCA")]
         public string Nombre { get; set; }
