@@ -1,24 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 
 namespace Negocio
 {
     public class AccesoDatos
     {
-
         private SqlConnection conexion;
         private SqlCommand comando;
         private SqlDataReader lector;
 
-        public SqlDataReader Lector
-        {
-            get { return lector; }
-        }
+        public SqlDataReader Lector => lector;
 
         public AccesoDatos()
         {
@@ -30,22 +21,27 @@ namespace Negocio
         {
             comando.CommandType = System.Data.CommandType.Text;
             comando.CommandText = consulta;
+            comando.Parameters.Clear(); // Limpiar paraetros de llamadas anteriores
         }
 
-
+        public void setearParametro(string nombre, object valor)
+        {
+            comando.Parameters.AddWithValue(nombre, valor);
+        }
 
         public void ejecutarLectura()
         {
             comando.Connection = conexion;
             try
             {
-                conexion.Open();
+                if (conexion.State != System.Data.ConnectionState.Open)
+                    conexion.Open();
+
                 lector = comando.ExecuteReader();
             }
             catch (Exception ex)
             {
-
-                throw ex;
+                throw;
             }
         }
 
@@ -54,28 +50,24 @@ namespace Negocio
             comando.Connection = conexion;
             try
             {
-                conexion.Open();
-                comando.ExecuteNonQuery();
+                if (conexion.State != System.Data.ConnectionState.Open)
+                    conexion.Open();
 
+                comando.ExecuteNonQuery();
             }
             catch (Exception ex)
             {
-
-                throw ex;
+                throw;
             }
         }
 
-        public void setearParametro(string nombre, object valor)
-        {
-            comando.Parameters.AddWithValue(nombre, valor);
-        }
         public void cerrarConexion()
         {
-            if (lector != null)
+            if (lector != null && !lector.IsClosed)
                 lector.Close();
-            conexion.Close();
-        }
 
+            if (conexion.State != System.Data.ConnectionState.Closed)
+                conexion.Close();
+        }
     }
 }
-

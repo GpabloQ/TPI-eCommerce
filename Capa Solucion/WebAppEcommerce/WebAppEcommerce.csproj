@@ -123,6 +123,7 @@
     <Content Include="Default.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="FinDeCompra.aspx" />
+    <Content Include="FormularioProducto.aspx" />
     <Content Include="Gestion.aspx" />
     <Content Include="Global.asax" />
     <Content Include="ListarMarcas.aspx" />
@@ -226,6 +227,13 @@
     </Compile>
     <Compile Include="FinDeCompra.aspx.designer.cs">
       <DependentUpon>FinDeCompra.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="FormularioProducto.aspx.cs">
+      <DependentUpon>FormularioProducto.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="FormularioProducto.aspx.designer.cs">
+      <DependentUpon>FormularioProducto.aspx</DependentUpon>
     </Compile>
     <Compile Include="Gestion.aspx.cs">
       <DependentUpon>Gestion.aspx</DependentUpon>

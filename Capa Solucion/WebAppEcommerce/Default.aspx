@@ -3,42 +3,49 @@
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
 
     <main>
-        <section class="row" aria-labelledby="aspnetTitle">
-            <h1 id="aspnetTitle">ASP.NET</h1>
-            <p class="lead">ARSUMO.</p>
-            <p><a href="http://www.asp.net" class="btn btn-primary btn-md">Learn more &raquo;</a></p>
-        </section>
+     <hr/>
+        <div class="module-image">
+         <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-srcset="//acdn-us.mitiendanube.com/stores/002/936/119/themes/style/img-596067975-1736528106-c4ae845a20c394ca2d2df71fa9c22e741736528107.png?1300625852 480w, //acdn-us.mitiendanube.com/stores/002/936/119/themes/style/img-596067975-1736528106-c4ae845a20c394ca2d2df71fa9c22e741736528107.png?1300625852 640w, //acdn-us.mitiendanube.com/stores/002/936/119/themes/style/img-596067975-1736528106-c4ae845a20c394ca2d2df71fa9c22e741736528107.png?1300625852 1024w, //acdn-us.mitiendanube.com/stores/002/936/119/themes/style/img-596067975-1736528106-c4ae845a20c394ca2d2df71fa9c22e741736528107.png?1300625852 1920w" data-sizes="auto" class="textbanner-image-background lazyautosizes fade-in ls-is-cached lazyloaded" alt="¿QUIENES SOMOS?" sizes="720px" srcset="//acdn-us.mitiendanube.com/stores/002/936/119/themes/style/img-596067975-1736528106-c4ae845a20c394ca2d2df71fa9c22e741736528107.png?1300625852 480w, //acdn-us.mitiendanube.com/stores/002/936/119/themes/style/img-596067975-1736528106-c4ae845a20c394ca2d2df71fa9c22e741736528107.png?1300625852 640w, //acdn-us.mitiendanube.com/stores/002/936/119/themes/style/img-596067975-1736528106-c4ae845a20c394ca2d2df71fa9c22e741736528107.png?1300625852 1024w, //acdn-us.mitiendanube.com/stores/002/936/119/themes/style/img-596067975-1736528106-c4ae845a20c394ca2d2df71fa9c22e741736528107.png?1300625852 1920w">
+             <div class="placeholder-overlay placeholder-container"></div>
+                <div class="module-text pull-left">
+                    <h3 class="module-text-title">¿QUIENES SOMOS?</h3>
+                    <div class="module-text-paragraph">Somos una empresa dedicada a la venta de componentes e insumos electrónicos. Con más de 1 año de experiencia, nuestro objetivo es ofrecer soluciones que cumplan las necesidades de cada cliente.</div>
+                    <div class="module-text-button btn btn-primary">VER MAS</div>
+                </div>
+             </div>
+        <asp:Repeater ID="rptArticulos" runat="server">
+            <ItemTemplate>
+                <div style="border:1px solid #ccc; 
+                            border-radius:10px; 
+                            padding:15px; 
+                            margin:10px; 
+                            display:inline-block; 
+                            width:300px; 
+                            vertical-align:top;
+                            box-shadow:2px 2px 6px rgba(0,0,0,0.1);">
+            
+                    <h4 style="margin-top:0;"><%# Eval("nombre") %></h4>
+                    <p><strong>Codigo:</strong> <%# Eval("codigoArticulo") %></p>
+                    <p><strong>Marca:</strong> <%# Eval("Marca.Nombre") %></p>
+                    <p><strong>Categoria:</strong> <%# Eval("tipo.Nombre") %></p>
+                    <p><strong>Precio:</strong> $<%# Eval("precio", "{0:N2}") %></p>
 
-        <div class="row">
-            <section class="col-md-4" aria-labelledby="gettingStartedTitle">
-                <h2 id="gettingStartedTitle">Getting started</h2>
-                <p>
-                    ASP.NET Web Forms lets you build dynamic websites using a familiar drag-and-drop, event-driven model.
-                A design surface and hundreds of controls and components let you rapidly build sophisticated, powerful UI-driven sites with data access.
-                </p>
-                <p>
-                    <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301948">Learn more &raquo;</a>
-                </p>
-            </section>
-            <section class="col-md-4" aria-labelledby="librariesTitle">
-                <h2 id="librariesTitle">Get more libraries</h2>
-                <p>
-                    NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.
-                </p>
-                <p>
-                    <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301949">Learn more &raquo;</a>
-                </p>
-            </section>
-            <section class="col-md-4" aria-labelledby="hostingTitle">
-                <h2 id="hostingTitle">Web Hosting</h2>
-                <p>
-                    You can easily find a web hosting company that offers the right mix of features and price for your applications.
-                </p>
-                <p>
-                    <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301950">Learn more &raquo;</a>
-                </p>
-            </section>
-        </div>
+                    <!-- Galería de imágenes -->
+                    <asp:Repeater ID="rptImagenes" runat="server" DataSource='<%# Eval("ListaUrls") %>'>
+                        <ItemTemplate>
+                            <img src='<%# Container.DataItem %>' 
+                                 alt="Imagen del producto" 
+                                 style="width:90px; 
+                                        height:90px; 
+                                        object-fit:cover; 
+                                        margin:5px; 
+                                        border-radius:8px; 
+                                        border:1px solid #ddd;" />
+                        </ItemTemplate>
+                    </asp:Repeater>
+                 </div>
+            </ItemTemplate>
+        </asp:Repeater>
     </main>
 
 </asp:Content>

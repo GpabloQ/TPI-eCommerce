@@ -9,11 +9,9 @@ namespace Dominio
 {
     public class Categoria
     {
-        [DisplayName("ID")]
-        public int Id { get; set; }
-       
-        [DisplayName("NOMBRE")]
+        public int IdCategoria { get; set; } 
         public string Nombre { get; set; }
+        public int Id { get; set; }
 
         public override string ToString()
         {
@@ -21,3 +19,4 @@ namespace Dominio
         }
     }
 }
+

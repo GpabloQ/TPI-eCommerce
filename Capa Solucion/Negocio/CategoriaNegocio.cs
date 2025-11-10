@@ -16,14 +16,21 @@ namespace Negocio
 
             try
             {
-                datos.setearConsulta("SELECT Id, Nombre FROM CATEGORIAS");
+                datos.setearConsulta("SELECT IdCategoria, Nombre FROM CATEGORIAS");
                 datos.ejecutarLectura();
 
                 while (datos.Lector.Read())
                 {
                     Categoria aux = new Categoria();
-                    aux.Id = (int)datos.Lector["Id"];
-                    aux.Nombre = (string)datos.Lector["Nombre"];
+                    object valor = datos.Lector["IdCategoria"];
+
+                    if (valor != DBNull.Value)
+                        aux.Id = Convert.ToInt32(valor);
+                    else
+                        aux.Id = 0;
+
+                    aux.Nombre = datos.Lector["Nombre"].ToString();
+
                     lista.Add(aux);
                 }
 
@@ -38,6 +45,9 @@ namespace Negocio
                 datos.cerrarConexion();
             }
         }
+
+
+
 
         public void agregar(Categoria nueva)
         {
@@ -65,9 +75,10 @@ namespace Negocio
 
             try
             {
+
                 datos.setearConsulta("UPDATE CATEGORIAS SET Nombre = @Nombre WHERE Id = @Id");
                 datos.setearParametro("@Nombre", modificar.Nombre);
-                datos.setearParametro("@Id", modificar.Id);
+                datos.setearParametro("@Id", modificar.IdCategoria);
                 datos.ejecutarAccion();
             }
             catch (Exception ex)
@@ -91,8 +102,9 @@ namespace Negocio
             AccesoDatos datos = new AccesoDatos();
             try
             {
-                datos.setearConsulta("DELETE FROM CATEGORIAS WHERE Id = @id");
-                datos.setearParametro("@id", id);
+                datos.setearConsulta("DELETE FROM CATEGORIAS WHERE IdCategoria = @idCategoria");
+                datos.setearParametro("@idCategoria",id);
+
                 datos.ejecutarAccion();
                 return true;
             }
