@@ -18,7 +18,7 @@ namespace WebAppEcommerce
 
             try
             {
-                listaArticulo = negocio.listar2();
+                listaArticulo = negocio.Listar2();
 
                 // 🔹 Solo se cargan los datos la primera vez
                 if (!IsPostBack)

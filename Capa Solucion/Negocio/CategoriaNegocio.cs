@@ -25,9 +25,9 @@ namespace Negocio
                     object valor = datos.Lector["IdCategoria"];
 
                     if (valor != DBNull.Value)
-                        aux.Id = Convert.ToInt32(valor);
+                        aux.IdCategoria= Convert.ToInt32(valor);
                     else
-                        aux.Id = 0;
+                        aux.IdCategoria = 0;
 
                     aux.Nombre = datos.Lector["Nombre"].ToString();
 
@@ -49,25 +49,45 @@ namespace Negocio
 
 
 
-        public void agregar(Categoria nueva)
+        public List<Categoria> Listar()
         {
+            List<Categoria> lista = new List<Categoria>();
             AccesoDatos datos = new AccesoDatos();
 
             try
             {
-                datos.setearConsulta("INSERT INTO CATEGORIAS (Nombre) VALUES (@Nombre)");
-                datos.setearParametro("@Nombre", nueva.Nombre);
-                datos.ejecutarAccion();
+                datos.setearConsulta("SELECT IdCategoria, Nombre, Estado FROM CATEGORIAS");
+                datos.ejecutarLectura();
+
+                while (datos.Lector.Read())
+                {
+                    Categoria aux = new Categoria();
+
+                    aux.IdCategoria = datos.Lector["IdCategoria"] != DBNull.Value
+                        ? Convert.ToInt32(datos.Lector["IdCategoria"])
+                        : 0;
+
+                    aux.Nombre = datos.Lector["Nombre"] != DBNull.Value
+                        ? datos.Lector["Nombre"].ToString()
+                        : "";
+
+                    lista.Add(aux);
+                }
+
+                return lista;
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw new Exception("Error al listar categorías: " + ex.Message);
             }
             finally
             {
                 datos.cerrarConexion();
             }
         }
+
+
+
 
         public void modificar(Categoria modificar)
         {

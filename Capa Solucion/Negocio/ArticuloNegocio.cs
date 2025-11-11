@@ -12,57 +12,9 @@ namespace Negocio
 {
     public class ArticuloNegocio
     {
-        
 
-        public List<Articulo> listar()
-        {
 
-            List<Articulo> lista = new List<Articulo>();
-            AccesoDatos datos = new AccesoDatos();
-
-            try
-            {
-                datos.setearConsulta("SELECT \r\n    A.IdArticulo AS Id,\r\n    A.Codigo,\r\n    A.Nombre,\r\n    M.Nombre AS Marca,\r\n    C.Nombre AS Tipo,\r\n    A.Descripcion,\r\n    A.Precio,\r\n    I.UrlImagen AS Imagen,\r\n    A.IdCategoria,\r\n    A.IdMarca\r\nFROM ARTICULOS A\r\nJOIN MARCAS M ON M.IdMarca = A.IdMarca\r\nJOIN CATEGORIAS C ON C.IdCategoria = A.IdCategoria\r\nJOIN IMAGENES I ON I.IdArticulo = A.IdArticulo;");
-                datos.ejecutarLectura();
-
-                while (datos.Lector.Read())
-                {
-
-                    Articulo aux = new Articulo();
-                    aux.id = (int)datos.Lector["Id"];
-                    aux.codigoArticulo = (string)datos.Lector["Codigo"];
-                    aux.nombre = (string)datos.Lector["Nombre"];
-
-                    aux.Marca = new Marca();
-                    aux.Marca.IdMarca = (int)datos.Lector["IdMarca"];
-                    aux.Marca.Nombre = (string)datos.Lector["Marca"];
-                    aux.tipo = new Categoria();
-                    aux.tipo.Id = (int)datos.Lector["IdCategoria"];
-                    aux.tipo.Nombre = (string)datos.Lector["Tipo"];
-
-                    if (!(datos.Lector["Descripcion"] is DBNull))
-                        aux.descripcion = (string)datos.Lector["Descripcion"];
-                    aux.precio = (decimal)datos.Lector["Precio"];
-
-                    if (!(datos.Lector["Imagen"] is DBNull))
-                        aux.UrlImagen = (string)datos.Lector["Imagen"];
-
-                    lista.Add(aux);
-                }
-
-                return lista;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            finally
-            {
-                datos.cerrarConexion();
-            }
-        }
-
-        public List<Articulo> listar2()
+        public List<Articulo> Listar()
         {
             List<Articulo> lista = new List<Articulo>();
             AccesoDatos datos = new AccesoDatos();
@@ -74,64 +26,54 @@ namespace Negocio
                 A.IdArticulo,
                 A.Codigo,
                 A.Nombre,
-                M.Nombre AS Marca,
-                C.Nombre AS Tipo,
                 A.Descripcion,
                 A.Precio,
-                I.UrlImagen AS Imagen,
-                A.IdCategoria,
-                A.IdMarca
+                A.Estado,
+                M.IdMarca,
+                M.Nombre AS Marca,
+                C.IdCategoria,
+                C.Nombre AS Categoria,
+                (SELECT TOP 1 I.UrlImagen 
+                 FROM IMAGENES I 
+                 WHERE I.IdArticulo = A.IdArticulo) AS UrlImagen
             FROM ARTICULOS A
             INNER JOIN MARCAS M ON M.IdMarca = A.IdMarca
             INNER JOIN CATEGORIAS C ON C.IdCategoria = A.IdCategoria
-            LEFT JOIN IMAGENES I ON I.IdArticulo = A.IdArticulo");
+        ");
 
                 datos.ejecutarLectura();
 
                 while (datos.Lector.Read())
                 {
-                    int idArticulo = Convert.ToInt32(datos.Lector["IdArticulo"]);
-
-                    // Buscar si ya existe el artículo
-                    Articulo aux = lista.FirstOrDefault(a => a.id == idArticulo);
-
-                    if (aux == null)
+                    var art = new Articulo
                     {
-                        aux = new Articulo();
-                        aux.id = idArticulo;
-                        aux.codigoArticulo = datos.Lector["Codigo"].ToString();
-                        aux.nombre = datos.Lector["Nombre"].ToString();
+                        IdArticulo = Convert.ToInt64(datos.Lector["IdArticulo"]),
+                        Codigo = datos.Lector["Codigo"].ToString(),
+                        Nombre = datos.Lector["Nombre"].ToString(),
+                        Descripcion = datos.Lector["Descripcion"] is DBNull ? "" : datos.Lector["Descripcion"].ToString(),
+                        Precio = datos.Lector["Precio"] is DBNull ? 0 : Convert.ToDecimal(datos.Lector["Precio"]),
+                        Estado = datos.Lector["Estado"] is DBNull ? true : Convert.ToBoolean(datos.Lector["Estado"]),
+                        Marca = new Marca
+                        {
+                            IdMarca = Convert.ToInt64(datos.Lector["IdMarca"]),
+                            Nombre = datos.Lector["Marca"].ToString()
+                        },
+                        Categoria = new Categoria
+                        {
+                            IdCategoria = (int)Convert.ToInt64(datos.Lector["IdCategoria"]),
+                            Nombre = datos.Lector["Categoria"].ToString()
+                        },
+                        UrlImagen = datos.Lector["UrlImagen"] is DBNull ? null : datos.Lector["UrlImagen"].ToString()
+                    };
 
-                        aux.Marca = new Marca();
-                        aux.Marca.IdMarca = Convert.ToInt32(datos.Lector["IdMarca"]);
-                        aux.Marca.Nombre = datos.Lector["Marca"].ToString();
-
-                        aux.tipo = new Categoria();
-                        aux.tipo.Id = Convert.ToInt32(datos.Lector["IdCategoria"]);
-                        aux.tipo.Nombre = datos.Lector["Tipo"].ToString();
-
-                        if (!(datos.Lector["Descripcion"] is DBNull))
-                            aux.descripcion = datos.Lector["Descripcion"].ToString();
-
-                        // 🟢 Este es otro punto común de error: conversión de precio
-                        if (!(datos.Lector["Precio"] is DBNull))
-                            aux.precio = Convert.ToDecimal(datos.Lector["Precio"]);
-
-                        aux.ListaUrls = new List<string>();
-
-                        lista.Add(aux);
-                    }
-
-                    // Agregar imagen si existe
-                    if (!(datos.Lector["Imagen"] is DBNull))
-                        aux.ListaUrls.Add(datos.Lector["Imagen"].ToString());
+                    lista.Add(art);
                 }
 
                 return lista;
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw new Exception("Error al listar los artículos: " + ex.Message);
             }
             finally
             {
@@ -139,7 +81,8 @@ namespace Negocio
             }
         }
 
-        public List<Articulo> listarUnaSolaImagen()
+
+        public List<Articulo> Listar2()
         {
             List<Articulo> lista = new List<Articulo>();
             AccesoDatos datos = new AccesoDatos();
@@ -147,58 +90,73 @@ namespace Negocio
             try
             {
                 datos.setearConsulta(@"
-            SELECT A.Id, A.Codigo, A.Nombre, 
-                   M.Descripcion AS Marca, 
-                   C.Descripcion AS Tipo, 
-                   A.Descripcion, 
-                   A.Precio, 
-                   (SELECT TOP 1 I.ImagenUrl 
-                    FROM IMAGENES I 
-                    WHERE I.IdArticulo = A.Id) AS Imagen, 
-                   A.IdCategoria, 
-                   A.IdMarca
+            SELECT 
+                A.IdArticulo,
+                A.Codigo,
+                A.Nombre,
+                M.IdMarca,
+                M.Nombre AS Marca,
+                C.IdCategoria,
+                C.Nombre AS Categoria,
+                A.Descripcion,
+                A.Precio,
+                A.Estado,
+                I.UrlImagen
             FROM ARTICULOS A
-            JOIN MARCAS M ON M.Id = A.IdMarca
-            JOIN CATEGORIAS C ON C.Id = A.IdCategoria
+            INNER JOIN MARCAS M ON M.IdMarca = A.IdMarca
+            INNER JOIN CATEGORIAS C ON C.IdCategoria = A.IdCategoria
+            LEFT JOIN IMAGENES I ON I.IdArticulo = A.IdArticulo
         ");
 
                 datos.ejecutarLectura();
 
                 while (datos.Lector.Read())
                 {
-                    Articulo aux = new Articulo();
-                    aux.id = (int)datos.Lector["Id"];
-                    aux.codigoArticulo = (string)datos.Lector["Codigo"];
-                    aux.nombre = (string)datos.Lector["Nombre"];
+                    long idArticulo = Convert.ToInt64(datos.Lector["IdArticulo"]);
+                    Articulo articuloExistente = lista.FirstOrDefault(a => a.IdArticulo == idArticulo);
 
-                    aux.Marca = new Marca
+                    if (articuloExistente == null)
                     {
-                        IdMarca = (int)datos.Lector["IdMarca"],
-                        Nombre = (string)datos.Lector["Marca"]
-                    };
+                        var articulo = new Articulo
+                        {
+                            IdArticulo = idArticulo,
+                            Codigo = datos.Lector["Codigo"].ToString(),
+                            Nombre = datos.Lector["Nombre"].ToString(),
+                            Descripcion = datos.Lector["Descripcion"] is DBNull ? "" : datos.Lector["Descripcion"].ToString(),
+                            Precio = datos.Lector["Precio"] is DBNull ? 0 : Convert.ToDecimal(datos.Lector["Precio"]),
+                            Estado = datos.Lector["Estado"] is DBNull ? true : Convert.ToBoolean(datos.Lector["Estado"]),
+                            Marca = new Marca
+                            {
+                                IdMarca = Convert.ToInt64(datos.Lector["IdMarca"]),
+                                Nombre = datos.Lector["Marca"].ToString()
+                            },
+                            Categoria = new Categoria
+                            {
+                                IdCategoria = (int)Convert.ToInt64(value: datos.Lector["IdCategoria"]),
+                                
+                                Nombre = datos.Lector["Categoria"].ToString()
+                            },
+                            ListaUrls = new List<string>()
+                        };
 
-                    aux.tipo = new Categoria
+                        if (!(datos.Lector["UrlImagen"] is DBNull))
+                            articulo.ListaUrls.Add(datos.Lector["UrlImagen"].ToString());
+
+                        lista.Add(articulo);
+                    }
+                    else
                     {
-                        Id = (int)datos.Lector["IdCategoria"],
-                        Nombre = (string)datos.Lector["Tipo"]
-                    };
-
-                    if (!(datos.Lector["Descripcion"] is DBNull))
-                        aux.descripcion = (string)datos.Lector["Descripcion"];
-
-                    aux.precio = (decimal)datos.Lector["Precio"];
-
-                    if (!(datos.Lector["Imagen"] is DBNull))
-                        aux.UrlImagen = (string)datos.Lector["Imagen"];
-
-                    lista.Add(aux);
+                        // Si ya existe el artículo, agregar imagen adicional
+                        if (!(datos.Lector["UrlImagen"] is DBNull))
+                            articuloExistente.ListaUrls.Add(datos.Lector["UrlImagen"].ToString());
+                    }
                 }
 
                 return lista;
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw new Exception("Error al listar los artículos: " + ex.Message);
             }
             finally
             {
@@ -206,37 +164,120 @@ namespace Negocio
             }
         }
 
-        public void agregarArticulo(Articulo nuevo)
-        {
 
+
+        public List<Articulo> ListarUnaSolaImagen()
+        {
+            List<Articulo> lista = new List<Articulo>();
             AccesoDatos datos = new AccesoDatos();
+
             try
             {
-                datos.setearConsulta("insert into ARTICULOS (Codigo,Nombre,Descripcion,IdMarca,IdCategoria,Precio) values (@Codigo,@Nombre,@Descripcion,@IdMarca,@IdCategoria,@Precio); insert into IMAGENES (ImagenUrl,IdArticulo) values (@imagen,SCOPE_IDENTITY())");
-                datos.setearParametro("@Codigo", nuevo.codigoArticulo);
-                datos.setearParametro("@Nombre", nuevo.nombre);
-                datos.setearParametro("@IdMarca", nuevo.Marca.IdMarca);
-                datos.setearParametro("@IdCategoria", nuevo.tipo.Id);
-                datos.setearParametro("@Descripcion", nuevo.descripcion);
-                datos.setearParametro("@Precio", nuevo.precio);
-                datos.setearParametro("@imagen", nuevo.UrlImagen);
+                datos.setearConsulta(@"
+            SELECT 
+                A.IdArticulo,
+                A.Codigo,
+                A.Nombre,
+                A.Descripcion,
+                A.Precio,
+                A.Estado,
+                M.IdMarca,
+                M.Nombre AS Marca,
+                C.IdCategoria,
+                C.Nombre AS Categoria,
+                (SELECT TOP 1 I.UrlImagen 
+                 FROM IMAGENES I 
+                 WHERE I.IdArticulo = A.IdArticulo) AS UrlImagen
+            FROM ARTICULOS A
+            INNER JOIN MARCAS M ON M.IdMarca = A.IdMarca
+            INNER JOIN CATEGORIAS C ON C.IdCategoria = A.IdCategoria
+        ");
 
-                datos.ejecutarAccion();
+                datos.ejecutarLectura();
 
+                while (datos.Lector.Read())
+                {
+                    Articulo art = new Articulo
+                    {
+                        IdArticulo = Convert.ToInt64(datos.Lector["IdArticulo"]),
+                        Codigo = datos.Lector["Codigo"].ToString(),
+                        Nombre = datos.Lector["Nombre"].ToString(),
+                        Descripcion = datos.Lector["Descripcion"] is DBNull ? "" : datos.Lector["Descripcion"].ToString(),
+                        Precio = datos.Lector["Precio"] is DBNull ? 0 : Convert.ToDecimal(datos.Lector["Precio"]),
+                        Estado = datos.Lector["Estado"] is DBNull ? true : Convert.ToBoolean(datos.Lector["Estado"]),
+                        Marca = new Marca
+                        {
+                            IdMarca = Convert.ToInt64(datos.Lector["IdMarca"]),
+                            Nombre = datos.Lector["Marca"].ToString()
+                        },
+                        Categoria = new Categoria
+                        {
+                            IdCategoria = (int)Convert.ToInt64(datos.Lector["IdCategoria"]),
+                            Nombre = datos.Lector["Categoria"].ToString()
+                        },
+                        UrlImagen = datos.Lector["UrlImagen"] is DBNull ? null : datos.Lector["UrlImagen"].ToString()
+                    };
+
+                    lista.Add(art);
+                }
+
+                return lista;
             }
             catch (Exception ex)
             {
-
-                throw ex;
+                throw new Exception("Error al listar artículos con una sola imagen: " + ex.Message);
             }
             finally
             {
                 datos.cerrarConexion();
             }
-
-
-
         }
+
+
+        public void AgregarArticulo(Articulo nuevo)
+        {
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setearConsulta(@"
+            INSERT INTO ARTICULOS 
+                (Codigo, Nombre, Descripcion, IdMarca, IdCategoria, Precio, Cantidad, Estado)
+            VALUES 
+                (@Codigo, @Nombre, @Descripcion, @IdMarca, @IdCategoria, @Precio, @Cantidad, 1);
+
+            DECLARE @IdArticulo INT = SCOPE_IDENTITY();
+
+            IF (@UrlImagen IS NOT NULL AND @UrlImagen <> '')
+            BEGIN
+                INSERT INTO IMAGENES (UrlImagen, IdArticulo)
+                VALUES (@UrlImagen, @IdArticulo);
+            END
+        ");
+
+                datos.setearParametro("@Codigo", nuevo.Codigo);
+                datos.setearParametro("@Nombre", nuevo.Nombre);
+                datos.setearParametro("@Descripcion", nuevo.Descripcion ?? "");
+                datos.setearParametro("@IdMarca", nuevo.Marca.IdMarca);
+                datos.setearParametro("@IdCategoria", nuevo.Categoria.IdCategoria);
+                datos.setearParametro("@Precio", nuevo.Precio);
+                datos.setearParametro("@Cantidad", nuevo.Cantidad > 0 ? nuevo.Cantidad : 0);
+                datos.setearParametro("@UrlImagen", string.IsNullOrWhiteSpace(nuevo.UrlImagen) ? null : nuevo.UrlImagen);
+
+                datos.ejecutarAccion();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al agregar el artículo: " + ex.Message);
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
+
+
 
         public void modificarProducto(Articulo articulo)
         {
@@ -250,13 +291,13 @@ namespace Negocio
                 WHERE IdArticulo = @Id");
 
 
-                datos.setearParametro("@cod", articulo.codigoArticulo);
-                datos.setearParametro("@nom", articulo.nombre);
+                datos.setearParametro("@cod", articulo.Codigo);
+                datos.setearParametro("@nom", articulo.Nombre);
                 datos.setearParametro("@idmarca", articulo.Marca.IdMarca);
-                datos.setearParametro("@idcategoria", articulo.tipo.Id);
-                datos.setearParametro("@desc", articulo.descripcion);
-                datos.setearParametro("@precio", articulo.precio);
-                datos.setearParametro("@Id", articulo.id);
+                datos.setearParametro("@idcategoria", articulo.Categoria.IdCategoria);
+                datos.setearParametro("@desc", articulo.Descripcion);
+                datos.setearParametro("@precio", articulo.Precio);
+                datos.setearParametro("@Id", articulo.IdArticulo);
 
                 datos.ejecutarAccion();
                 
@@ -270,7 +311,7 @@ namespace Negocio
                     INSERT INTO IMAGENES (ImagenUrl, IdArticulo) VALUES (@imagen, @Id) ");
 
                     datos.setearParametro("@imagen", articulo.UrlImagen);
-                    datos.setearParametro("@Id", articulo.id);
+                    datos.setearParametro("@Id", articulo.IdArticulo);
 
                     datos.ejecutarAccion();
                 }
@@ -286,37 +327,67 @@ namespace Negocio
             }
         }
 
-        public void modificarArticulo(Articulo articulo, string urlVieja, string urlNueva)
+        public void ModificarArticulo(Articulo articulo, string urlVieja, string urlNueva)
         {
             AccesoDatos datos = new AccesoDatos();
 
             try
             {
-                // Primero actualizamos los datos del artículo
+                // Actualiza los datos principales del artículo
                 datos.setearConsulta(@"
             UPDATE ARTICULOS 
-            SET Codigo = @cod, Nombre = @nom, IdMarca = @idmarca, IdCategoria = @idcategoria, 
-                Descripcion = @desc, Precio = @precio 
-            WHERE IdArticulo = @Id;
-            
-            -- Actualizamos solo la imagen específica que coincide con la URL vieja
-            UPDATE IMAGENES 
-            SET ImagenUrl = @nuevaUrl 
-            WHERE IdArticulo = @Id AND ImagenUrl = @urlVieja;
-        ");                
+            SET Codigo = @Codigo,
+                Nombre = @Nombre,
+                Descripcion = @Descripcion,
+                Precio = @Precio,
+                Cantidad = @Cantidad,
+                IdMarca = @IdMarca,
+                IdCategoria = @IdCategoria,
+                Estado = @Estado
+            WHERE IdArticulo = @IdArticulo
+        ");
 
-                datos.setearParametro("@cod", articulo.codigoArticulo);
-                datos.setearParametro("@nom", articulo.nombre);
-                datos.setearParametro("@idmarca", articulo.Marca.IdMarca);
-                datos.setearParametro("@idcategoria", articulo.tipo.Id);
-                datos.setearParametro("@desc", articulo.descripcion);
-                datos.setearParametro("@precio", articulo.precio);
-                datos.setearParametro("@Id", articulo.id);
-
-                datos.setearParametro("@urlVieja", urlVieja);
-                datos.setearParametro("@nuevaUrl", urlNueva);
+                datos.setearParametro("@Codigo", articulo.Codigo);
+                datos.setearParametro("@Nombre", articulo.Nombre);
+                datos.setearParametro("@Descripcion", articulo.Descripcion ?? "");
+                datos.setearParametro("@Precio", articulo.Precio);
+                datos.setearParametro("@Cantidad", articulo.Cantidad);
+                datos.setearParametro("@IdMarca", articulo.Marca.IdMarca);
+                datos.setearParametro("@IdCategoria", articulo.Categoria.IdCategoria);
+                datos.setearParametro("@Estado", articulo.Estado);
+                datos.setearParametro("@IdArticulo", articulo.IdArticulo);
 
                 datos.ejecutarAccion();
+                datos.cerrarConexion(); 
+                datos = null;           
+
+                //Si hay una imagen vieja y una nueva → la actualiza
+                if (!string.IsNullOrEmpty(urlVieja) && !string.IsNullOrEmpty(urlNueva))
+                {
+                    datos = new AccesoDatos();
+                    datos.setearConsulta(@"
+                UPDATE IMAGENES 
+                SET UrlImagen = @NuevaUrl 
+                WHERE IdArticulo = @IdArticulo AND UrlImagen = @UrlVieja
+            ");
+
+                    datos.setearParametro("@NuevaUrl", urlNueva);
+                    datos.setearParametro("@UrlVieja", urlVieja);
+                    datos.setearParametro("@IdArticulo", articulo.IdArticulo);
+                    datos.ejecutarAccion();
+                }
+                // Si no existía imagen vieja pero hay una nueva → inserta
+                else if (string.IsNullOrEmpty(urlVieja) && !string.IsNullOrEmpty(urlNueva))
+                {
+                    datos = new AccesoDatos();
+                    datos.setearConsulta(@"
+                INSERT INTO IMAGENES (UrlImagen, IdArticulo)
+                VALUES (@NuevaUrl, @IdArticulo)
+            ");
+                    datos.setearParametro("@NuevaUrl", urlNueva);
+                    datos.setearParametro("@IdArticulo", articulo.IdArticulo);
+                    datos.ejecutarAccion();
+                }
             }
             catch (Exception ex)
             {
@@ -324,7 +395,8 @@ namespace Negocio
             }
             finally
             {
-                datos.cerrarConexion();
+                if (datos != null)
+                    datos.cerrarConexion();
             }
         }
 
@@ -424,56 +496,76 @@ namespace Negocio
 
         }
 
-        public List<Articulo> filtrarPorPrecio(decimal precioMax)
+        public List<Articulo> FiltrarPorPrecio(decimal precioMax)
         {
             List<Articulo> lista = new List<Articulo>();
             AccesoDatos datos = new AccesoDatos();
 
             try
             {
-                datos.setearConsulta("SELECT A.IdArticulo, A.Codigo, A.Nombre, \r\n       M.Nombre AS Marca, \r\n       C.Nombre AS Tipo, \r\n       A.Descripcion, \r\n       A.Precio, \r\n       I.UrlImagen AS Imagen, \r\n       A.IdCategoria, \r\n       A.IdMarca\r\nFROM ARTICULOS A\r\nLEFT JOIN IMAGENES I ON I.IdArticulo = A.IdArticulo\r\nJOIN MARCAS M ON M.IdMarca = A.IdMarca\r\nJOIN CATEGORIAS C ON C.IdCategoria = A.IdCategoria\r\nWHERE A.Precio <= @PrecioMax\r\n");
-
+                datos.setearConsulta(@"
+            SELECT 
+                A.IdArticulo,
+                A.Codigo,
+                A.Nombre,
+                A.Descripcion,
+                A.Precio,
+                A.Estado,
+                M.IdMarca,
+                M.Nombre AS Marca,
+                C.IdCategoria,
+                C.Nombre AS Categoria,
+                (SELECT TOP 1 I.UrlImagen 
+                 FROM IMAGENES I 
+                 WHERE I.IdArticulo = A.IdArticulo) AS UrlImagen
+            FROM ARTICULOS A
+            INNER JOIN MARCAS M ON M.IdMarca = A.IdMarca
+            INNER JOIN CATEGORIAS C ON C.IdCategoria = A.IdCategoria
+            WHERE A.Precio <= @PrecioMax AND A.Estado = 1
+            ORDER BY A.Precio ASC
+        ");
 
                 datos.setearParametro("@PrecioMax", precioMax);
                 datos.ejecutarLectura();
 
                 while (datos.Lector.Read())
                 {
-                    Articulo aux = new Articulo();
-                    aux.id = (int)datos.Lector["Id"];
-                    aux.codigoArticulo = (string)datos.Lector["Codigo"];
-                    aux.nombre = (string)datos.Lector["Nombre"];
+                    var art = new Articulo
+                    {
+                        IdArticulo = Convert.ToInt64(datos.Lector["IdArticulo"]),
+                        Codigo = datos.Lector["Codigo"].ToString(),
+                        Nombre = datos.Lector["Nombre"].ToString(),
+                        Descripcion = datos.Lector["Descripcion"] is DBNull ? "" : datos.Lector["Descripcion"].ToString(),
+                        Precio = datos.Lector["Precio"] is DBNull ? 0 : Convert.ToDecimal(datos.Lector["Precio"]),
+                        Estado = datos.Lector["Estado"] is DBNull ? true : Convert.ToBoolean(datos.Lector["Estado"]),
+                        Marca = new Marca
+                        {
+                            IdMarca = Convert.ToInt64(datos.Lector["IdMarca"]),
+                            Nombre = datos.Lector["Marca"].ToString()
+                        },
+                        Categoria = new Categoria
+                        {
+                            IdCategoria = (int)Convert.ToInt64(datos.Lector["IdCategoria"]),
+                            Nombre = datos.Lector["Categoria"].ToString()
+                        },
+                        UrlImagen = datos.Lector["UrlImagen"] is DBNull ? null : datos.Lector["UrlImagen"].ToString()
+                    };
 
-                    aux.Marca = new Marca();
-                    aux.Marca.IdMarca = (int)datos.Lector["IdMarca"];
-                    aux.Marca.Nombre = (string)datos.Lector["Marca"];
-
-                    aux.tipo = new Categoria();
-                    aux.tipo.Id = (int)datos.Lector["IdCategoria"];
-                    aux.tipo.Nombre = (string)datos.Lector["Tipo"];
-
-                    if (!(datos.Lector["Descripcion"] is DBNull))
-                        aux.descripcion = (string)datos.Lector["Descripcion"];
-
-                    aux.precio = (decimal)datos.Lector["Precio"];
-
-                    if (!(datos.Lector["Imagen"] is DBNull))
-                        aux.UrlImagen = (string)datos.Lector["Imagen"];
-
-                    lista.Add(aux);
+                    lista.Add(art);
                 }
 
                 return lista;
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw new Exception("Error al filtrar artículos por precio: " + ex.Message);
             }
             finally
             {
                 datos.cerrarConexion();
             }
         }
+
 
         public List<Articulo> BuscarProducto(string nombre)
         {
@@ -483,51 +575,62 @@ namespace Negocio
             try
             {
                 datos.setearConsulta(@"
-                    SELECT A.IdArticulo, A.Codigo, A.Nombre, 
-                               M.Nombre AS Marca, 
-                               C.Nombre AS Tipo, 
-                               A.Descripcion, 
-                               A.Precio, 
-                               (SELECT TOP 1 I.UrlImagen 
-                                FROM IMAGENES I 
-                                WHERE I.IdArticulo = A.IdArticulo) AS Imagen, 
-                               A.IdCategoria, 
-                               A.IdMarca
-                        FROM ARTICULOS A
-                        JOIN MARCAS M ON M.IdMarca = A.IdMarca
-                        JOIN CATEGORIAS C ON C.IdCategoria = A.IdCategoria
-                    WHERE A.Nombre LIKE '%' + @nombre + '%'
-                    ");
+            SELECT 
+                A.IdArticulo,
+                A.Codigo,
+                A.Nombre,
+                A.Descripcion,
+                A.Precio,
+                A.Estado,
+                M.IdMarca,
+                M.Nombre AS Marca,
+                C.IdCategoria,
+                C.Nombre AS Categoria,
+                (SELECT TOP 1 I.UrlImagen 
+                 FROM IMAGENES I 
+                 WHERE I.IdArticulo = A.IdArticulo) AS UrlImagen
+            FROM ARTICULOS A
+            INNER JOIN MARCAS M ON M.IdMarca = A.IdMarca
+            INNER JOIN CATEGORIAS C ON C.IdCategoria = A.IdCategoria
+            WHERE A.Nombre LIKE '%' + @nombre + '%'
+              AND A.Estado = 1
+            ORDER BY A.Nombre ASC
+        ");
 
                 datos.setearParametro("@nombre", nombre);
                 datos.ejecutarLectura();
 
                 while (datos.Lector.Read())
                 {
-                    Articulo aux = new Articulo
+                    var art = new Articulo
                     {
-                        id = (int)datos.Lector["Id"],
-                        codigoArticulo = (string)datos.Lector["Codigo"],
-                        nombre = (string)datos.Lector["Nombre"],
-                        descripcion = datos.Lector["Descripcion"] is DBNull ? "" : (string)datos.Lector["Descripcion"],
-                        precio = (decimal)datos.Lector["Precio"],
-                        UrlImagen = datos.Lector["Imagen"] is DBNull ? null : (string)datos.Lector["Imagen"],
+                        IdArticulo = Convert.ToInt64(datos.Lector["IdArticulo"]),
+                        Codigo = datos.Lector["Codigo"].ToString(),
+                        Nombre = datos.Lector["Nombre"].ToString(),
+                        Descripcion = datos.Lector["Descripcion"] is DBNull ? "" : datos.Lector["Descripcion"].ToString(),
+                        Precio = datos.Lector["Precio"] is DBNull ? 0 : Convert.ToDecimal(datos.Lector["Precio"]),
+                        Estado = datos.Lector["Estado"] is DBNull ? true : Convert.ToBoolean(datos.Lector["Estado"]),
                         Marca = new Marca
                         {
-                            IdMarca = (int)datos.Lector["IdMarca"],
-                            Nombre = (string)datos.Lector["Marca"]
+                            IdMarca = Convert.ToInt64(datos.Lector["IdMarca"]),
+                            Nombre = datos.Lector["Marca"].ToString()
                         },
-                        tipo = new Categoria
+                        Categoria = new Categoria
                         {
-                            Id = (int)datos.Lector["IdCategoria"],
-                            Nombre = (string)datos.Lector["Tipo"]
-                        }
+                            IdCategoria = (int)Convert.ToInt64(datos.Lector["IdCategoria"]),
+                            Nombre = datos.Lector["Categoria"].ToString()
+                        },
+                        UrlImagen = datos.Lector["UrlImagen"] is DBNull ? null : datos.Lector["UrlImagen"].ToString()
                     };
 
-                    lista.Add(aux);
+                    lista.Add(art);
                 }
 
                 return lista;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al buscar productos: " + ex.Message);
             }
             finally
             {
@@ -535,78 +638,8 @@ namespace Negocio
             }
         }
 
-        public Articulo BuscarPorId(int id)
-        {
-            Articulo articulo = null;
 
-
-            AccesoDatos datos = new AccesoDatos();
-            {
-                datos.setearConsulta(@"
-            SELECT A.IdArticulo, A.Codigo, A.Nombre, 
-                   M.Nombre AS Marca, 
-                   C.Nombre AS Tipo, 
-                   A.Descripcion, 
-                   A.Precio, 
-                   (SELECT TOP 1 I.UrlImagen 
-                    FROM IMAGENES I 
-                    WHERE I.IdArticulo = A.IdArticulo) AS Imagen, 
-                   A.IdCategoria, 
-                   A.IdMarca
-            FROM ARTICULOS A
-            JOIN MARCAS M ON M.IdMarca = A.IdMarca
-            JOIN CATEGORIAS C ON C.IdCategoria = A.IdCategoria
-            WHERE A.Nombre LIKE '%' + @nombre + '%'
-
-        ");
-                datos.setearParametro("@id", id);
-                datos.ejecutarLectura();
-
-                if (datos.Lector.Read())
-                {
-                    articulo = new Articulo
-                    {
-                        id = (int)datos.Lector["Id"],
-                        codigoArticulo = (string)datos.Lector["Codigo"],
-                        nombre = (string)datos.Lector["Nombre"],
-                        descripcion = datos.Lector["Descripcion"] is DBNull ? "" : (string)datos.Lector["Descripcion"],
-                        precio = (decimal)datos.Lector["Precio"],
-                        Marca = new Marca
-                        {
-                            IdMarca = (int)datos.Lector["IdMarca"],
-                            Nombre = (string)datos.Lector["Marca"]
-                        },
-                        tipo = new Categoria
-                        {
-                            Id = (int)datos.Lector["IdCategoria"],
-                            Nombre = (string)datos.Lector["Tipo"]
-                        }
-                    };
-                }
-            }
-
-            if (articulo != null)
-            {
-
-                AccesoDatos datosImg = new AccesoDatos();
-                {
-                    datosImg.setearConsulta("SELECT ImagenUrl FROM IMAGENES WHERE IdArticulo = @id");
-                    datosImg.setearParametro("@id", id);
-                    datosImg.ejecutarLectura();
-
-                    while (datosImg.Lector.Read())
-                    {
-                        if (!(datosImg.Lector["ImagenUrl"] is DBNull))
-                            articulo.ListaUrls.Add((string)datosImg.Lector["ImagenUrl"]);
-                    }
-                }
-
-
-                articulo.UrlImagen = articulo.ListaUrls.FirstOrDefault();
-            }
-
-            return articulo;
-        }
+       
 
     }
 }

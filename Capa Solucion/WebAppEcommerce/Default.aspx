@@ -24,11 +24,11 @@
                             vertical-align:top;
                             box-shadow:2px 2px 6px rgba(0,0,0,0.1);">
             
-                    <h4 style="margin-top:0;"><%# Eval("nombre") %></h4>
-                    <p><strong>Codigo:</strong> <%# Eval("codigoArticulo") %></p>
+                    <h4 style="margin-top:0;"><%# Eval("Nombre") %></h4>
+                    <p><strong>Codigo:</strong> <%# Eval("Codigo") %></p>
                     <p><strong>Marca:</strong> <%# Eval("Marca.Nombre") %></p>
-                    <p><strong>Categoria:</strong> <%# Eval("tipo.Nombre") %></p>
-                    <p><strong>Precio:</strong> $<%# Eval("precio", "{0:N2}") %></p>
+                    <p><strong>Categoria:</strong> <%# Eval("Categoria.Nombre") %></p>
+                    <p><strong>Precio:</strong> $<%# Eval("Precio", "{0:N2}") %></p>
 
                     <!-- Galería de imágenes -->
                     <asp:Repeater ID="rptImagenes" runat="server" DataSource='<%# Eval("ListaUrls") %>'>

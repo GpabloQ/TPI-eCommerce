@@ -12,16 +12,27 @@ namespace WebAppEcommerce
         {
             if (!IsPostBack)
             {
-                cargarListas();
+                cargarListas(); 
 
                 string id = Request.QueryString["id"];
-                if (id != null)
+                if (!string.IsNullOrEmpty(id))
                 {
                     ArticuloNegocio negocio = new ArticuloNegocio();
-                    Articulo seleccionado = negocio.listar2().Find(x => x.id == int.Parse(id));
-                    Session.Add("articuloSeleccionado", seleccionado);
-                    cargarFormulario(seleccionado);
-                    lblModo.Text = "EDITAR PRODUCTO";
+
+                    // Busca el artículo por ID 
+                    Articulo seleccionado = negocio.Listar2()
+                        .Find(x => x.IdArticulo == long.Parse(id));
+
+                    if (seleccionado != null)
+                    {
+                        Session["articuloSeleccionado"] = seleccionado;
+                        CargarFormulario(seleccionado);
+                        lblModo.Text = "EDITAR PRODUCTO";
+                    }
+                    else
+                    {
+                        lblError.Text = "No se encontró el artículo especificado.";
+                    }
                 }
                 else
                 {
@@ -30,6 +41,9 @@ namespace WebAppEcommerce
             }
         }
 
+    
+
+
         private void cargarListas()
         {
             MarcaNegocio marcaNegocio = new MarcaNegocio();
@@ -37,25 +51,25 @@ namespace WebAppEcommerce
 
             ddlMarca.DataSource = marcaNegocio.listar();
             ddlMarca.DataTextField = "Nombre";   
-            ddlMarca.DataValueField = "Id";      
+            ddlMarca.DataValueField = "IdMarca";      
             ddlMarca.DataBind();
 
             ddlCategoria.DataSource = categoriaNegocio.listar();
             ddlCategoria.DataTextField = "Nombre"; 
-            ddlCategoria.DataValueField = "Id";    
+            ddlCategoria.DataValueField = "IdCategoria";    
             ddlCategoria.DataBind();
         }
 
-        private void cargarFormulario(Articulo art)
+        private void CargarFormulario(Articulo art)
         {
-            txtCodigo.Text = art.codigoArticulo;
-            txtNombre.Text = art.nombre;
-            txtDescripcion.Text = art.descripcion;
-            txtPrecio.Text = art.precio.ToString("N2");
+            txtCodigo.Text = art.Codigo;
+            txtNombre.Text = art.Nombre;
+            txtDescripcion.Text = art.Descripcion;
+            txtPrecio.Text = art.Precio.ToString("N2");
             txtUrlImagen.Text = art.UrlImagen;
 
-            ddlMarca.SelectedValue = art.Marca.Id.ToString();
-            ddlCategoria.SelectedValue = art.tipo.Id.ToString();
+            ddlMarca.SelectedValue = art.Marca.IdMarca.ToString();
+            ddlCategoria.SelectedValue = art.Categoria.IdCategoria.ToString();
         }
 
         protected void btnAceptar_Click(object sender, EventArgs e)
@@ -65,49 +79,64 @@ namespace WebAppEcommerce
 
             try
             {
-                // Validaciones 
+                // Validaciones básicas
                 if (string.IsNullOrEmpty(txtCodigo.Text) || string.IsNullOrEmpty(txtNombre.Text) ||
-                    string.IsNullOrEmpty(txtPrecio.Text) || ddlMarca.SelectedValue == "" || ddlCategoria.SelectedValue == "")
+                    string.IsNullOrEmpty(txtPrecio.Text) || string.IsNullOrEmpty(ddlMarca.SelectedValue) ||
+                    string.IsNullOrEmpty(ddlCategoria.SelectedValue))
                 {
-                    
                     lblError.Text = "Todos los campos obligatorios deben completarse.";
                     return;
                 }
 
                 if (!decimal.TryParse(txtPrecio.Text, out decimal precio) || precio <= 0)
                 {
-                    lblError.Text = "Precio debe ser un número positivo.";
+                    lblError.Text = "El precio debe ser un número positivo.";
                     return;
                 }
 
-                articulo.codigoArticulo = txtCodigo.Text;
-                articulo.nombre = txtNombre.Text;
-                articulo.descripcion = txtDescripcion.Text;
-                articulo.precio = precio;
-                articulo.UrlImagen = txtUrlImagen.Text;
+                // Se asignan valores al objeto Articulo
+                articulo.Codigo = txtCodigo.Text.Trim();
+                articulo.Nombre = txtNombre.Text.Trim();
+                articulo.Descripcion = txtDescripcion.Text.Trim();
+                articulo.Precio = precio;
+                articulo.UrlImagen = txtUrlImagen.Text.Trim();
+                articulo.Estado = true;
+                articulo.Cantidad = 1; 
 
-                
-                articulo.Marca = new Marca { Id = int.Parse(ddlMarca.SelectedValue) };
-                articulo.tipo = new Categoria { Id = int.Parse(ddlCategoria.SelectedValue) };
+                articulo.Marca = new Marca { IdMarca = int.Parse(ddlMarca.SelectedValue) };
+                articulo.Categoria = new Categoria { IdCategoria = int.Parse(ddlCategoria.SelectedValue) };
 
-                if (Request.QueryString["id"] != null)
+                string id = Request.QueryString["id"];
+
+                if (!string.IsNullOrEmpty(id))
                 {
-                    articulo.id = int.Parse(Request.QueryString["id"]);
-                    negocio.modificarProducto(articulo);
+                    // Edición
+                    articulo.IdArticulo = int.Parse(id);
+
+                    string urlVieja = "";
+                    if (Session["articuloSeleccionado"] != null)
+                    {
+                        Articulo seleccionado = (Articulo)Session["articuloSeleccionado"];
+                        urlVieja = seleccionado.UrlImagen;
+                    }
+
+                    negocio.ModificarArticulo(articulo, urlVieja, articulo.UrlImagen);
                 }
                 else
                 {
-                    negocio.agregarArticulo(articulo);
+                    // Alta
+                    negocio.AgregarArticulo(articulo);
                 }
 
                 Response.Redirect("Gestion.aspx", false);
             }
             catch (Exception ex)
             {
-                Session.Add("error", "Error al guardar el producto. Intente nuevamente.");
-                Response.Redirect("Error.aspx", false);
+                lblError.Text = "Error técnico: " + ex.Message;
             }
         }
+
+
 
 
         protected void btnCancelar_Click(object sender, EventArgs e)

@@ -12,20 +12,26 @@ namespace WebAppEcommerce
 
         public List<Articulo> listaArticulo { get; set; }
 
-        protected void Page_Load(object sender, EventArgs e)
+        
+            protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
+                ArticuloNegocio negocio = new ArticuloNegocio();
+                rptArticulos.DataSource = negocio.ListarUnaSolaImagen();
+                rptArticulos.DataBind();
                 cargarArticulos();
             }
         }
+
+        
 
         private void cargarArticulos()
         {
             try
             {
                 ArticuloNegocio negocio = new ArticuloNegocio();
-                listaArticulo = negocio.listar2();
+                listaArticulo = negocio.Listar2();
 
                 rptArticulos.DataSource = listaArticulo;
                 rptArticulos.DataBind();

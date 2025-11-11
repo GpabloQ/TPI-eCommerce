@@ -1,43 +1,55 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+﻿    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
 
-namespace Dominio
-{
-    public class Articulo
+    namespace Dominio
     {
-        [DisplayName("ID")]
-        public int id { get; set; }
-
-        [DisplayName("CÓDIGO DE ARTÍCULO")]
-        public string codigoArticulo { get; set; }
-
-        [DisplayName("NOMBRE")]
-        public string nombre { get; set; }
-
-        [DisplayName("MARCA")]
-        public Marca Marca { get; set; }
-
-        [DisplayName("CATEGORÍA")]
-        public Categoria tipo { get; set; }
-
-        [DisplayName("DESCRIPCIÓN")]
-        public string descripcion { get; set; }
-
-        [DisplayName("PRECIO")]
-        public decimal precio { get; set; }
-        public string UrlImagen { get; set; }
-        public List<string> ListaUrls { get; set; }
-
-        public Articulo()
+        public class Articulo
         {
-            ListaUrls = new List<string>();
-        }
+            [DisplayName("ID ARTÍCULO")]
+            public long IdArticulo { get; set; }
 
+            [DisplayName("CÓDIGO")]
+            public string Codigo { get; set; }
+
+            [DisplayName("NOMBRE")]
+            public string Nombre { get; set; }
+
+            [DisplayName("DESCRIPCIÓN")]
+            public string Descripcion { get; set; }
+
+            [DisplayName("PRECIO")]
+            public decimal Precio { get; set; }
+
+            [DisplayName("CANTIDAD EN STOCK")]
+            public int Cantidad { get; set; }  // ⚙️ Campo requerido en la tabla ARTICULOS
+
+            [DisplayName("ESTADO")]
+            public bool Estado { get; set; }
+
+            [DisplayName("MARCA")]
+            public Marca Marca { get; set; }
+
+            [DisplayName("CATEGORÍA")]
+            public Categoria Categoria { get; set; }
+
+            [DisplayName("URL IMAGEN PRINCIPAL")]
+            public string UrlImagen { get; set; }
+
+            [DisplayName("IMÁGENES ASOCIADAS")]
+            public List<string> ListaUrls { get; set; }
+
+            public Articulo()
+            {
+                ListaUrls = new List<string>();
+                Marca = new Marca();
+                Categoria = new Categoria();
+                Estado = true;       
+                Cantidad = 0;        
+            }
+        }
     }
-}
+
+
+
 
