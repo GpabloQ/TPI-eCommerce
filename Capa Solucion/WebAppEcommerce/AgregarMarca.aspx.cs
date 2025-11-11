@@ -104,9 +104,25 @@ namespace WebAppEcommerce
                 if (ChkConfirmaEliminacion.Checked)
                 {
                 MarcaNegocio negocio = new MarcaNegocio();
-                long id = long.Parse(Request.QueryString["id"]);
-                negocio.eliminar(id);
-                Response.Redirect("ListarMarcas.aspx", false);
+                Marca modificar = new Marca();
+                    long id = long.Parse(Request.QueryString["id"]);
+                //negocio.eliminacionFisica(id);
+
+
+                    if (!string.IsNullOrWhiteSpace(txtNombre.Text))
+                    { 
+                        // El TextBox tiene contenido válido
+
+                        modificar.Nombre = txtNombre.Text;
+                        modificar.Estado = false;
+
+                        if (Request.QueryString["id"] != null)
+                        {
+                            modificar.IdMarca = long.Parse(Request.QueryString["id"].ToString());
+                            negocio.eliminacionLogica(modificar);
+                            Response.Redirect("ListarMarcas.aspx", false);
+                        }
+                    }
                 }
             }
             catch (Exception ex )

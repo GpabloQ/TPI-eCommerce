@@ -100,7 +100,7 @@ namespace Negocio
             }
         }
 
-        public bool eliminar(long id)
+        public bool eliminacionFisica(long id)
         {
             if (ExisteMarcaEnArticulos(id))
             {
@@ -119,6 +119,30 @@ namespace Negocio
             {
 
                 throw;
+            }
+        }
+
+
+        public void eliminacionLogica(Marca modificar)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.setearConsulta("UPDATE MARCAS SET Estado = @estado WHERE IdMarca = @idmarca");
+                datos.setearParametro("@idmarca", modificar.IdMarca);
+                datos.setearParametro("@nombre", modificar.Nombre);
+                datos.setearParametro("@estado", modificar.Estado);
+
+                datos.ejecutarAccion();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            finally
+            {
+                datos.cerrarConexion();
             }
         }
 

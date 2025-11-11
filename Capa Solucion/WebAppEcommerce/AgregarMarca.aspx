@@ -7,6 +7,10 @@
           gap: 8px; /* espacio entre los hijos */
         }
 
+         .checkbox-align {
+    vertical-align: middle;
+         }
+
     </style>
     <asp:Label ID="lblTitulo" runat="server" CssClass="h2"></asp:Label>
     <br />
@@ -27,7 +31,7 @@
 
       <%if (ConfirmaEliminacion) {  %>       
   <div class="botonera">
-  <asp:CheckBox ID="ChkConfirmaEliminacion" runat="server" Text="Confirmar Eliminación" />
+  <asp:CheckBox ID="ChkConfirmaEliminacion" runat="server" Text="Confirmar Eliminación" CssClass="checkbox-align"/>
   <asp:Button ID="btnConfirmarEliminar" runat="server" Text="Eliminar" CssClass="btn btn-outline-danger mt-3"
       OnClick="btnEliminar_Click"/>
   </div>
