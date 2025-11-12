@@ -18,7 +18,7 @@ namespace WebAppEcommerce
             if (!IsPostBack)
             {
                 ArticuloNegocio negocio = new ArticuloNegocio();
-                rptArticulos.DataSource = negocio.ListarUnaSolaImagen();
+                rptArticulos.DataSource = negocio.ListarConImagenes();
                 rptArticulos.DataBind();
                 cargarArticulos();
             }

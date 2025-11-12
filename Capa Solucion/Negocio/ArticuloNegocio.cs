@@ -638,8 +638,90 @@ namespace Negocio
             }
         }
 
+        public List<Articulo> ListarConImagenes()
+        {
+            List<Articulo> lista = new List<Articulo>();
+            AccesoDatos datos = new AccesoDatos();
 
-       
+            try
+            {
+                datos.setearConsulta(@"
+            SELECT 
+                A.IdArticulo,
+                A.Codigo,
+                A.Nombre,
+                A.Descripcion,
+                A.Precio,
+                A.Estado,
+                M.IdMarca,
+                M.Nombre AS Marca,
+                C.IdCategoria,
+                C.Nombre AS Categoria,
+                I.UrlImagen
+            FROM ARTICULOS A
+            INNER JOIN MARCAS M ON M.IdMarca = A.IdMarca
+            INNER JOIN CATEGORIAS C ON C.IdCategoria = A.IdCategoria
+            LEFT JOIN IMAGENES I ON I.IdArticulo = A.IdArticulo
+            ORDER BY A.IdArticulo
+        ");
+
+                datos.ejecutarLectura();
+
+                while (datos.Lector.Read())
+                {
+                    long idArticulo = Convert.ToInt64(datos.Lector["IdArticulo"]);
+                    Articulo articuloExistente = lista.FirstOrDefault(a => a.IdArticulo == idArticulo);
+
+
+                    if (articuloExistente == null)
+                    {
+                        var articulo = new Articulo
+                        {
+                            IdArticulo = idArticulo,
+                            Codigo = datos.Lector["Codigo"].ToString(),
+                            Nombre = datos.Lector["Nombre"].ToString(),
+                            Descripcion = datos.Lector["Descripcion"] is DBNull ? "" : datos.Lector["Descripcion"].ToString(),
+                            Precio = datos.Lector["Precio"] is DBNull ? 0 : Convert.ToDecimal(datos.Lector["Precio"]),
+                            Estado = datos.Lector["Estado"] is DBNull ? true : Convert.ToBoolean(datos.Lector["Estado"]),
+                            Marca = new Marca
+                            {
+                                IdMarca = Convert.ToInt64(datos.Lector["IdMarca"]),
+                                Nombre = datos.Lector["Marca"].ToString()
+                            },
+                            Categoria = new Categoria
+                            {
+                                IdCategoria = (int)Convert.ToInt64(datos.Lector["IdCategoria"]),
+                                Nombre = datos.Lector["Categoria"].ToString()
+                            },
+                            ListaUrls = new List<string>()
+                        };
+
+                        // Si hay una imagen, la agregamos
+                        if (!(datos.Lector["UrlImagen"] is DBNull))
+                            articulo.ListaUrls.Add(datos.Lector["UrlImagen"].ToString());
+
+                        lista.Add(articulo);
+                    }
+                    else
+                    {
+                        // Si ya existe el artículo, agregamos las imágenes adicionales
+                        if (!(datos.Lector["UrlImagen"] is DBNull))
+                            articuloExistente.ListaUrls.Add(datos.Lector["UrlImagen"].ToString());
+                    }
+                }
+
+                return lista;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al listar los artículos con múltiples imágenes: " + ex.Message);
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
 
     }
 }
