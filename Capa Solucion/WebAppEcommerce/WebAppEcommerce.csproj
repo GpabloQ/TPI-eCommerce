@@ -125,7 +125,9 @@
     <Content Include="FinDeCompra.aspx" />
     <Content Include="FormularioProducto.aspx" />
     <Content Include="Gestion.aspx" />
+    <Content Include="GestionCategoria.aspx" />
     <Content Include="Global.asax" />
+    <Content Include="ListaCategorias.aspx" />
     <Content Include="ListarMarcas.aspx" />
     <Content Include="Registro.aspx" />
     <Content Include="Scripts\bootstrap.bundle.js" />
@@ -242,8 +244,20 @@
     <Compile Include="Gestion.aspx.designer.cs">
       <DependentUpon>Gestion.aspx</DependentUpon>
     </Compile>
+    <Compile Include="GestionCategoria.aspx.cs">
+      <DependentUpon>GestionCategoria.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="GestionCategoria.aspx.designer.cs">
+      <DependentUpon>GestionCategoria.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="ListaCategorias.aspx.cs">
+      <DependentUpon>ListaCategorias.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ListaCategorias.aspx.designer.cs">
+      <DependentUpon>ListaCategorias.aspx</DependentUpon>
     </Compile>
     <Compile Include="ListarMarcas.aspx.cs">
       <DependentUpon>ListarMarcas.aspx</DependentUpon>
