@@ -8,7 +8,7 @@
             <asp:BoundField  HeaderText="ID"  DataField="IdCategoria"/>
             <asp:BoundField  HeaderText="Nombre de Categoria"  DataField="Nombre"/>
             <asp:BoundField  HeaderText="Estado"  DataField="Estado" Visible="false"/>
-            <asp:CommandField  HeaderText="modificar"  ShowSelectButton="true" SelectText="✅"/>
+            <asp:CommandField  HeaderText=""  ShowSelectButton="true" SelectText="✅"/>
 
         </Columns>    
 
@@ -18,7 +18,7 @@
        
 
     <div>
-        <asp:Button runat="server" Text="Gestionar" ID="btnGestionar" OnClick="btnGestionar_Click"  CssClass="btn btn-primary" />
+        <asp:Button runat="server" Text="Agregar" ID="btnAgregar" OnClick="btnAgregar_Click"  CssClass="btn btn-primary" />
     </div>
     
 </asp:Content>

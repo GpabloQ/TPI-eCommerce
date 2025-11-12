@@ -11,20 +11,24 @@ namespace WebAppEcommerce
 {
     public partial class GestionCategoria : System.Web.UI.Page
     {
+        public bool   ConfirmarEliminacion { get; set; }
+      
         protected void Page_Load(object sender, EventArgs e)
         {
+           
             string id = Request.QueryString["id"] != null ? Request.QueryString["id"].ToString() : "";
-            if (id != "")
+            if (id != "" )
             {
-
+                ConfirmarEliminacion = false;
                 //precarga de datos
                 CategoriaNegocio categoriaNegocio = new CategoriaNegocio();
-                //List<Categoria> lista = categoriaNegocio.listar(id);
                 Categoria seleccionado = (categoriaNegocio.listar(id))[0];
+                //List<Categoria> lista = categoriaNegocio.listar(id);
                 txtId.Text = seleccionado.IdCategoria.ToString();
                 txtNombreCategoria.Text = seleccionado.Nombre;
-
+            
             }
+            
 
         }
 
@@ -39,6 +43,7 @@ namespace WebAppEcommerce
                 nuevo.Estado = true;
                
                 categoriaNegocio.agregar(nuevo);
+                Response.Redirect("ListaCategorias.aspx");
 
             }
             catch (Exception)
@@ -62,7 +67,8 @@ namespace WebAppEcommerce
 
                     if (Request.QueryString["id"] != null) 
                     categoriaNegocio.modificar(seleccionado);
-                
+                    Response.Redirect("ListaCategorias.aspx");
+
             }
             catch (Exception)
             {
@@ -74,11 +80,31 @@ namespace WebAppEcommerce
 
         protected void btnEliminar_Click(object sender, EventArgs e)
         {
-            Categoria nuevo = new Categoria();
-            CategoriaNegocio categoriaNegocio = new CategoriaNegocio();
+            ConfirmarEliminacion = true;
+        }
 
-            //categoriaNegocio.eliminar();
+        protected void btnConfirmacion_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (chkConfimaEliminacion.Checked) { 
+                CategoriaNegocio  negocio = new CategoriaNegocio();
+                negocio.eliminar(int.Parse(txtId.Text));
+                Response.Redirect("ListaCategorias.aspx");
+                
+                }
 
+            }
+            catch (Exception ex)
+            {
+
+                Session.Add("error", ex);
+            }
+        }
+
+        protected void btnCancelar_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("ListaCategorias.aspx");
         }
     }
 }

@@ -10,16 +10,12 @@ namespace WebAppEcommerce
 {
     public partial class ListaCategorias : System.Web.UI.Page
     {
+ 
         protected void Page_Load(object sender, EventArgs e)
         {
             CategoriaNegocio negocio = new CategoriaNegocio();
             dgvCategorias.DataSource = negocio.listar();
             dgvCategorias.DataBind();
-        }
-
-        protected void btnGestionar_Click(object sender, EventArgs e)
-        {
-
         }
 
         protected void dgvCategorias_SelectedIndexChanged(object sender, EventArgs e)
@@ -32,6 +28,11 @@ namespace WebAppEcommerce
         {
             dgvCategorias.PageIndex = e.NewPageIndex;
             dgvCategorias.DataBind();
+        }
+
+        protected void btnAgregar_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("GestionCategoria.aspx");
         }
     }
 }
