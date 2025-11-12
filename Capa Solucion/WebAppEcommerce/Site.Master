@@ -54,7 +54,8 @@
                         <li class="nav-item"><a class="nav-link" runat="server" href="~/Contact.aspx">Contacto</a></li>    
                         <li class="nav-item"><a class="nav-link" runat="server" href="~/Registro.aspx">Registrarse</a></li>   
                         <li class="nav-item"><a class="nav-link" runat="server" href="~/Gestion.aspx">Gestion Productos</a></li>
-                           
+                        <li class="nav-item"><a class="nav-link" runat="server" href="~/ListarMarcas.aspx">Gestion Marcas</a></li>
+                        <li class="nav-item"><a class="nav-link" runat="server" href="~/Default.aspx">Gestion Categorias</a></li>                          
                           
 
                         </ul>
