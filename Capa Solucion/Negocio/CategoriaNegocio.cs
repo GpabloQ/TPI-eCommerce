@@ -87,9 +87,11 @@ namespace Negocio
             try
             {
 
-                datos.setearConsulta("UPDATE CATEGORIAS SET Nombre = @Nombre WHERE IdCategoria = @Id");
-                datos.setearParametro("@Nombre", modificar.Nombre);
-                datos.setearParametro("@Id", modificar.IdCategoria);
+                datos.setearConsulta("UPDATE CATEGORIAS SET Nombre = @nombre, Estado = @estado WHERE IdCategoria = @idcategoria");
+                datos.setearParametro("@idcategoria", modificar.IdCategoria);
+                datos.setearParametro("@nombre", modificar.Nombre);
+                datos.setearParametro("@estado", modificar.Estado);
+
                 datos.ejecutarAccion();
             }
             catch (Exception ex)

@@ -17,13 +17,15 @@ namespace WebAppEcommerce
         {
            
             string id = Request.QueryString["id"] != null ? Request.QueryString["id"].ToString() : "";
-            if (id != "" )
+            if (id != ""  && !IsPostBack)
             {
                 ConfirmarEliminacion = false;
+                
                 //precarga de datos
                 CategoriaNegocio categoriaNegocio = new CategoriaNegocio();
                 Categoria seleccionado = (categoriaNegocio.listar(id))[0];
-                //List<Categoria> lista = categoriaNegocio.listar(id);
+               
+
                 txtId.Text = seleccionado.IdCategoria.ToString();
                 txtNombreCategoria.Text = seleccionado.Nombre;
             
@@ -56,18 +58,25 @@ namespace WebAppEcommerce
 
         protected void btnModificar_Click(object sender, EventArgs e)
         {
+
             try
             {
                     CategoriaNegocio categoriaNegocio = new CategoriaNegocio();
-                //List<Categoria> lista = categoriaNegocio.listar(id);
-                Categoria seleccionado = new Categoria();
+                    Categoria seleccionado = new Categoria();
+                    
 
                     //modificacion de datos
                     seleccionado.Nombre=txtNombreCategoria.Text;
+                    seleccionado.Estado = true;
 
-                    if (Request.QueryString["id"] != null) 
-                    categoriaNegocio.modificar(seleccionado);
-                    Response.Redirect("ListaCategorias.aspx");
+                    if (Request.QueryString["id"] != null) {
+                    
+                        seleccionado.IdCategoria = int.Parse(Request.QueryString["id"].ToString());
+                        categoriaNegocio.modificar(seleccionado);
+                        Response.Redirect("ListaCategorias.aspx");
+                    }
+
+                
 
             }
             catch (Exception)
