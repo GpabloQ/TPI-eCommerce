@@ -126,10 +126,13 @@
     <Content Include="FormularioProducto.aspx" />
     <Content Include="Gestion.aspx" />
     <Content Include="GestionCategoria.aspx" />
+    <Content Include="GestionUsuarios.aspx" />
     <Content Include="Global.asax" />
     <Content Include="ListaCategorias.aspx" />
     <Content Include="ListarMarcas.aspx" />
-    <Content Include="Registro.aspx" />
+    <Content Include="AgregarUsuario.aspx">
+      <Generator>MSWebApplicationBuilder</Generator>
+    </Content>
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.esm.js" />
@@ -251,6 +254,13 @@
     <Compile Include="GestionCategoria.aspx.designer.cs">
       <DependentUpon>GestionCategoria.aspx</DependentUpon>
     </Compile>
+    <Compile Include="GestionUsuarios.aspx.cs">
+      <DependentUpon>GestionUsuarios.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GestionUsuarios.aspx.designer.cs">
+      <DependentUpon>GestionUsuarios.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -269,12 +279,12 @@
       <DependentUpon>ListarMarcas.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Registro.aspx.cs">
-      <DependentUpon>Registro.aspx</DependentUpon>
+    <Compile Include="AgregarUsuario.aspx.cs">
+      <DependentUpon>AgregarUsuario.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Registro.aspx.designer.cs">
-      <DependentUpon>Registro.aspx</DependentUpon>
+    <Compile Include="AgregarUsuario.aspx.designer.cs">
+      <DependentUpon>AgregarUsuario.aspx</DependentUpon>
     </Compile>
     <Compile Include="Signin.aspx.cs">
       <DependentUpon>Signin.aspx</DependentUpon>

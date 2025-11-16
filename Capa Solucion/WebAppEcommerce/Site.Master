@@ -52,10 +52,10 @@
                         <li class="nav-item"><a class="nav-link" runat="server" href="~/Signin.aspx">Iniciar sesion</a></li>
                         <li class="nav-item"><a class="nav-link" runat="server" href="~/FinDeCompra.aspx">Compra Finalizada</a></li>
                         <li class="nav-item"><a class="nav-link" runat="server" href="~/Contact.aspx">Contacto</a></li>    
-                        <li class="nav-item"><a class="nav-link" runat="server" href="~/Registro.aspx">Registrarse</a></li>   
-                        <li class="nav-item"><a class="nav-link" runat="server" href="~/Gestion.aspx">Gestion Productos</a></li>
-                        <li class="nav-item"><a class="nav-link" runat="server" href="~/ListarMarcas.aspx">Gestion Marcas</a></li>
-                        <li class="nav-item"><a class="nav-link" runat="server" href="~/Default.aspx">Gestion Categorias</a></li>                          
+                        <li class="nav-item"><a class="nav-link" runat="server" href="~/GestionUsuarios.aspx">Gestion de Usuarios</a></li>   
+                        <li class="nav-item"><a class="nav-link" runat="server" href="~/Gestion.aspx">Gestion de Productos</a></li>
+                        <li class="nav-item"><a class="nav-link" runat="server" href="~/ListarMarcas.aspx">Gestion de Marcas</a></li>
+                        <li class="nav-item"><a class="nav-link" runat="server" href="~/ListaCategorias.aspx">Gestion de Categorias</a></li>                          
                           
 
                         </ul>
