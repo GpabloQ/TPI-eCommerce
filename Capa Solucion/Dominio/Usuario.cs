@@ -23,8 +23,5 @@ namespace Dominio
             //Estas propiedades son para el metodo listar con join
             public string NombreCompleto { get; set; }
             public string TipoUsuarioNombre { get; set; }
-
-
-
     }
 }

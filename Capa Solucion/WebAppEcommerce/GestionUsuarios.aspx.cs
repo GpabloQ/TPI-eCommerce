@@ -39,19 +39,23 @@ namespace WebAppEcommerce
             Response.Redirect("AgregarUsuario.aspx");
         }
 
+        // se ejecuta al presiona la confirmacion de eliminar en la ventana ejergente de JS.
         protected void dgvUsuarios_RowCommand(object sender, GridViewCommandEventArgs e)
         {
             if (e.CommandName == "Eliminar")
             {
                 long id = Convert.ToInt64(e.CommandArgument);
-
                 UsuarioNegocio negocio = new UsuarioNegocio();
                 negocio.EliminarUsuario(id);
 
                 // Actualiza la lista de usuarios después de eliminar
                 dgvUsuarios.DataSource = negocio.listar();
                 dgvUsuarios.DataBind();
+
+                // Muestra mensaje de éxito
+                ScriptManager.RegisterStartupScript(this, GetType(), "UsuarioEliminado",
+                    "Swal.fire('Eliminado', 'El usuario fue eliminado correctamente', 'success');", true);
             }                                     
-        }
+        }        
     }
 }

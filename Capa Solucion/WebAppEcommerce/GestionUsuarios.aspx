@@ -45,14 +45,16 @@
        
         <asp:TemplateField HeaderText="Eliminar">
             <ItemTemplate>
+                <%-- Llama a la función de JS para mostrar el msj de confirmacion antes de eliminar y evita el postback automatico --%>
                 <asp:LinkButton ID="btnEliminar"
-                                runat="server"
-                                CommandName="Eliminar"
-                                CommandArgument='<%# Eval("IdUsuario") %>'
-                                CssClass="icon-btn"
-                                OnClientClick='return confirmarEliminacion(<%# Eval("IdUsuario") %>, this);'>
-                    🗑️
+                    runat="server"
+                    CommandName="Eliminar"
+                    CommandArgument='<%# Eval("IdUsuario") %>'
+                    CssClass="icon-btn"                    
+                    OnClientClick='<%# "confirmarEliminacion(this, \"" + Eval("IdUsuario") + "\"); return false;" %>'>🗑️        
                 </asp:LinkButton>
+
+
             </ItemTemplate>
         </asp:TemplateField>
 
@@ -71,9 +73,10 @@
 
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+    <%--FRAN, BALTA Investigando encontre esta libreria de JS SweetAlert: muestra ventanas emergentes  y permite confirmar acciones --%>
+    <%--Ventana de JS para mostrar el mensaje de confirmación antes de eliminar un usuario--%>
 <script type="text/javascript">
-    function confirmarEliminacion(id, boton) {
+    function confirmarEliminacion(boton, id) {
         event.preventDefault();
 
         Swal.fire({
@@ -88,15 +91,20 @@
         }).then((result) => {
             if (result.isConfirmed) {
 
-                
-                let postBackID = boton.id.replace(/_/g, "$");
+                // toma el href del LinkButton
+                var href = boton.getAttribute("href");                
+                var match = href && href.match(/__doPostBack\('([^']+)'/);
 
-                __doPostBack(postBackID, id);
+                if (match && match[1]) {
+                    var postBackID = match[1];
+                    // No hace falta pasar el id aca: el CommandArgument lo aporta el LinkButton
+                    __doPostBack(postBackID, "");
+                }
             }
         });
-
         return false;
     }
 </script>
+
 
 </asp:Content>
