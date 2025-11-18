@@ -1,6 +1,7 @@
 ﻿using Dominio;
 using Negocio;
 using System;
+using System.Web.UI;
 
 namespace WebAppEcommerce
 {
@@ -94,6 +95,8 @@ namespace WebAppEcommerce
                 u.TipoUsuario = int.Parse(ddlTipoUsuario.SelectedValue);
                 u.Estado = true;
 
+                          
+                // ALTA
                 if (u.IdUsuario == 0)
                 {
                     if (string.IsNullOrWhiteSpace(txtContrasenia.Text))
@@ -107,17 +110,29 @@ namespace WebAppEcommerce
                     u.Contrasenia = txtContrasenia.Text;
                     negocio.AgregarUsuario(u);
 
-                    lblMensaje.Text = "Usuario agregado correctamente.";
-                    lblMensaje.CssClass = "alert alert-success";
-                }
-                else
-                {
-                    negocio.ModificarUsuario(u);
-                    lblMensaje.Text = "Usuario modificado correctamente.";
-                    lblMensaje.CssClass = "alert alert-success";
+                    // SweetAlert de creación + redireccion
+                    ClientScript.RegisterStartupScript(
+                        this.GetType(),
+                        "UsuarioCreado",
+                        "Swal.fire({ title: 'Usuario creado', text: 'El usuario fue creado exitosamente', icon: 'success' })" +
+                        ".then(function(){ window.location = 'GestionUsuarios.aspx'; });",
+                        true
+                    );
+                    return;
                 }
 
-                lblMensaje.Visible = true;
+                // MODIFICACION
+                negocio.ModificarUsuario(u);
+
+                ClientScript.RegisterStartupScript(
+                    this.GetType(),
+                    "UsuarioModificado",
+                    "Swal.fire({ title: 'Usuario modificado', text: 'Los datos fueron actualizados correctamente', icon: 'success' })" +
+                    ".then(function(){ window.location = 'GestionUsuarios.aspx'; });",
+                    true
+                );
+                return;
+
             }
             catch (Exception ex)
             {
@@ -126,6 +141,7 @@ namespace WebAppEcommerce
                 lblMensaje.Visible = true;
             }
         }
+
 
         protected void btnCancelar_Click(object sender, EventArgs e)
         {

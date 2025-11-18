@@ -69,6 +69,7 @@
     <asp:Label ID="lblMensaje" runat="server" ForeColor="Green" Visible="false"></asp:Label>
 
 </div>
-
+    <%--Libreria de JS SweetAlert, para mostrar carteles copados--%>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </asp:Content>
 
