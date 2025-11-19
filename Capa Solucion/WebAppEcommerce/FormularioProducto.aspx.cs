@@ -84,13 +84,15 @@ namespace WebAppEcommerce
                     string.IsNullOrEmpty(txtPrecio.Text) || string.IsNullOrEmpty(ddlMarca.SelectedValue) ||
                     string.IsNullOrEmpty(ddlCategoria.SelectedValue))
                 {
-                    lblError.Text = "Todos los campos obligatorios deben completarse.";
+                    ScriptManager.RegisterStartupScript(this, GetType(), "alertCampos",
+                        "Swal.fire('Campos incompletos', 'Debe completar todos los campos obligatorios.', 'warning');", true);
                     return;
                 }
 
                 if (!decimal.TryParse(txtPrecio.Text, out decimal precio) || precio <= 0)
                 {
-                    lblError.Text = "El precio debe ser un número positivo.";
+                    ScriptManager.RegisterStartupScript(this, GetType(), "alertPrecio",
+                        "Swal.fire('Precio inválido', 'El precio debe ser un número positivo.', 'warning');", true);
                     return;
                 }
 
@@ -101,7 +103,7 @@ namespace WebAppEcommerce
                 articulo.Precio = precio;
                 articulo.UrlImagen = txtUrlImagen.Text.Trim();
                 articulo.Estado = true;
-                articulo.Cantidad = 1; 
+                articulo.Cantidad = 1;
 
                 articulo.Marca = new Marca { IdMarca = int.Parse(ddlMarca.SelectedValue) };
                 articulo.Categoria = new Categoria { IdCategoria = int.Parse(ddlCategoria.SelectedValue) };
@@ -121,24 +123,29 @@ namespace WebAppEcommerce
                     }
 
                     negocio.ModificarArticulo(articulo, urlVieja, articulo.UrlImagen);
+
+                    // SweetAlert éxito edición
+                    ScriptManager.RegisterStartupScript(this, GetType(), "alertModificado",
+                        "Swal.fire('Articulo modificado', 'Los cambios se guardaron correctamente.', 'success')" +
+                        ".then(() => { window.location = 'Gestion.aspx'; });", true);
                 }
                 else
                 {
                     // Alta
                     negocio.AgregarArticulo(articulo);
-                }
 
-                Response.Redirect("Gestion.aspx", false);
+                    // SweetAlert éxito alta
+                    ScriptManager.RegisterStartupScript(this, GetType(), "alertAgregado",
+                        "Swal.fire('Articulo agregado', 'El articulo fue creado correctamente.', 'success')" +
+                        ".then(() => { window.location = 'Gestion.aspx'; });", true);
+                }
             }
             catch (Exception ex)
             {
-                lblError.Text = "Error técnico: " + ex.Message;
+                ScriptManager.RegisterStartupScript(this, GetType(), "alertError",
+                    $"Swal.fire('Error técnico', '{ex.Message}', 'error');", true);
             }
         }
-
-
-
-
         protected void btnCancelar_Click(object sender, EventArgs e)
         {
             Response.Redirect("Gestion.aspx", false);

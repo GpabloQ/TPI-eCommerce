@@ -22,7 +22,7 @@
             public decimal Precio { get; set; }
 
             [DisplayName("CANTIDAD EN STOCK")]
-            public int Cantidad { get; set; }  // ⚙️ Campo requerido en la tabla ARTICULOS
+            public int Cantidad { get; set; }  
 
             [DisplayName("ESTADO")]
             public bool Estado { get; set; }

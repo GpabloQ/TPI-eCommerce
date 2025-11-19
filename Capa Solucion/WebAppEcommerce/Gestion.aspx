@@ -6,6 +6,10 @@
     <main class="container mt-4">
         <h2 class="text-center mb-4">GESTION DE PRODUCTOS</h2>
 
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        
+
+
         <!-- Botón para agregar nuevo producto -->
         <div class="text-center mb-4">
             <asp:Button ID="btnAgregar" runat="server" Text="AGREGAR NUEVO PRODUCTO"
@@ -74,7 +78,7 @@
                             <asp:Button ID="btnEliminar" runat="server" Text="ELIMINAR"
                                         CssClass="btn btn-danger btn-sm mx-1"
                                         CommandName="Eliminar" CommandArgument='<%# Eval("IdArticulo") %>'
-                                        OnClientClick="return confirm('¿Seguro que desea eliminar este producto?');" />
+                                        OnClientClick="return confirmarEliminacion(this);" />
                         </div>
                     </div>
                 </div>
@@ -117,4 +121,29 @@
         .carousel-control-prev.custom-arrow { left: 10px; }
         .carousel-control-next.custom-arrow { right: 10px; }
     </style>
+    <script>
+        function confirmarEliminacion(boton) {
+
+            // Detener el postback inmediato
+            event.preventDefault();
+
+            Swal.fire({
+                title: '¿Eliminar artículo?',
+                text: 'Esta acción no se puede deshacer.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+                    // Hacemos que el botón ASP.NET ejecute el Command normalmente
+                    __doPostBack(boton.name, '');
+                }
+            });
+
+            return false;
+        }
+    </script>
+
 </asp:Content>

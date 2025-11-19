@@ -15,6 +15,13 @@
     <webopt:bundlereference runat="server" path="~/Content/css" />
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
 
+    <style>
+    .nav-container-negro {
+        background: #000 !important;
+        color: #fff !important;
+    }
+    </style>
+
 </head>
 <body>
     <form runat="server">
@@ -37,31 +44,39 @@
             </Scripts>
         </asp:ScriptManager>
 
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
+        <nav class="navbar navbar-expand-sm navbar-dark bg-black">
             <div class="container">
+
                 <a class="navbar-brand d-flex align-items-center" runat="server" href="~/">
-                    <img src="//acdn-us.mitiendanube.com/stores/002/936/119/themes/common/logo-22781428-1736359691-1181e8b8417134564b3585ce75180c481736359691-480-0.webp" alt="ARSUMO TECNOLOGIA E INNOVACION " class="logo-img logo-img-big" width="191" height="76">
+                    <img src="//acdn-us.mitiendanube.com/stores/002/936/119/themes/common/logo-22781428-1736359691-1181e8b8417134564b3585ce75180c481736359691-480-0.webp" 
+                         alt="ARSUMO TECNOLOGIA E INNOVACION " 
+                         class="logo-img logo-img-big" width="191" height="76">
                 </a>
-                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Toggle navigation" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
+
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" 
+                        data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
+
                 <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item"><a class="nav-link" runat="server" href="~/">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" runat="server" href="~/Signin.aspx">Iniciar sesion</a></li>
-                        <li class="nav-item"><a class="nav-link" runat="server" href="~/FinDeCompra.aspx">Compra Finalizada</a></li>
-                        <li class="nav-item"><a class="nav-link" runat="server" href="~/Contact.aspx">Contacto</a></li>    
-                        <li class="nav-item"><a class="nav-link" runat="server" href="~/GestionUsuarios.aspx">Gestion de Usuarios</a></li>   
-                        <li class="nav-item"><a class="nav-link" runat="server" href="~/Gestion.aspx">Gestion de Productos</a></li>
-                        <li class="nav-item"><a class="nav-link" runat="server" href="~/ListarMarcas.aspx">Gestion de Marcas</a></li>
-                        <li class="nav-item"><a class="nav-link" runat="server" href="~/ListaCategorias.aspx">Gestion de Categorias</a></li>                          
-                          
 
-                        </ul>
+                        <li class="nav-item"><a class="nav-link text-white" runat="server" href="~/">Home</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" runat="server" href="~/Signin.aspx">Iniciar sesion</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" runat="server" href="~/FinDeCompra.aspx">Compra Finalizada</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" runat="server" href="~/Contact.aspx">Contacto</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" runat="server" href="~/GestionUsuarios.aspx">Gestion de Usuarios</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" runat="server" href="~/Gestion.aspx">Gestion de Productos</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" runat="server" href="~/ListarMarcas.aspx">Gestion de Marcas</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" runat="server" href="~/ListaCategorias.aspx">Gestion de Categorias</a></li>
+
+                    </ul>
                 </div>
+
             </div>
         </nav>
+
         <div class="container body-content">
             <asp:ContentPlaceHolder ID="MainContent" runat="server">
             </asp:ContentPlaceHolder>
