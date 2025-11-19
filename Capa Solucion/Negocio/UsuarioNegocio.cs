@@ -40,7 +40,7 @@ namespace Negocio
             }
         }
 
-        //Esto nos sirve para chekear que el usuarios nuevo no se alla registrado con el mismo email
+        //Esto nos sirve para chekear que el usuarios nuevo no este registrado con el mismo email
         public bool ExisteMail(string mail)
         {
             AccesoDatos datos = new AccesoDatos();
@@ -222,5 +222,70 @@ namespace Negocio
             }
         }
 
+        public Usuario Login(string mail, string pass)
+        {
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setearConsulta(
+                    "SELECT U.IdUsuario, U.Nombre, U.Apellido, U.Mail, U.Contrasenia, " +
+                    "U.Telefono, U.DNI, U.FechaNacimiento, U.Estado, " +
+                    "U.TipoUsuario AS IdTipoUsuario, TU.Tipo AS TipoUsuarioNombre " +
+                    "FROM USUARIOS U " +
+                    "INNER JOIN TIPOUSUARIOS TU ON TU.IdTipoUsuario = U.TipoUsuario " +
+                    "WHERE U.Mail = @mail AND U.Contrasenia = @pass"
+                );
+
+                datos.setearParametro("@mail", mail);
+                datos.setearParametro("@pass", pass);
+                datos.ejecutarLectura();
+
+                if (datos.Lector.Read())
+                {
+                    Usuario usuario = new Usuario();
+
+                    usuario.IdUsuario = Convert.ToInt64(datos.Lector["IdUsuario"]);
+                    usuario.Nombre = datos.Lector["Nombre"].ToString();
+                    usuario.Apellido = datos.Lector["Apellido"].ToString();
+                    usuario.Mail = datos.Lector["Mail"].ToString();
+                    usuario.Contrasenia = datos.Lector["Contrasenia"].ToString();
+
+                    usuario.Telefono = datos.Lector["Telefono"] == DBNull.Value
+                        ? ""
+                        : datos.Lector["Telefono"].ToString();
+
+                    usuario.DNI = datos.Lector["DNI"] == DBNull.Value
+                        ? ""
+                        : datos.Lector["DNI"].ToString();
+
+                    usuario.FechaNacimiento = datos.Lector["FechaNacimiento"] == DBNull.Value
+                        ? DateTime.MinValue
+                        : Convert.ToDateTime(datos.Lector["FechaNacimiento"]);
+
+                    usuario.Estado = datos.Lector["Estado"] != DBNull.Value
+                        && Convert.ToBoolean(datos.Lector["Estado"]);
+
+                    usuario.TipoUsuario = datos.Lector["IdTipoUsuario"] == DBNull.Value
+                        ? 2  
+                        : Convert.ToInt32(datos.Lector["IdTipoUsuario"]);
+
+                    usuario.TipoUsuarioNombre = datos.Lector["TipoUsuarioNombre"] == DBNull.Value
+                        ? "CLIENTE"
+                        : datos.Lector["TipoUsuarioNombre"].ToString();
+
+                    
+                    usuario.NombreCompleto = usuario.Nombre + " " + usuario.Apellido;
+
+                    return usuario;
+                }
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error en Login(): " + ex.Message);
+            }
+        }
     }
 }
