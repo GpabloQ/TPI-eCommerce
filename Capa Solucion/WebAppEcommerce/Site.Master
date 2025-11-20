@@ -84,6 +84,7 @@
                         <li class="nav-item"><a class="nav-link text-white" runat="server" href="~/PanelAdmin">Panel Administrativo</a></li>
                         <li class="nav-item"><a class="nav-link text-white" runat="server" href="~/AgregarUsuario.aspx">Registrarse</a></li>
                         <li class="nav-item"><a class="nav-link text-white" runat="server" href="~/Tienda.aspx">Tienda</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" runat="server" href="~/DetalleProducto.aspx">Detalle Producto</a></li>
                     </ul>
                 </div>
                 <!-- Opciones derecha -->                

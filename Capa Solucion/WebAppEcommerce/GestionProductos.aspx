@@ -69,6 +69,13 @@
                             <p><strong>Precio:</strong> $<%# Eval("Precio", "{0:N2}") %></p>
                         </div>
 
+                        <!-- Boton Detalle Articulo -->
+                        <div class="card-footer text-center">
+                            <asp:Button ID="btnDetalleArticulo" runat="server" Text="Detalle Artículo" 
+                                OnClick="btnDetalleArticulo_Click"  CommandArgument='<%# Eval("IdArticulo") %>'
+                                CssClass="btn btn-outline-dark"/>
+                            </div>
+
                         <!-- Botones -->
                         <div class="card-footer text-center">
                             <asp:Button ID="btnModificar" runat="server" Text="MODIFICAR"
@@ -120,6 +127,21 @@
 
         .carousel-control-prev.custom-arrow { left: 10px; }
         .carousel-control-next.custom-arrow { right: 10px; }
+
+
+        .btn-outline-dark {
+  color: #fff;               /* texto blanco */
+  background-color: #000;    /* fondo negro */
+  border: 2px solid #000;    /* borde negro */
+  transition: all 0.3s ease;
+}
+
+.btn-outline-dark:hover {
+  color: #000;               /* texto negro */
+  background-color: #fff;    /* fondo blanco */
+  border-color: #000;        /* mantiene el borde negro */
+}
+
     </style>
     <script>
         function confirmarEliminacion(boton) {

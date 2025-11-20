@@ -1,5 +1,6 @@
 ﻿using Dominio;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -721,6 +722,84 @@ namespace Negocio
                 datos.cerrarConexion();
             }
         }
+
+
+
+        public Articulo ListarPorIDArticulo(int idarticulo)
+        {
+            
+            AccesoDatos datos = new AccesoDatos();
+            Articulo art = null;
+
+            try
+            {
+                datos.setearConsulta(@"
+             SELECT 
+                  A.IdArticulo,
+                  A.Codigo,
+                  A.Cantidad,
+                  A.Nombre,
+                  A.Descripcion,
+                  A.Precio,
+                  A.Estado,
+                  M.IdMarca,
+                  M.Nombre AS Marca,
+                  C.IdCategoria,
+                  C.Nombre AS Categoria,
+                  I.UrlImagen
+              FROM ARTICULOS A
+              INNER JOIN MARCAS M ON M.IdMarca = A.IdMarca
+              INNER JOIN CATEGORIAS C ON C.IdCategoria = A.IdCategoria
+              LEFT JOIN IMAGENES I ON I.IdArticulo = A.IdArticulo
+              where A.IdArticulo = @idarticulo
+        ");
+                datos.setearParametro("@idarticulo", idarticulo);
+                datos.ejecutarLectura();
+
+                while (datos.Lector.Read())
+                {
+                    if (art == null)
+                    {
+                        art = new Articulo
+                        {
+                            IdArticulo = Convert.ToInt64(datos.Lector["IdArticulo"]),
+                            Cantidad = Convert.ToInt32(datos.Lector["Cantidad"]),
+                            Codigo = datos.Lector["Codigo"].ToString(),
+                            Nombre = datos.Lector["Nombre"].ToString(),
+                            Descripcion = datos.Lector["Descripcion"] is DBNull ? "" : datos.Lector["Descripcion"].ToString(),
+                            Precio = datos.Lector["Precio"] is DBNull ? 0 : Convert.ToDecimal(datos.Lector["Precio"]),
+                            Estado = datos.Lector["Estado"] is DBNull ? true : Convert.ToBoolean(datos.Lector["Estado"]),
+                            Marca = new Marca
+                            {
+                                IdMarca = Convert.ToInt64(datos.Lector["IdMarca"]),
+                                Nombre = datos.Lector["Marca"].ToString()
+                            },
+                            Categoria = new Categoria
+                            {
+                                IdCategoria = (int)Convert.ToInt64(datos.Lector["IdCategoria"]),
+                                Nombre = datos.Lector["Categoria"].ToString()
+                            },
+                            ListaUrls = new List<string>()
+                        };
+                    }
+                         if (!(datos.Lector["UrlImagen"] is DBNull))
+                art.ListaUrls.Add(datos.Lector["UrlImagen"].ToString());
+                }
+
+                return art;
+               
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al listar el artículo: " + ex.Message);
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
+
 
 
     }

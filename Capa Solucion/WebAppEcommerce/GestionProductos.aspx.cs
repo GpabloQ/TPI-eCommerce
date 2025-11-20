@@ -65,7 +65,7 @@ namespace WebAppEcommerce
                         break;
                 }
             }
-            catch (Exception ex)
+            catch (Exception )
             {
                
                 throw;
@@ -76,6 +76,14 @@ namespace WebAppEcommerce
         protected void btnAgregar_Click(object sender, EventArgs e)
         {            
             Response.Redirect("FormularioProducto.aspx", false);
+        }
+
+        protected void btnDetalleArticulo_Click(object sender, EventArgs e)
+        {
+            Button btn = (Button)sender;
+            string idArticulo = btn.CommandArgument;
+
+            Response.Redirect("DetalleProducto.aspx?id=" + idArticulo, false);
         }
     }
 }
