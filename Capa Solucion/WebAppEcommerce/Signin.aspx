@@ -3,8 +3,8 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <link href="Content/sign-in.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <style>
-        /* Pegá aquí tus estilos personalizados del HTML original */
+     <%--/* estilos */--%>
+    <style>       
         .bd-placeholder-img {
             font-size: 1.125rem;
             text-anchor: middle;
@@ -96,10 +96,10 @@
                 <asp:TextBox ID="txtPassword" runat="server" CssClass="form-control" TextMode="Password" placeholder="Password" />
                 <label for="txtPassword">Contraseña</label>
             </div>
-        <p class="text-center mt-3">
-  ¿No tenés cuenta?
-  <a href="Registrarse.aspx">Registrate acá</a>
-</p>
+                <p class="text-center mt-3">
+                  ¿No tenés cuenta?
+                  <a href="AgregarUsuario.aspx">Registrate acá</a>
+                </p>
 
             <asp:Button ID="btnLogin" runat="server" Text="Iniciar sesión" CssClass="btn btn-primary w-100 py-2" OnClick="btnLogin_Click" />
 

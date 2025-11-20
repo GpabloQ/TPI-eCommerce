@@ -20,7 +20,7 @@ namespace WebAppEcommerce
                 }
                 else
                 {
-                    lblTitulo.Text = "Agregar Usuario";
+                    lblTitulo.Text = "Registrarse";
                     divPass.Visible = true;
                 }
             }
