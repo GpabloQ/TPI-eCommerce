@@ -127,7 +127,7 @@ namespace WebAppEcommerce
                     // SweetAlert éxito edición
                     ScriptManager.RegisterStartupScript(this, GetType(), "alertModificado",
                         "Swal.fire('Articulo modificado', 'Los cambios se guardaron correctamente.', 'success')" +
-                        ".then(() => { window.location = 'Gestion.aspx'; });", true);
+                        ".then(() => { window.location = 'GestionProductos.aspx'; });", true);
                 }
                 else
                 {
@@ -137,7 +137,7 @@ namespace WebAppEcommerce
                     // SweetAlert éxito alta
                     ScriptManager.RegisterStartupScript(this, GetType(), "alertAgregado",
                         "Swal.fire('Articulo agregado', 'El articulo fue creado correctamente.', 'success')" +
-                        ".then(() => { window.location = 'Gestion.aspx'; });", true);
+                        ".then(() => { window.location = 'GestionProductos.aspx'; });", true);
                 }
             }
             catch (Exception ex)
@@ -148,7 +148,7 @@ namespace WebAppEcommerce
         }
         protected void btnCancelar_Click(object sender, EventArgs e)
         {
-            Response.Redirect("Gestion.aspx", false);
+            Response.Redirect("GestionProductos.aspx", false);
         }
     }
 }

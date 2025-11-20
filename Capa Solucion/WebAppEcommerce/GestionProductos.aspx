@@ -1,5 +1,5 @@
 ﻿<%@ Page Title="Gestion de Productos" Language="C#" MasterPageFile="~/Site.Master"
-    AutoEventWireup="true" CodeBehind="Gestion.aspx.cs" Inherits="WebAppEcommerce.Gestion" %>
+    AutoEventWireup="true" CodeBehind="GestionProductos.aspx.cs" Inherits="WebAppEcommerce.Gestion" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
 

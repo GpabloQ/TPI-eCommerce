@@ -34,7 +34,7 @@ namespace WebAppEcommerce
                     // Si es ADMIN (1) → ir al panel
                     if (usuario.TipoUsuario == 1) // ADMINISTRADOR
                     {
-                        Response.Redirect("Gestion.aspx", false);
+                        Response.Redirect("Default.aspx", false);
                     }
                     else
                     {

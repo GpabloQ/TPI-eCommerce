@@ -124,7 +124,7 @@
     <Content Include="favicon.ico" />
     <Content Include="FinDeCompra.aspx" />
     <Content Include="FormularioProducto.aspx" />
-    <Content Include="Gestion.aspx" />
+    <Content Include="GestionProductos.aspx" />
     <Content Include="GestionCategoria.aspx" />
     <Content Include="GestionUsuarios.aspx" />
     <Content Include="Global.asax" />
@@ -133,6 +133,7 @@
     <Content Include="AgregarUsuario.aspx">
       <Generator>MSWebApplicationBuilder</Generator>
     </Content>
+    <Content Include="PanelAdmin.aspx" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.esm.js" />
@@ -240,12 +241,12 @@
     <Compile Include="FormularioProducto.aspx.designer.cs">
       <DependentUpon>FormularioProducto.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Gestion.aspx.cs">
-      <DependentUpon>Gestion.aspx</DependentUpon>
+    <Compile Include="GestionProductos.aspx.cs">
+      <DependentUpon>GestionProductos.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Gestion.aspx.designer.cs">
-      <DependentUpon>Gestion.aspx</DependentUpon>
+    <Compile Include="GestionProductos.aspx.designer.cs">
+      <DependentUpon>GestionProductos.aspx</DependentUpon>
     </Compile>
     <Compile Include="GestionCategoria.aspx.cs">
       <DependentUpon>GestionCategoria.aspx</DependentUpon>
@@ -277,6 +278,13 @@
     </Compile>
     <Compile Include="ListarMarcas.aspx.designer.cs">
       <DependentUpon>ListarMarcas.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="PanelAdmin.aspx.cs">
+      <DependentUpon>PanelAdmin.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PanelAdmin.aspx.designer.cs">
+      <DependentUpon>PanelAdmin.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AgregarUsuario.aspx.cs">
