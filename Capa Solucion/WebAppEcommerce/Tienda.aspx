@@ -61,9 +61,10 @@
                      </div>
 
                         <!-- Info del producto -->
-                        <div class="card-body">
+                        <div class="card-body; text-center">
                             <h5 class="card-title text-center"><%# Eval("Nombre") %></h5>
-                            <p><strong>Precio:</strong> $<%# Eval("Precio", "{0:N2}") %></p>
+                            <p style="font-family: Poppins, sans-serif; color: #333333CC; font-size:12px;"> $<%# Eval("Precio", "{0:N2}") %></p>
+      <p style="font-family: Poppins, sans-serif; color: #EC6746; font-size:12px;">$<%# string.Format("{0:N2}", Convert.ToDecimal(Eval("Precio")) * 0.97m) %> CON TRANSFERENCIA O DEPÓSITO</p>
                         </div>
 
                         <!-- Boton Detalle Articulo -->
