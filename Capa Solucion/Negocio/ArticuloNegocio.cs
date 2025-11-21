@@ -800,6 +800,84 @@ namespace Negocio
         }
 
 
+        public List<Articulo> ListarArticulosPorCategoria(int idcategoria)
+        {
+            List<Articulo> lista = new List<Articulo>();
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setearConsulta(@"
+            SELECT 
+                A.IdArticulo,
+                A.Codigo,
+                A.Nombre,
+                A.Descripcion,
+                A.Precio,
+                A.Cantidad,
+                A.Estado,
+                M.IdMarca,
+                M.Nombre AS Marca,
+                C.IdCategoria,
+                C.Nombre AS Categoria,
+                I.UrlImagen
+            FROM ARTICULOS A
+            INNER JOIN MARCAS M ON M.IdMarca = A.IdMarca
+            INNER JOIN CATEGORIAS C ON C.IdCategoria = A.IdCategoria
+            LEFT JOIN IMAGENES I ON I.IdArticulo = A.IdArticulo
+            WHERE A.IdCategoria = @idcategoria
+        ");
+                datos.setearParametro("@idCategoria", idcategoria);
+                datos.ejecutarLectura();
+
+                while (datos.Lector.Read())
+                {
+                    // Buscar si ya existe el artículo en la lista (por si tiene varias imágenes)
+                    Articulo art = lista.FirstOrDefault(a => a.IdArticulo == Convert.ToInt32(datos.Lector["IdArticulo"]));
+
+                    if (art == null)
+                    {
+                        art = new Articulo
+                        {
+                            IdArticulo = Convert.ToInt64(datos.Lector["IdArticulo"]),
+                            Cantidad = Convert.ToInt32(datos.Lector["Cantidad"]),
+                            Codigo = datos.Lector["Codigo"].ToString(),
+                            Nombre = datos.Lector["Nombre"].ToString(),
+                            Descripcion = datos.Lector["Descripcion"] is DBNull ? "" : datos.Lector["Descripcion"].ToString(),
+                            Precio = datos.Lector["Precio"] is DBNull ? 0 : Convert.ToDecimal(datos.Lector["Precio"]),
+                            Estado = datos.Lector["Estado"] is DBNull ? true : Convert.ToBoolean(datos.Lector["Estado"]),
+                            Marca = new Marca
+                            {
+                                IdMarca = Convert.ToInt32(datos.Lector["IdMarca"]),
+                                Nombre = datos.Lector["Marca"].ToString()
+                            },
+                            Categoria = new Categoria
+                            {
+                                IdCategoria = Convert.ToInt32(datos.Lector["IdCategoria"]),
+                                Nombre = datos.Lector["Categoria"].ToString()
+                            },
+                            ListaUrls = new List<string>()
+                        };
+
+                        lista.Add(art);
+                    }
+
+                    // Agregar imagen si existe
+                    if (!(datos.Lector["UrlImagen"] is DBNull))
+                        art.ListaUrls.Add(datos.Lector["UrlImagen"].ToString());
+                }
+
+                return lista;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al listar artículos por categoría: " + ex.Message);
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
 
 
     }

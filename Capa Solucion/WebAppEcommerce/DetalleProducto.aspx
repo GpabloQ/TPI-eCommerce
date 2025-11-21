@@ -5,10 +5,12 @@
 
      <main class="container-fluid">
          <br />
-     <h2 class="text-center mb-4">DETALLE DEL PRODUCTO</h2>
+     <h2 class="text-center mb-4">Detalle del producto</h2>
+         <hr class="mb-4" />
          <br />
-         <br />
-
+         <div class="text-center mt-3">
+    <asp:Label ID="Label2" runat="server" ForeColor="Red"></asp:Label>
+</div>
      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
      
 

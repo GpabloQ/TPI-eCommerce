@@ -36,6 +36,13 @@
       max-width: 100%;
     }
 
+
+    .nav-item.dropdown:hover .dropdown-menu {
+    display: block;
+    margin-top: 0; /* evita salto */
+}
+
+
     </style>
 
 </head>
@@ -83,10 +90,24 @@
                         <li class="nav-item"><a class="nav-link text-white" runat="server" href="~/Default.aspx#contacto">Contacto</a></li>
                         <li class="nav-item"><a class="nav-link text-white" runat="server" href="~/PanelAdmin">Panel Administrativo</a></li>
                         <li class="nav-item"><a class="nav-link text-white" runat="server" href="~/AgregarUsuario.aspx">Registrarse</a></li>
-                        <li class="nav-item"><a class="nav-link text-white" runat="server" href="~/Tienda.aspx">Tienda</a></li>
-                        <li class="nav-item"><a class="nav-link text-white" runat="server" href="~/DetalleProducto.aspx">Detalle Producto</a></li>
+ <!-- Dropdown Tienda -->
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-white" href="#" id="tiendaDropdown" role="button"
+               data-bs-toggle="dropdown" aria-expanded="false">
+                Tienda
+            </a>
+            <ul class="dropdown-menu bg-dark" aria-labelledby="tiendaDropdown">
+                <li><a class="dropdown-item text-white" runat="server" href="~/Tienda.aspx?id=4">Impresoras 3D</a></li>
+                <li><a class="dropdown-item text-white" runat="server" href="~/Tienda.aspx?id=5">Informática</a></li>
+               <!-- <li><a class="dropdown-item text-white" runat="server" href="~/Categoria.aspx?id=2">Filamentos</a></li>
+                <li><a class="dropdown-item text-white" runat="server" href="~/Categoria.aspx?id=3">Accesorios</a></li>  -->
+            </ul>
+        </li>
                     </ul>
                 </div>
+
+
+
                 <!-- Opciones derecha -->                
                 <div class="d-flex align-items-center text-white">
                     <a runat="server" href="~/Signin.aspx" class="text-white me-4 text-decoration-none">
