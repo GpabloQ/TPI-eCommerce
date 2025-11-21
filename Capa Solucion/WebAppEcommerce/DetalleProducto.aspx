@@ -7,7 +7,7 @@
          <br />
      <h2 class="text-center mb-4">Detalle del producto</h2>
          <hr class="mb-4" />
-         <br />
+         
          <div class="text-center mt-3">
     <asp:Label ID="Label2" runat="server" ForeColor="Red"></asp:Label>
 </div>
@@ -70,9 +70,11 @@
                      <!-- Info del producto -->
                      <div class="card-body">
                          <h5 class="card-title text-center"><%# Eval("Nombre") %></h5>
+                         <br />
                          <p><strong>Marca:</strong> <%# Eval("Marca.Nombre") %></p>
                          <p><strong>Categoría:</strong> <%# Eval("Categoria.Nombre") %></p>
-                         <p><strong>Precio:</strong> $<%# Eval("Precio", "{0:N2}") %></p>
+                            <h5 style="font-family: Poppins, sans-serif; color: #333333CC; "> $<%# Eval("Precio", "{0:N2}") %></h5>
+      <h6 style="font-family: Poppins, sans-serif; color: #EC6746; ">$<%# string.Format("{0:N2}", Convert.ToDecimal(Eval("Precio")) * 0.97m) %> CON TRANSFERENCIA O DEPÓSITO</h6>
                           <p><strong>Cantidad:</strong> <%# Eval("Cantidad") %></p>
                          <p><strong>Descripción:</strong> <%# Eval("Descripcion") %></p>
                      </div>

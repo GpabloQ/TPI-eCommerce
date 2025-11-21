@@ -16,6 +16,12 @@
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
 
     <style>
+           body {
+            font-family: 'Poppins', sans-serif; /* tipo de letra */
+            font-size: 12px;                  /* tamaño base */
+            color: #333333CC;                      /* color del texto */
+        }
+
     .nav-container-negro {
         background: #000 !important;
         color: #fff !important;
