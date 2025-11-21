@@ -61,5 +61,10 @@ namespace WebAppEcommerce
                 lblMensajeContact.Text = "Error al enviar: " + ex.Message;
             }
         }
+
+        protected void BtnVermas_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("QuienesSomos.aspx");
+        }
     }
 }

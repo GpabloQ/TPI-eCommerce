@@ -22,18 +22,77 @@
   max-width: 100%;
 }
 
+
+.module-image {
+    position: relative;
+    width: 100%;
+    height: 380px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    overflow: hidden;
+}
+.cuadroImagen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("https://acdn-us.mitiendanube.com/stores/002/936/119/themes/style/img-596067975-1736528106-c4ae845a20c394ca2d2df71fa9c22e741736528107.png?1300625852");
+    background-size: cover;
+    background-position: center;
+}
+
+.Info {
+    position: relative;
+    width: 380px;
+    left: 60px;
+    background: rgba(255,255,255,0.85);
+    padding: 25px;
+    border-radius: 5px;
+    text-align: center;
+    z-index: 2;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+}
+
+.Info h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 24px;
+    font-weight: 800;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+}
+
+.Info p {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    color: #444;
+}
+
+
+
 </style>
     <main>
      <hr/>
+        
+        <%--QUIENES SOMOS--%>
         <div class="module-image">
-         <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-srcset="//acdn-us.mitiendanube.com/stores/002/936/119/themes/style/img-596067975-1736528106-c4ae845a20c394ca2d2df71fa9c22e741736528107.png?1300625852 480w, //acdn-us.mitiendanube.com/stores/002/936/119/themes/style/img-596067975-1736528106-c4ae845a20c394ca2d2df71fa9c22e741736528107.png?1300625852 640w, //acdn-us.mitiendanube.com/stores/002/936/119/themes/style/img-596067975-1736528106-c4ae845a20c394ca2d2df71fa9c22e741736528107.png?1300625852 1024w, //acdn-us.mitiendanube.com/stores/002/936/119/themes/style/img-596067975-1736528106-c4ae845a20c394ca2d2df71fa9c22e741736528107.png?1300625852 1920w" data-sizes="auto" class="textbanner-image-background lazyautosizes fade-in ls-is-cached lazyloaded" alt="¿QUIENES SOMOS?" sizes="720px" srcset="//acdn-us.mitiendanube.com/stores/002/936/119/themes/style/img-596067975-1736528106-c4ae845a20c394ca2d2df71fa9c22e741736528107.png?1300625852 480w, //acdn-us.mitiendanube.com/stores/002/936/119/themes/style/img-596067975-1736528106-c4ae845a20c394ca2d2df71fa9c22e741736528107.png?1300625852 640w, //acdn-us.mitiendanube.com/stores/002/936/119/themes/style/img-596067975-1736528106-c4ae845a20c394ca2d2df71fa9c22e741736528107.png?1300625852 1024w, //acdn-us.mitiendanube.com/stores/002/936/119/themes/style/img-596067975-1736528106-c4ae845a20c394ca2d2df71fa9c22e741736528107.png?1300625852 1920w">
+            <div class="cuadroImagen"> </div>            
+         <%--<img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-srcset="//acdn-us.mitiendanube.com/stores/002/936/119/themes/style/img-596067975-1736528106-c4ae845a20c394ca2d2df71fa9c22e741736528107.png?1300625852 480w, //acdn-us.mitiendanube.com/stores/002/936/119/themes/style/img-596067975-1736528106-c4ae845a20c394ca2d2df71fa9c22e741736528107.png?1300625852 640w, //acdn-us.mitiendanube.com/stores/002/936/119/themes/style/img-596067975-1736528106-c4ae845a20c394ca2d2df71fa9c22e741736528107.png?1300625852 1024w, //acdn-us.mitiendanube.com/stores/002/936/119/themes/style/img-596067975-1736528106-c4ae845a20c394ca2d2df71fa9c22e741736528107.png?1300625852 1920w" data-sizes="auto" class="textbanner-image-background lazyautosizes fade-in ls-is-cached lazyloaded" alt="¿QUIENES SOMOS?" sizes="720px" srcset="//acdn-us.mitiendanube.com/stores/002/936/119/themes/style/img-596067975-1736528106-c4ae845a20c394ca2d2df71fa9c22e741736528107.png?1300625852 480w, //acdn-us.mitiendanube.com/stores/002/936/119/themes/style/img-596067975-1736528106-c4ae845a20c394ca2d2df71fa9c22e741736528107.png?1300625852 640w, //acdn-us.mitiendanube.com/stores/002/936/119/themes/style/img-596067975-1736528106-c4ae845a20c394ca2d2df71fa9c22e741736528107.png?1300625852 1024w, //acdn-us.mitiendanube.com/stores/002/936/119/themes/style/img-596067975-1736528106-c4ae845a20c394ca2d2df71fa9c22e741736528107.png?1300625852 1920w">--%>
              <div class="placeholder-overlay placeholder-container"></div>
-                <div class="module-text pull-left">
-                    <h3 class="module-text-title">¿QUIENES SOMOS?</h3>
-                    <div class="module-text-paragraph">Somos una empresa dedicada a la venta de componentes e insumos electrónicos. Con más de 1 año de experiencia, nuestro objetivo es ofrecer soluciones que cumplan las necesidades de cada cliente.</div>
-                    <div class="module-text-button btn btn-primary">VER MAS</div>
+                
+            <div class="Info">
+                    <h3 >¿QUIENES SOMOS?</h3>
+                    <p>Somos una empresa dedicada a la venta de componentes e insumos electrónicos. Con más de 1 año de experiencia, nuestro objetivo es ofrecer soluciones que cumplan las necesidades de cada cliente.</p>
+                   
+                <div class="BOTON">
+                        <asp:Button ID="BtnVermas" class="module-text-button btn btn-dark" OnClick="BtnVermas_Click" runat="server" Text="VER MAS" />
+                    </div>
+
                 </div>
-             </div>
+           </div> 
+
         <asp:Repeater ID="rptArticulos" runat="server">
             <ItemTemplate>
                 <div style="border:1px solid #ccc; 
