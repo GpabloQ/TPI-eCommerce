@@ -1,18 +1,12 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="ListarMarcas.aspx.cs" Inherits="WebAppEcommerce.ListarMarcas" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
-     <style>
-     .botonera {
-       display: flex;
-       gap: 16px; /* espacio entre los hijos */
-     }
 
- </style>
 
     <h2>Listado de marcas.</h2>
     <br />
 <%--  Listar usando SP --%>
-        <asp:GridView ID="dgvMarcas" runat="server" CssClass="table" AutoGenerateColumns="false"
+        <asp:GridView ID="dgvMarcas" runat="server" CssClass="table table-striped" AutoGenerateColumns="false"
             DataKeyNames="IdMarca" OnSelectedIndexChanged="dgvMarcas_SelectedIndexChanged"
             OnPageIndexChanging="dgvMarcas_PageIndexChanging"
             AllowPaging="true" PageSize="5">

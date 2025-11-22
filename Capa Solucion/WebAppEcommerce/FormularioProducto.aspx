@@ -32,8 +32,29 @@
 
         <div class="form-group">
             <label>URL Imagen:</label>
-            <asp:TextBox ID="txtUrlImagen" runat="server" CssClass="form-control" />
+            <div class="input-group">
+                <asp:TextBox ID="txtUrlImagen" runat="server" CssClass="form-control" />
+                <asp:Button ID="btnVerImagen" runat="server"
+                            CssClass="btn btn-info"
+                            Text="VER IMAGEN"
+                            OnClick="btnVerImagen_Click" />
+            </div>
         </div>
+
+                            
+                            
+                            
+                            
+
+
+        <!-- Vista previa de la imagen -->
+        <div class="mt-3">
+            <asp:Image ID="imgPreview" runat="server"
+                       Width="220px"
+                       Height="220px"
+                       Style="object-fit:cover; border-radius:8px; border:1px solid #ddd; display:none;" />
+        </div>
+
 
         <div class="form-group">
             <label>Marca:</label>
