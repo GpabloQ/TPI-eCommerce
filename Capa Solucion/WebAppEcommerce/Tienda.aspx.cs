@@ -134,10 +134,16 @@ namespace WebAppEcommerce
 
         protected void btnAgregarCarrito_Click(object sender, EventArgs e)
         {
+            
             Usuario usuario = Session["Usuario"] as Usuario;
+            if(usuario == null)
+            {
+                Response.Redirect("Signin.aspx");
+                return;
+            }
 
             ArticuloNegocio artnegocio  = new ArticuloNegocio();
-
+                      
             int idArticulo = Convert.ToInt32(Request.QueryString["id"]);
             int cantidad = 1; // o lo que seleccione el usuario
 

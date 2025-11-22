@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
@@ -782,8 +783,13 @@ namespace Negocio
                             ListaUrls = new List<string>()
                         };
                     }
-                         if (!(datos.Lector["UrlImagen"] is DBNull))
-                art.ListaUrls.Add(datos.Lector["UrlImagen"].ToString());
+                    string url = null;
+                    if (!(datos.Lector["UrlImagen"] is DBNull))
+                    {
+                        url = datos.Lector["UrlImagen"].ToString();
+                        art.ListaUrls.Add(datos.Lector["UrlImagen"].ToString());
+                    }
+                    art.UrlImagen = url;
                 }
 
                 return art;

@@ -4,7 +4,8 @@
     
   <div class="container mt-4">
         <h2>Carrito de Compras</h2>
-
+      <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+          <ContentTemplate>
         <!-- Repeater para mostrar los productos -->
         <asp:Repeater ID="rptCarrito" runat="server" OnItemCommand="rptCarrito_ItemCommand">
             <ItemTemplate>
@@ -39,18 +40,19 @@
                    </div>
                     <div>
                         <asp:Button ID="btnEliminar" runat="server" Text="🗑" 
-                                CommandName="Eliminar" CommandArgument='<%# Eval("IdArticulo") %>' CssClass="btn btn-danger btn-sm; align-items-center;" />
+                                CommandName="Eliminar" CommandArgument='<%# Eval("IdArticulo") %>' CssClass="btn btn-danger btn-sm align-items-center;" />
                 </div>
                 </div>
                     </div>
                 </div>
             </ItemTemplate>
         </asp:Repeater>
-
         <!-- Total -->
         <div class="mt-3 text-end">
             <asp:Label ID="lblTotal" runat="server" CssClass="fw-bold fs-5"></asp:Label>
         </div>
+              </ContentTemplate>
+          </asp:UpdatePanel>
     </div>
 
 

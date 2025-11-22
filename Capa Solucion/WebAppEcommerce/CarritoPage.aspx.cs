@@ -27,7 +27,7 @@ namespace WebAppEcommerce
                         // Traemos el artículo completo
                         Articulo art = negocio.ListarPorIDArticulo(Convert.ToInt32(i.IdArticulo));
 
-
+                        /*
                         if (art == null)
                         {
                             return new
@@ -40,6 +40,7 @@ namespace WebAppEcommerce
                                 Subtotal = i.Cantidad * i.PrecioUnitario
                             };
                         }
+                        */
                         return new
                         {
                             IdArticulo = art.IdArticulo,
@@ -52,13 +53,6 @@ namespace WebAppEcommerce
                     });
 
                     rptCarrito.DataSource = datos;
-                    //el siguiente for each hay que borrarlo
-                    foreach (var item in datos)
-                    {
-                        System.Diagnostics.Debug.WriteLine(item.ImagenUrl);
-                        Response.Write("<p>ImagenUrl: " + item.ImagenUrl + "</p>");
-                    }
-
                     rptCarrito.DataBind();
 
                     // Calcular total del carrito
