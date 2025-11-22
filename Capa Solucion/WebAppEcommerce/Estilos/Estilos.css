@@ -109,6 +109,62 @@ body {
             color: #444;
         }
 
+
+.EnviosGratis {
+    position: relative;
+    width: 100%;
+    height: 600px;
+    background-image: url('https://acdn-us.mitiendanube.com/stores/002/936/119/themes/style/2-slide-1762981352311-8082204111-7c0dcd00b0c00c64591f78739791089f1762981355-1920-1920.webp?1422681916');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.info-barra {
+    width: 100%;
+    padding: 40px 0;
+    background: #f7f7f7;
+    display: flex;
+    justify-content: center;
+    gap: 80px;
+    text-align: center;
+    font-family: 'Montserrat', sans-serif;
+}
+
+
+.info-item {
+    max-width: 280px;
+}
+
+
+.info-icono {
+    font-size: 35px;
+    margin-bottom: 10px;
+}
+
+
+.info-item h3 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 5px;
+    letter-spacing: 1px;
+}
+
+
+.info-item p {
+    font-size: 14px;
+    color: #777;
+    margin: 0;
+}
+
+
+
+
+
+
 /* ==================== ESTILOS TIENDA ==================== */
 
     <!-- Estilos para flechas -->
