@@ -18,19 +18,15 @@
     <Columns>
 
         
-        <asp:BoundField HeaderText="Usuario" DataField="NombreCompleto" />
-
-       
-        <asp:BoundField HeaderText="Tipo" DataField="TipoUsuarioNombre" />
-
-        
+        <asp:BoundField HeaderText="Usuario" DataField="NombreCompleto" />       
+        <asp:BoundField HeaderText="Tipo" DataField="TipoUsuarioNombre" />        
         <asp:CommandField HeaderText="Editar"
                           ShowSelectButton="true"
                           SelectText="✏️" />
        
         <asp:TemplateField HeaderText="Eliminar">
             <ItemTemplate>
-                <%-- Llama a la función de JS para mostrar el msj de confirmacion antes de eliminar y evita el postback automatico --%>
+                <%-- Llama a la función de JS para mostrar el msj de confirmacion antes de eliminar --%>
                 <asp:LinkButton ID="btnEliminar"
                     runat="server"
                     CommandName="Eliminar"

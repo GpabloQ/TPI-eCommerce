@@ -7,6 +7,7 @@
 
 
         <%--IMAGEN ENVIOS GRATIS--%>
+       
         <div class="EnviosGratis"></div>
 
         <div class="info-barra">
@@ -28,13 +29,9 @@
                 <h3>COMPRÁ CON SEGURIDAD</h3>
                 <p>Tus datos siempre protegidos</p>
             </div>
-
-        </div>
-
-
-
-
-
+          </div>
+        
+        
 
 
         <%--QUIENES SOMOS--%>

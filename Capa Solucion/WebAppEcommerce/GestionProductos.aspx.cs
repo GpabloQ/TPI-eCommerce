@@ -9,32 +9,24 @@ namespace WebAppEcommerce
 {
     public partial class Gestion : System.Web.UI.Page
     {
-
         public List<Articulo> listaArticulo { get; set; }
 
-        
-            protected void Page_Load(object sender, EventArgs e)
+        protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
-                ArticuloNegocio negocio = new ArticuloNegocio();
-                rptArticulos.DataSource = negocio.ListarConImagenes();
-                rptArticulos.DataBind();
                 cargarArticulos();
             }
         }
-
-        
 
         private void cargarArticulos()
         {
             try
             {
                 ArticuloNegocio negocio = new ArticuloNegocio();
-                listaArticulo = negocio.Listar2();
-
-                rptArticulos.DataSource = listaArticulo;
-                rptArticulos.DataBind();
+                listaArticulo = negocio.Listar2();   // Obtiene la lista completa
+                dgvProductos.DataSource = listaArticulo;
+                dgvProductos.DataBind();
             }
             catch (Exception ex)
             {
@@ -42,48 +34,35 @@ namespace WebAppEcommerce
             }
         }
 
-        protected void rptArticulos_ItemCommand(object source, RepeaterCommandEventArgs e)
+        // Maneja botones DETALLE / MODIFICAR / ELIMINAR
+        protected void dgvProductos_RowCommand(object sender, GridViewCommandEventArgs e)
         {
-            try
+            int rowIndex = Convert.ToInt32(e.CommandArgument);
+            int idArticulo = Convert.ToInt32(dgvProductos.DataKeys[rowIndex].Value);
+
+            ArticuloNegocio negocio = new ArticuloNegocio();
+
+            switch (e.CommandName)
             {
-                int idArticulo = Convert.ToInt32(e.CommandArgument);
+                case "Detalle":
+                    Response.Redirect("DetalleProducto.aspx?id=" + idArticulo);
+                    break;
 
-                if (idArticulo <= 0) return;
+                case "Modificar":
+                    Response.Redirect("FormularioProducto.aspx?id=" + idArticulo);
+                    break;
 
-                ArticuloNegocio negocio = new ArticuloNegocio();
-
-                switch (e.CommandName)
-                {
-                    case "Modificar":
-                        Response.Redirect("FormularioProducto.aspx?id=" + idArticulo, false);
-                        break;
-
-                    case "Eliminar":
-                        negocio.EliminarArticulo(idArticulo);
-                        cargarArticulos();                        
-                        lblMensaje.Text = "ARTICULO ELIMINADO CORRECTAMENTE";
-                        break;
-                }
-            }
-            catch (Exception )
-            {
-               
-                throw;
+                case "Eliminar":
+                    negocio.EliminarArticulo(idArticulo);
+                    cargarArticulos();
+                    lblMensaje.Text = "ARTICULO ELIMINADO CORRECTAMENTE";
+                    break;
             }
         }
-
 
         protected void btnAgregar_Click(object sender, EventArgs e)
-        {            
-            Response.Redirect("FormularioProducto.aspx", false);
-        }
-
-        protected void btnDetalleArticulo_Click(object sender, EventArgs e)
         {
-            Button btn = (Button)sender;
-            string idArticulo = btn.CommandArgument;
-
-            Response.Redirect("DetalleProducto.aspx?id=" + idArticulo, false);
+            Response.Redirect("FormularioProducto.aspx");
         }
     }
 }

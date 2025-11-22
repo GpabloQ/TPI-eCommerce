@@ -41,9 +41,6 @@ namespace WebAppEcommerce
             }
         }
 
-    
-
-
         private void cargarListas()
         {
             MarcaNegocio marcaNegocio = new MarcaNegocio();
@@ -150,5 +147,30 @@ namespace WebAppEcommerce
         {
             Response.Redirect("GestionProductos.aspx", false);
         }
+
+        protected void btnVerImagen_Click(object sender, EventArgs e)
+        {
+            string url = txtUrlImagen.Text.Trim();
+
+            if (string.IsNullOrEmpty(url))
+            {
+                lblError.Text = "INGRESE UNA URL PARA PREVISUALIZAR.";
+                imgPreview.Style["display"] = "none";
+                return;
+            }
+
+            try
+            {
+                imgPreview.ImageUrl = url;
+                imgPreview.Style["display"] = "block";
+                lblError.Text = "";
+            }
+            catch
+            {
+                imgPreview.Style["display"] = "none";
+                lblError.Text = "LA URL NO ES VALIDA O LA IMAGEN NO SE CARGÓ.";
+            }
+        }
+
     }
 }
