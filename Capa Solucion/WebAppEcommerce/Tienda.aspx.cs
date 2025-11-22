@@ -83,7 +83,11 @@ namespace WebAppEcommerce
                 {
                     // Recuperar usuario de sesión
                     Usuario usuario = Session["Usuario"] as Usuario;
-
+                    if (usuario == null)
+                    {
+                        Response.Redirect("Signin.aspx");
+                        return;
+                    }
                     ArticuloNegocio artnegocio = new ArticuloNegocio();
 
                     // Recuperar carrito de sesión
@@ -131,7 +135,7 @@ namespace WebAppEcommerce
             Response.Redirect("DetalleProducto.aspx?id=" + idArticulo, false);
         }
 
-
+        /*
         protected void btnAgregarCarrito_Click(object sender, EventArgs e)
         {
             
@@ -145,6 +149,10 @@ namespace WebAppEcommerce
             ArticuloNegocio artnegocio  = new ArticuloNegocio();
                       
             int idArticulo = Convert.ToInt32(Request.QueryString["id"]);
+            System.Diagnostics.Debug.WriteLine("ID recibido: " + idArticulo);
+
+
+
             int cantidad = 1; // o lo que seleccione el usuario
 
             // Recuperar carrito de sesión
@@ -173,6 +181,9 @@ namespace WebAppEcommerce
             // Guardar en sesión
             Session["Carrito"] = carrito;
         }
+        */
+       
+
 
 
     }

@@ -68,9 +68,10 @@
                         </div>
 
                         <!-- Boton Detalle Articulo y agregar al carrito-->
+                                <!-- OnClick="btnAgregarCarrito_Click" --> 
                         <div class="card-footer text-center">
                             <asp:Button ID="btnAgregarCarrito" runat="server" Text="Agregar al carrito"
-                                OnClick="btnAgregarCarrito_Click" CssClass="btn btn-primary" 
+                                CssClass="btn btn-primary" 
                                 CommandName="Agregar" 
                                 CommandArgument='<%# Eval("IdArticulo") %>'/>
                             <asp:Button ID="btnDetalleArticulo" runat="server" Text="Detalle Artículo" 
