@@ -85,7 +85,23 @@ namespace WebAppEcommerce
                     Usuario usuario = Session["Usuario"] as Usuario;
                     if (usuario == null)
                     {
-                        Response.Redirect("Signin.aspx");
+                        string script = @"Swal.fire({
+        title: 'Inicia sesión',
+        text: 'Para agregar el artículo al carrito debes iniciar sesión',
+        icon: 'info',
+        position: 'top',
+        showCancelButton: true,
+        confirmButtonText: 'Aceptar',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = 'Signin.aspx';
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+            console.log('El usuario canceló');
+        }
+    });";
+
+                        ScriptManager.RegisterStartupScript(this, GetType(), "msg", script, true);
                         return;
                     }
                     ArticuloNegocio artnegocio = new ArticuloNegocio();
@@ -103,21 +119,34 @@ namespace WebAppEcommerce
                         };
                     }
 
-                    // Crear nuevo elemento
-                    ElementoCarrito item = new ElementoCarrito
+                    // Buscar si ya existe el artículo en el carrito
+        var existente = carrito.Items.FirstOrDefault(x => x.IdArticulo == idArticulo);
+                    if (existente != null)
                     {
-                        IdArticulo = idArticulo,
-                        Cantidad = 1, // o lo que seleccione el usuario
-                        PrecioUnitario = artnegocio.ObtenerPrecioArticulo(idArticulo)
-                    };
+                        // Si ya existe, solo aumento la cantidad
+                        existente.Cantidad++;
+                    }
+                    else
+                    {
+                        // Crear nuevo elemento
 
-                    carrito.Items.Add(item);
+                        ElementoCarrito item = new ElementoCarrito
+                        {
+                            IdArticulo = idArticulo,
+                            Cantidad = 1, // o lo que seleccione el usuario
+                            PrecioUnitario = artnegocio.ObtenerPrecioArticulo(idArticulo)
+                        };
 
+                        carrito.Items.Add(item);
+                    }
                     // Guardar carrito en sesión
                     Session["Carrito"] = carrito;
 
                     // Podés redirigir al carrito o mostrar un mensaje
-                    Response.Redirect("CarritoPage.aspx");
+                    //   Response.Redirect("CarritoPage.aspx");
+                    ScriptManager.RegisterStartupScript(this, GetType(),
+         "msg", "Swal.fire({ text: 'Producto agregado', position: 'top', timer: 1000, showConfirmButton: false });", true);
+
                 }
                 else
                 {

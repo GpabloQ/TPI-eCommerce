@@ -74,6 +74,7 @@
                                 CssClass="btn btn-primary" 
                                 CommandName="Agregar" 
                                 CommandArgument='<%# Eval("IdArticulo") %>'/>
+                            
                             <asp:Button ID="btnDetalleArticulo" runat="server" Text="Detalle Artículo" 
                                 OnClick="btnDetalleArticulo_Click"  CommandArgument='<%# Eval("IdArticulo") %>'
                                 CssClass="btn btn-outline-dark"/>
