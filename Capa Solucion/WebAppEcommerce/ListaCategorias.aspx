@@ -8,7 +8,7 @@
             <asp:BoundField  HeaderText="ID"  DataField="IdCategoria"/>
             <asp:BoundField  HeaderText="Nombre de Categoria"  DataField="Nombre"/>
             <asp:BoundField  HeaderText="Estado"  DataField="Estado" Visible="false"/>
-            <asp:CommandField  HeaderText=""  ShowSelectButton="true" SelectText="✅"/>
+            <asp:CommandField  HeaderText="Modificar"  ShowSelectButton="true" SelectText="✏️"/>
 
         </Columns>        
 

@@ -38,14 +38,20 @@ namespace WebAppEcommerce
         {
             try
             {
-                Categoria nuevo = new Categoria();
-                CategoriaNegocio categoriaNegocio = new CategoriaNegocio();
-                
-                nuevo.Nombre = txtNombreCategoria.Text;
-                nuevo.Estado = true;
-               
-                categoriaNegocio.agregar(nuevo);
-                Response.Redirect("ListaCategorias.aspx");
+                if (!string.IsNullOrWhiteSpace(txtNombreCategoria.Text))
+                {
+                    Categoria nuevo = new Categoria();
+                    CategoriaNegocio categoriaNegocio = new CategoriaNegocio();
+
+                    nuevo.Nombre = txtNombreCategoria.Text;
+                    nuevo.Estado = true;
+
+                    categoriaNegocio.agregar(nuevo);
+                    Response.Redirect("ListaCategorias.aspx");
+                }
+                else {
+                    return;
+                }
 
             }
             catch (Exception)
@@ -97,9 +103,9 @@ namespace WebAppEcommerce
             try
             {
                 if (chkConfimaEliminacion.Checked) { 
-                CategoriaNegocio  negocio = new CategoriaNegocio();
-                negocio.eliminar(int.Parse(txtId.Text));
-                Response.Redirect("ListaCategorias.aspx");
+                    CategoriaNegocio  negocio = new CategoriaNegocio();
+                    negocio.eliminar(int.Parse(txtId.Text));
+                    Response.Redirect("ListaCategorias.aspx");
                 
                 }
 

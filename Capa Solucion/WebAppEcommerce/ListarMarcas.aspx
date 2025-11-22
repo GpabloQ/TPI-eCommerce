@@ -6,7 +6,7 @@
     <h2>Listado de marcas.</h2>
     <br />
 <%--  Listar usando SP --%>
-        <asp:GridView ID="dgvMarcas" runat="server" CssClass="table" AutoGenerateColumns="false"
+        <asp:GridView ID="dgvMarcas" runat="server" CssClass="table table-striped" AutoGenerateColumns="false"
             DataKeyNames="IdMarca" OnSelectedIndexChanged="dgvMarcas_SelectedIndexChanged"
             OnPageIndexChanging="dgvMarcas_PageIndexChanging"
             AllowPaging="true" PageSize="5">
