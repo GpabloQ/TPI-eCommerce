@@ -1,13 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="ListarMarcas.aspx.cs" Inherits="WebAppEcommerce.ListarMarcas" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
-     <style>
-     .botonera {
-       display: flex;
-       gap: 16px; /* espacio entre los hijos */
-     }
 
- </style>
 
     <h2>Listado de marcas.</h2>
     <br />

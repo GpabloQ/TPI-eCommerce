@@ -10,9 +10,7 @@
             <asp:BoundField  HeaderText="Estado"  DataField="Estado" Visible="false"/>
             <asp:CommandField  HeaderText=""  ShowSelectButton="true" SelectText="✅"/>
 
-        </Columns>    
-
-    
+        </Columns>        
 
     </asp:GridView>
        

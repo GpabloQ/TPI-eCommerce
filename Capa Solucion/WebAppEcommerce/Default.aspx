@@ -1,78 +1,7 @@
 ﻿<%@ Page Title="Home Page" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="WebAppEcommerce._Default" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
-<style>
-.nav-container-negro {
-    background: #000 !important;
-    color: #fff !important;
-}
-.contenedor-contacto {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-}
 
-.izquierda, .derecha {
-  margin: 0;
-  padding: 0;
-  width: 48%;
-}
-
-.izquierda iframe {
-  max-width: 100%;
-}
-
-
-.module-image {
-    position: relative;
-    width: 100%;
-    height: 380px;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    overflow: hidden;
-}
-.cuadroImagen {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url("https://acdn-us.mitiendanube.com/stores/002/936/119/themes/style/img-596067975-1736528106-c4ae845a20c394ca2d2df71fa9c22e741736528107.png?1300625852");
-    background-size: cover;
-    background-position: center;
-}
-
-.Info {
-    position: relative;
-    width: 380px;
-    left: 60px;
-    background: rgba(255,255,255,0.85);
-    padding: 25px;
-    border-radius: 5px;
-    text-align: center;
-    z-index: 2;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-}
-
-.Info h2 {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 24px;
-    font-weight: 800;
-    margin-bottom: 15px;
-    text-transform: uppercase;
-}
-
-.Info p {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 16px;
-    line-height: 1.6;
-    color: #444;
-}
-
-
-
-</style>
     <main>
      <hr/>
         

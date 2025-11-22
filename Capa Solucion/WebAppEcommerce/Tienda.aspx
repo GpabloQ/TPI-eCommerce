@@ -89,48 +89,7 @@
         </div>
     </main>
 
-    <!-- Estilos para flechas -->
-    <style>
-        .custom-arrow {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background-color: rgba(0, 0, 0, 0.6);
-            color: white;
-            font-size: 28px;
-            border: none;
-            border-radius: 50%;
-            width: 38px;
-            height: 38px;
-            text-align: center;
-            line-height: 32px;
-            cursor: pointer;
-            z-index: 2;
-        }
 
-        .custom-arrow:hover {
-            background-color: rgba(255, 255, 255, 0.8);
-            color: black;
-        }
-
-        .carousel-control-prev.custom-arrow { left: 10px; }
-        .carousel-control-next.custom-arrow { right: 10px; }
-
-
-        .btn-outline-dark {
-  color: #fff;               /* texto blanco */
-  background-color: #000;    /* fondo negro */
-  border: 2px solid #000;    /* borde negro */
-  transition: all 0.3s ease;
-}
-
-.btn-outline-dark:hover {
-  color: #000;               /* texto negro */
-  background-color: #fff;    /* fondo blanco */
-  border-color: #000;        /* mantiene el borde negro */
-}
-
-    </style>
     
 
 

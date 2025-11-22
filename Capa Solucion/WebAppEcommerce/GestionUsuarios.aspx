@@ -2,23 +2,7 @@
     CodeBehind="GestionUsuarios.aspx.cs" Inherits="WebAppEcommerce.GestionUsuarios" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-
  
-
-<style>
-    .botonera {
-        display: flex;
-        gap: 16px;
-    }
-    .icon-btn {
-        font-size: 20px;
-        cursor: pointer;
-        text-decoration: none;
-        background: none;
-        border: none;
-    }
-</style>
-
 <h2>Listado de usuarios</h2>
 <br />
 
@@ -43,7 +27,6 @@
         <asp:CommandField HeaderText="Editar"
                           ShowSelectButton="true"
                           SelectText="✏️" />
-
        
         <asp:TemplateField HeaderText="Eliminar">
             <ItemTemplate>
