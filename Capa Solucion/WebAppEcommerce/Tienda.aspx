@@ -67,8 +67,12 @@
       <p style="font-family: Poppins, sans-serif; color: #EC6746; font-size:12px;">$<%# string.Format("{0:N2}", Convert.ToDecimal(Eval("Precio")) * 0.97m) %> CON TRANSFERENCIA O DEPÓSITO</p>
                         </div>
 
-                        <!-- Boton Detalle Articulo -->
+                        <!-- Boton Detalle Articulo y agregar al carrito-->
                         <div class="card-footer text-center">
+                            <asp:Button ID="btnAgregarCarrito" runat="server" Text="Agregar al carrito"
+                                OnClick="btnAgregarCarrito_Click" CssClass="btn btn-primary" 
+                                CommandName="Agregar" 
+                                CommandArgument='<%# Eval("IdArticulo") %>'/>
                             <asp:Button ID="btnDetalleArticulo" runat="server" Text="Detalle Artículo" 
                                 OnClick="btnDetalleArticulo_Click"  CommandArgument='<%# Eval("IdArticulo") %>'
                                 CssClass="btn btn-outline-dark"/>

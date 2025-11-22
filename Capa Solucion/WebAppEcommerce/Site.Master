@@ -121,7 +121,7 @@
                         <span id="lblAccion" runat="server" class="small"></span>
                     </a>
 
-                    <a runat="server" href="~/Carrito.aspx" class="text-white text-decoration-none d-flex align-items-center">
+                    <a runat="server" href="~/CarritoPage.aspx" class="text-white text-decoration-none d-flex align-items-center" >
                         🛒 <span class="ms-1">Carrito</span>
                     </a>
 

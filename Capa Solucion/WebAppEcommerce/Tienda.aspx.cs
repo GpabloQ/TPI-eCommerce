@@ -8,6 +8,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 
+
 namespace WebAppEcommerce
 {
     public partial class Tienda : System.Web.UI.Page
@@ -58,6 +59,7 @@ namespace WebAppEcommerce
         }
         protected void rptArticulos_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
+            /*
             try
             {
                 int idArticulo = Convert.ToInt32(e.CommandArgument);
@@ -72,6 +74,53 @@ namespace WebAppEcommerce
 
                 throw;
             }
+            */
+
+            if (e.CommandName == "Agregar")
+            {
+                int idArticulo;
+                if (int.TryParse(e.CommandArgument.ToString(), out idArticulo))
+                {
+                    // Recuperar usuario de sesión
+                    Usuario usuario = Session["Usuario"] as Usuario;
+
+                    ArticuloNegocio artnegocio = new ArticuloNegocio();
+
+                    // Recuperar carrito de sesión
+                    Dominio.Carrito carrito = Session["Carrito"] as Dominio.Carrito;
+                    if (carrito == null)
+                    {
+                        carrito = new Dominio.Carrito
+                        {
+                            IdUsuario = usuario.IdUsuario,
+                            FechaCreacion = DateTime.Now,
+                            Estado = "Activo",
+                            Items = new List<ElementoCarrito>()
+                        };
+                    }
+
+                    // Crear nuevo elemento
+                    ElementoCarrito item = new ElementoCarrito
+                    {
+                        IdArticulo = idArticulo,
+                        Cantidad = 1, // o lo que seleccione el usuario
+                        PrecioUnitario = artnegocio.ObtenerPrecioArticulo(idArticulo)
+                    };
+
+                    carrito.Items.Add(item);
+
+                    // Guardar carrito en sesión
+                    Session["Carrito"] = carrito;
+
+                    // Podés redirigir al carrito o mostrar un mensaje
+                    Response.Redirect("CarritoPage.aspx");
+                }
+                else
+                {
+                    // Si el argumento no era numérico, manejar el error
+                    // Ejemplo: mostrar un mensaje o ignorar
+                }
+            }
         }
 
         protected void btnDetalleArticulo_Click(object sender, EventArgs e)
@@ -81,6 +130,44 @@ namespace WebAppEcommerce
 
             Response.Redirect("DetalleProducto.aspx?id=" + idArticulo, false);
         }
+
+
+        protected void btnAgregarCarrito_Click(object sender, EventArgs e)
+        {
+            Usuario usuario = Session["Usuario"] as Usuario;
+
+            ArticuloNegocio artnegocio  = new ArticuloNegocio();
+
+            int idArticulo = Convert.ToInt32(Request.QueryString["id"]);
+            int cantidad = 1; // o lo que seleccione el usuario
+
+            // Recuperar carrito de sesión
+            Dominio.Carrito carrito = Session["Carrito"] as Dominio.Carrito;
+            if (carrito == null)
+            {
+                carrito = new Dominio.Carrito
+                {
+                    IdUsuario = usuario.IdUsuario, 
+                    FechaCreacion = DateTime.Now,
+                    Estado = "Activo",
+                    Items = new List<ElementoCarrito>()
+                };
+            }
+
+            // Crear elemento
+            ElementoCarrito item = new ElementoCarrito
+            {
+                IdArticulo = idArticulo,
+                Cantidad = cantidad,
+                PrecioUnitario = artnegocio.ObtenerPrecioArticulo(idArticulo) 
+            };
+
+            carrito.Items.Add(item);
+
+            // Guardar en sesión
+            Session["Carrito"] = carrito;
+        }
+
 
     }
 }

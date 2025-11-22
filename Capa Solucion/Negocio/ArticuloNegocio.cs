@@ -880,5 +880,35 @@ namespace Negocio
         }
 
 
-    }
+        public decimal ObtenerPrecioArticulo(int idArticulo)
+        {
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setearConsulta("SELECT Precio FROM ARTICULOS WHERE IdArticulo = @id");
+                datos.setearParametro("@id", idArticulo);
+                datos.ejecutarLectura();
+
+                if (datos.Lector.Read())
+                {
+                    return Convert.ToDecimal(datos.Lector["Precio"]);
+                }
+
+                return 0; // si no encuentra el artículo
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener precio del artículo: " + ex.Message);
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+    
+
+
+
+}
 }
