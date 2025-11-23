@@ -121,6 +121,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="Default.aspx" />
     <Content Include="DetalleProducto.aspx" />
+    <Content Include="Estilos\Estilos.css" />
     <Content Include="favicon.ico" />
     <Content Include="FinDeCompra.aspx" />
     <Content Include="FormularioProducto.aspx" />
