@@ -13,6 +13,8 @@ namespace Dominio
         public DateTime FechaCreacion { get; set; }
         public string Estado { get; set; }
 
+        public string EstadoCarrito { get; set; }
+
         public List<ElementoCarrito> Items { get; set; }
     }
 }

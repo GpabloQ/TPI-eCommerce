@@ -129,6 +129,40 @@ namespace WebAppEcommerce
         }
 
 
+        protected void btnFinalizarCompra_Click(object sender, EventArgs e)
+        {
+            Usuario usuario = Session["Usuario"] as Usuario;
+            if (usuario == null)
+            {
+                ScriptManager.RegisterStartupScript(this, GetType(),
+                    "msg", "Swal.fire({ title: 'Inicia sesión', text: 'Debes iniciar sesión para finalizar la compra', icon: 'info', confirmButtonText: 'Aceptar' });", true);
+                return;
+            }
+
+            Dominio.Carrito carrito = Session["Carrito"] as Dominio.Carrito;
+            if (carrito == null || carrito.Items.Count == 0)
+            {
+                ScriptManager.RegisterStartupScript(this, GetType(),
+                    "msg", "Swal.fire({ text: 'Tu carrito está vacío', icon: 'info', confirmButtonText: 'Aceptar' });", true);
+                return;
+            }
+
+            // Crear orden, descontar stock y guardar en BD
+            OrdenNegocio ordenNegocio = new OrdenNegocio();
+            ordenNegocio.CrearOrden(usuario.IdUsuario, carrito.Items);
+
+            // Paso 5: marcar carrito como finalizado
+            carrito.Estado = "Finalizado";
+            Session["Carrito"] = null;
+
+            // Paso 6: mostrar solo SweetAlert de éxito
+            ScriptManager.RegisterStartupScript(this, GetType(),
+                Guid.NewGuid().ToString(),
+                "Swal.fire({ title: 'Compra realizada', text: 'Tu pedido fue registrado correctamente', icon: 'success', confirmButtonText: 'Aceptar' });",
+                true);
+            
+
+        }
 
 
 

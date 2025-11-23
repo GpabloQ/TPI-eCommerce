@@ -22,9 +22,11 @@
             public decimal Precio { get; set; }
 
             [DisplayName("CANTIDAD EN STOCK")]
-            public int Cantidad { get; set; }  
+            public int Cantidad { get; set; }
 
-            [DisplayName("ESTADO")]
+        public long Stock { get; set; } // corresponde a Cantidad en la BD
+
+        [DisplayName("ESTADO")]
             public bool Estado { get; set; }
 
             [DisplayName("MARCA")]

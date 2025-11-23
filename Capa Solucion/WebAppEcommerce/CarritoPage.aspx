@@ -51,10 +51,13 @@
         <div class="mt-3 text-end">
             <asp:Label ID="lblTotal" runat="server" CssClass="fw-bold fs-5"></asp:Label>
         </div>
+    <asp:Button ID="btnFinalizarCompra" runat="server" 
+    Text="Finalizar compra" 
+    CssClass="btn btn-success"
+    OnClick="btnFinalizarCompra_Click" />
               </ContentTemplate>
           </asp:UpdatePanel>
     </div>
-
 
 
 </asp:Content>
