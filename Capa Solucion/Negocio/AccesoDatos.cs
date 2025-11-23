@@ -69,5 +69,27 @@ namespace Negocio
             if (conexion.State != System.Data.ConnectionState.Closed)
                 conexion.Close();
         }
+
+        public object ObtenerIdGenerado()
+        {
+            comando.Connection = conexion;
+
+            try
+            {
+                if (conexion.State != System.Data.ConnectionState.Open)
+                    conexion.Open();
+
+                return comando.ExecuteScalar();   // devuelve el ID generado
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                if (conexion.State == System.Data.ConnectionState.Open)
+                    conexion.Close();
+            }
+        }
     }
 }

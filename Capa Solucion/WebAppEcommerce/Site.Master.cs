@@ -16,7 +16,7 @@ namespace WebAppEcommerce
         {
             if (!IsPostBack)
             {
-                Usuario user = Session["usuario"] as Usuario;
+                Usuario user = Session["Usuario"] as Usuario;
 
                 if (user != null)
                 {
@@ -24,33 +24,37 @@ namespace WebAppEcommerce
                     lblSaludo.InnerText = "Hola, " + user.Nombre;
                     lblAccion.InnerText = "Cuenta";
 
-                    // Se mostrar boton de cerrar sesion
                     if (btnLogout != null)
                         btnLogout.Visible = true;
+
+                    // Redirigir a página de cuenta
+                    if (lnkCuenta != null)
+                        lnkCuenta.HRef = "~/CuentaUsuario.aspx";
                 }
                 else
                 {
                     // Usuario NO logueado
                     lblSaludo.InnerText = "Hola,";
-                    lblAccion.InnerText = "Iniciar Sesion";
+                    lblAccion.InnerText = "Iniciar Sesión";
 
-                    // Se oculta el boton de cerrar sesion
                     if (btnLogout != null)
                         btnLogout.Visible = false;
+
+                    // Redirigir a inicio de sesión
+                    if (lnkCuenta != null)
+                        lnkCuenta.HRef = "~/Signin.aspx";
                 }
             }
         }
 
 
 
+        // Estos son metodos integrados en el framework de ASP.NET, no son creados por mi
         protected void btnLogout_Click(object sender, EventArgs e)
         {
-            Session.Clear();
-            Session.Abandon();
-            Response.Redirect("~/Default.aspx");
+            Session.Clear();   // Limpia los valores de la sesión
+            Session.Abandon(); // Termina la sesión (propiedad interna de ASP.NET)
+            Response.Redirect("~/Default.aspx"); // Redirige al usuario a la página de inicio
         }
-
-        
-       
     }
 }

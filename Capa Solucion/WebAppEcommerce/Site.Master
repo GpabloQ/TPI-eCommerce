@@ -15,11 +15,13 @@
     <webopt:bundlereference runat="server" path="~/Content/css" />
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
 
-    <%--Vinculación a estilos CSS personalizados--%>
+    <%--Vinculación a estilos CSS --%>
     <link href="~/Estilos/Estilos.css" rel="stylesheet" />
-
-     <!-- Librería SweetAlert2 -->
+    <%--Vinculación a Funciones JS --%>
+    <script src="Javascript/FuncionesJS.js"></script>
+     <%--Libreria de JS SweetAlert, para mostrar carteles copados--%>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
 
 </head>
 <body>
@@ -85,7 +87,9 @@
 
                 <!-- Opciones derecha -->                
                 <div class="d-flex align-items-center text-white">
-                    <a runat="server" href="~/Signin.aspx" class="text-white me-4 text-decoration-none">
+                    <%--<a runat="server" href="~/Signin.aspx" class="text-white me-4 text-decoration-none">--%>
+                    <a id="lnkCuenta" runat="server" href="~/Signin.aspx" class="text-white me-4 text-decoration-none">
+
                         <span id="lblSaludo" runat="server" class="fw-bold"></span><br />
                         <span id="lblAccion" runat="server" class="small"></span>
                     </a>
@@ -102,6 +106,8 @@
                 </div>
             </div>
         </nav>
+
+
         <div class="container body-content">
             <asp:ContentPlaceHolder ID="MainContent" runat="server">
             </asp:ContentPlaceHolder>

@@ -29,7 +29,7 @@ namespace WebAppEcommerce
                 if (usuario != null && usuario.Estado)
                 {
                     // Guardar usuario en sesión
-                    Session["usuario"] = usuario;
+                    Session["Usuario"] = usuario;
 
                     // Si es ADMIN (1) → ir al panel
                     if (usuario.TipoUsuario == 1) // ADMINISTRADOR
@@ -53,7 +53,6 @@ namespace WebAppEcommerce
                 ScriptManager.RegisterStartupScript(this, GetType(), "loginError",
                    $"Swal.fire('Error', '{ex.Message}', 'error');", true);
             }
-        }
-
+        }                                                          
     }
 }

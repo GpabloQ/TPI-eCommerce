@@ -8,20 +8,21 @@ namespace Dominio
 {
     public class Usuario
     {
-            public long IdUsuario { get; set; }
-            public string Nombre { get; set; }
-            public string Apellido { get; set; }
-            public string Mail { get; set; }
-            public string Contrasenia { get; set; }
-            public string Telefono { get; set; }
-            public string DNI { get; set; }
-            public int TipoUsuario { get; set; }
-            public bool Estado { get; set; }
-            public DateTime FechaNacimiento { get; set; }
+        public long IdUsuario { get; set; }
+        public string Nombre { get; set; }
+        public string Apellido { get; set; }
+        public string Mail { get; set; }
+        public string Contrasenia { get; set; }
+        public string Telefono { get; set; }
+        public string DNI { get; set; }
+        public int TipoUsuario { get; set; }
+        public bool Estado { get; set; }
+        public DateTime FechaNacimiento { get; set; }
+        public long IdDomicilio { get; set; }
+        public Domicilio Domicilio { get; set; }
 
-
-            //Estas propiedades son para el metodo listar con join
-            public string NombreCompleto { get; set; }
-            public string TipoUsuarioNombre { get; set; }
+        //Estas propiedades son para el metodo listar con join
+        public string NombreCompleto { get; set; }
+        public string TipoUsuarioNombre { get; set; }
     }
 }

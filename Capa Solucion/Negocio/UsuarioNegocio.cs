@@ -231,9 +231,12 @@ namespace Negocio
                 datos.setearConsulta(
                     "SELECT U.IdUsuario, U.Nombre, U.Apellido, U.Mail, U.Contrasenia, " +
                     "U.Telefono, U.DNI, U.FechaNacimiento, U.Estado, " +
-                    "U.TipoUsuario AS IdTipoUsuario, TU.Tipo AS TipoUsuarioNombre " +
+                    "U.TipoUsuario AS IdTipoUsuario, TU.Tipo AS TipoUsuarioNombre, " +
+                    "U.IdDomicilio, " +
+                    "D.Calle, D.Numero, D.Piso, D.Departamento, D.Ciudad, D.Provincia, D.CodigoPostal " +
                     "FROM USUARIOS U " +
                     "INNER JOIN TIPOUSUARIOS TU ON TU.IdTipoUsuario = U.TipoUsuario " +
+                    "LEFT JOIN DOMICILIOS D ON D.IdDomicilio = U.IdDomicilio " +
                     "WHERE U.Mail = @mail AND U.Contrasenia = @pass"
                 );
 
@@ -266,16 +269,33 @@ namespace Negocio
                     usuario.Estado = datos.Lector["Estado"] != DBNull.Value
                         && Convert.ToBoolean(datos.Lector["Estado"]);
 
+                    // CORRECCIÓN CLAVE
                     usuario.TipoUsuario = datos.Lector["IdTipoUsuario"] == DBNull.Value
-                        ? 2  
+                        ? 2
                         : Convert.ToInt32(datos.Lector["IdTipoUsuario"]);
 
                     usuario.TipoUsuarioNombre = datos.Lector["TipoUsuarioNombre"] == DBNull.Value
                         ? "CLIENTE"
                         : datos.Lector["TipoUsuarioNombre"].ToString();
 
-                    
                     usuario.NombreCompleto = usuario.Nombre + " " + usuario.Apellido;
+
+                    // Carga domicilio del usuario
+                    if (datos.Lector["IdDomicilio"] != DBNull.Value)
+                    {
+                        usuario.Domicilio = new Domicilio
+                        {
+                            IdDomicilio = Convert.ToInt64(datos.Lector["IdDomicilio"]),
+                            Calle = datos.Lector["Calle"]?.ToString() ?? "",
+                            Numero = datos.Lector["Numero"]?.ToString() ?? "",
+                            Piso = datos.Lector["Piso"]?.ToString() ?? "",
+                            Departamento = datos.Lector["Departamento"]?.ToString() ?? "",
+                            Ciudad = datos.Lector["Ciudad"]?.ToString() ?? "",
+                            Provincia = datos.Lector["Provincia"]?.ToString() ?? "",
+                            CodigoPostal = datos.Lector["CodigoPostal"]?.ToString() ?? "",
+                            Estado = true
+                        };
+                    }
 
                     return usuario;
                 }
@@ -286,6 +306,18 @@ namespace Negocio
             {
                 throw new Exception("Error en Login(): " + ex.Message);
             }
+        }
+
+        public void AsignarDomicilio(long idUsuario, long idDomicilio)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            datos.setearConsulta(
+                "UPDATE USUARIOS SET IdDomicilio = @IdDomicilio WHERE IdUsuario = @IdUsuario");
+
+            datos.setearParametro("@IdUsuario", idUsuario);
+            datos.setearParametro("@IdDomicilio", idDomicilio);
+
+            datos.ejecutarAccion();
         }
     }
 }

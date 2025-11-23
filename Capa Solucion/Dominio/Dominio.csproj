@@ -46,6 +46,7 @@
     <Compile Include="Articulo.cs" />
     <Compile Include="Carrito.cs" />
     <Compile Include="Categoria.cs" />
+    <Compile Include="Domicilio.cs" />
     <Compile Include="ElementoCarrito.cs" />
     <Compile Include="Marca.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -119,8 +119,10 @@
     <Content Include="Content\bootstrap.rtl.min.css" />
     <Content Include="Content\sign-in.css" />
     <Content Include="Content\Site.css" />
+    <Content Include="CuentaUsuario.aspx" />
     <Content Include="Default.aspx" />
     <Content Include="DetalleProducto.aspx" />
+    <Content Include="Estilos\Estilos.css" />
     <Content Include="favicon.ico" />
     <Content Include="FinDeCompra.aspx" />
     <Content Include="FormularioProducto.aspx" />
@@ -128,6 +130,7 @@
     <Content Include="GestionCategoria.aspx" />
     <Content Include="GestionUsuarios.aspx" />
     <Content Include="Global.asax" />
+    <Content Include="JavaScript\FuncionesJS.js" />
     <Content Include="ListaCategorias.aspx" />
     <Content Include="ListarMarcas.aspx" />
     <Content Include="AgregarUsuario.aspx">
@@ -214,6 +217,13 @@
     </Compile>
     <Compile Include="CarritoPage.aspx.designer.cs">
       <DependentUpon>CarritoPage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CuentaUsuario.aspx.cs">
+      <DependentUpon>CuentaUsuario.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CuentaUsuario.aspx.designer.cs">
+      <DependentUpon>CuentaUsuario.aspx</DependentUpon>
     </Compile>
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
