@@ -18,15 +18,16 @@
     <%--Vinculación a estilos CSS --%>
     <link href="~/Estilos/Estilos.css" rel="stylesheet" />
     <%--Vinculación a Funciones JS --%>
-    <script src="Javascript/FuncionesJS.js"></script>
-     <%--Libreria de JS SweetAlert, para mostrar carteles copados--%>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="/Javascript/FuncionesJS.js"></script>
+     
     
 
 </head>
 <body>
     <form runat="server">
-        <asp:ScriptManager runat="server">
+        
+            <asp:ScriptManager runat="server" EnablePageMethods="true">
+
             <Scripts>
                 <%--To learn more about bundling scripts in ScriptManager see https://go.microsoft.com/fwlink/?LinkID=301884 --%>
                 <%--Framework Scripts--%>
@@ -117,6 +118,8 @@
     <asp:PlaceHolder runat="server">
         <%: Scripts.Render("~/Scripts/bootstrap.js") %>
     </asp:PlaceHolder>
+     <%--Libreria de JS SweetAlert, para mostrar carteles copados--%>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </body>
     

@@ -15,6 +15,11 @@ namespace Dominio
 
         public string EstadoCarrito { get; set; }
 
-        public List<ElementoCarrito> Items { get; set; }
+        // NECESARIO PARA MOSTRAR LOS ITEMS DEL PEDIDO
+        public List<ElementoCarrito> Items { get; set; } = new List<ElementoCarrito>();
     }
 }
+
+        
+       
+       

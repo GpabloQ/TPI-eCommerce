@@ -121,6 +121,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="CuentaUsuario.aspx" />
     <Content Include="Default.aspx" />
+    <Content Include="DetallePedido.aspx" />
     <Content Include="DetalleProducto.aspx" />
     <Content Include="Estilos\Estilos.css" />
     <Content Include="favicon.ico" />
@@ -231,6 +232,13 @@
     </Compile>
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="DetallePedido.aspx.cs">
+      <DependentUpon>DetallePedido.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DetallePedido.aspx.designer.cs">
+      <DependentUpon>DetallePedido.aspx</DependentUpon>
     </Compile>
     <Compile Include="DetalleProducto.aspx.cs">
       <DependentUpon>DetalleProducto.aspx</DependentUpon>

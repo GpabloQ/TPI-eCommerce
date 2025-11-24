@@ -75,12 +75,13 @@ namespace Negocio
         {
             List<Carrito> lista = new List<Carrito>();
             AccesoDatos datos = new AccesoDatos();
-
             try
             {
                 datos.setearConsulta(
                     "SELECT IdCarrito, IdUsuario, FechaCreacion, EstadoCarrito, Estado " +
-                    "FROM CARRITO WHERE IdUsuario = @IdUsuario AND EstadoCarrito = 'Finalizado'");
+                    "FROM CARRITO " +
+                    "WHERE IdUsuario = @IdUsuario " +
+                    "AND EstadoCarrito COLLATE Latin1_General_CI_AI = 'Finalizado'");
 
                 datos.setearParametro("@IdUsuario", idUsuario);
                 datos.ejecutarLectura();
@@ -111,46 +112,105 @@ namespace Negocio
             }
         }
 
-
-        public List<ElementoCarrito> ListarElementosPorCarrito(long idCarrito)
+        public Carrito BuscarCarritoPorId(long idCarrito)
         {
-            List<ElementoCarrito> lista = new List<ElementoCarrito>();
+            Carrito carrito = null;
             AccesoDatos datos = new AccesoDatos();
 
             try
             {
                 datos.setearConsulta(
-                    "SELECT IdElemento, IdCarrito, IdArticulo, Cantidad, PrecioUnitario " +
-                    "FROM ELEMENTOCARRITO WHERE IdCarrito = @IdCarrito");
+                    "SELECT IdCarrito, IdUsuario, FechaCreacion, EstadoCarrito, Estado " +
+                    "FROM CARRITO WHERE IdCarrito = @idCarrito");
 
-                datos.setearParametro("@IdCarrito", idCarrito);
+                datos.setearParametro("@idCarrito", idCarrito);
                 datos.ejecutarLectura();
 
-                while (datos.Lector.Read())
+                if (datos.Lector.Read())
                 {
-                    ElementoCarrito elemento = new ElementoCarrito
+                    carrito = new Carrito
                     {
-                        IdElemento = (long)datos.Lector["IdElemento"],
                         IdCarrito = (long)datos.Lector["IdCarrito"],
-                        IdArticulo = (long)datos.Lector["IdArticulo"],
-                        Cantidad = (long)datos.Lector["Cantidad"],
-                        PrecioUnitario = (decimal)datos.Lector["PrecioUnitario"]
+                        IdUsuario = (long)datos.Lector["IdUsuario"],
+                        FechaCreacion = (DateTime)datos.Lector["FechaCreacion"],
+                        EstadoCarrito = datos.Lector["EstadoCarrito"].ToString(),
+                        Estado = datos.Lector["Estado"].ToString()
                     };
-
-                    lista.Add(elemento);
                 }
 
-                return lista;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
+                return carrito;
             }
             finally
             {
                 datos.cerrarConexion();
             }
         }
+
+        public List<ElementoCarrito> ListarElementosPorCarrito(long idCarrito)
+        {
+            List<ElementoCarrito> lista = new List<ElementoCarrito>();
+            AccesoDatos datos = new AccesoDatos();
+            AccesoDatos datosImg = new AccesoDatos();
+
+            try
+            {
+                datos.setearConsulta(
+                    "SELECT EC.IdArticulo, EC.Cantidad, EC.PrecioUnitario, " +
+                    "A.Nombre AS NombreArticulo, A.Descripcion AS DescripcionArticulo, " +
+                    "M.Nombre AS Marca, C.Nombre AS Categoria " +
+                    "FROM ELEMENTOCARRITO EC " +
+                    "INNER JOIN ARTICULOS A ON A.IdArticulo = EC.IdArticulo " +
+                    "INNER JOIN MARCAS M ON M.IdMarca = A.IdMarca " +
+                    "INNER JOIN CATEGORIAS C ON C.IdCategoria = A.IdCategoria " +
+                    "WHERE EC.IdCarrito = @IdCarrito");
+
+                datos.setearParametro("@IdCarrito", idCarrito);
+                datos.ejecutarLectura();
+
+                while (datos.Lector.Read())
+                {
+                    ElementoCarrito item = new ElementoCarrito
+                    {
+                        IdArticulo = (long)datos.Lector["IdArticulo"],
+                        Cantidad = (long)datos.Lector["Cantidad"],
+                        PrecioUnitario = (decimal)datos.Lector["PrecioUnitario"],
+
+                        Nombre = datos.Lector["NombreArticulo"].ToString(),
+                        Descripcion = datos.Lector["DescripcionArticulo"].ToString(),
+                        Marca = datos.Lector["Marca"].ToString(),
+                        Categoria = datos.Lector["Categoria"].ToString(),
+                    };
+
+                    // --- SEGUNDA QUERY: TODAS LAS IMAGENES DEL ARTICULO ---
+                    datosImg.setearConsulta("SELECT UrlImagen FROM IMAGENES WHERE IdArticulo = @id");
+                    datosImg.setearParametro("@id", item.IdArticulo);
+                    datosImg.ejecutarLectura();
+
+                    while (datosImg.Lector.Read())
+                    {
+                        item.Imagenes.Add(datosImg.Lector["UrlImagen"].ToString());
+                    }
+
+                    // Si no tiene imágenes → imagen por defecto
+                    if (item.Imagenes.Count == 0)
+                        item.Imagenes.Add("/Images/no-image.png");
+
+                    datosImg.cerrarConexion();
+
+                    lista.Add(item);
+                }
+
+                return lista;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
+
+
+
 
     }
 }

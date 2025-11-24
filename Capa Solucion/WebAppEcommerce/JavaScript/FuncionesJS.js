@@ -33,7 +33,7 @@
         return false;
     }
 
-/* ----------Ventana de JS para mostrar el mensaje de confirmación antes de eliminar un usuario ---------- */
+/* ---------- Ventana de JS para mostrar el mensaje de confirmación antes de eliminar un usuario ---------- */
     function confirmarEliminacion(boton, id) {
             event.preventDefault();
 
@@ -62,3 +62,36 @@
             });
         return false;
     }
+
+/* ---------- Ventana para ver el detalle de un pedido ---------- */
+    function verDetallePedido(idCarrito) {
+
+        // Llamamos al WebMethod en el code-behind
+        PageMethods.ObtenerDetallePedido(idCarrito, function (response) {
+
+            let html = "<ul>";
+            response.forEach(item => {
+                html += `
+                <li>
+                    <strong>ID Artículo:</strong> ${item.IdArticulo}<br>
+                    <strong>Cantidad:</strong> ${item.Cantidad}<br>
+                    <strong>Precio:</strong> $${item.PrecioUnitario}<br>
+                    <strong>Subtotal:</strong> $${(item.Cantidad * item.PrecioUnitario).toFixed(2)}
+                </li>
+                <hr>
+            `;
+            });
+            html += "</ul>";
+
+            Swal.fire({
+                title: 'Detalle del Pedido Nº ' + idCarrito,
+                html: html,
+                width: 600,
+                confirmButtonText: "Cerrar"
+            });
+
+        }, function (err) {
+            Swal.fire("Error", "No se pudo cargar el pedido", "error");
+        });
+    }
+

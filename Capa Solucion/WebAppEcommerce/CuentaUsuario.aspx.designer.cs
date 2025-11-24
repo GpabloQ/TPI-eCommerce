@@ -87,13 +87,13 @@ namespace WebAppEcommerce
         protected global::System.Web.UI.WebControls.Button btnEditarCuenta;
 
         /// <summary>
-        /// Control lblMovimientos.
+        /// Control rptPedidos.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblMovimientos;
+        protected global::System.Web.UI.WebControls.Repeater rptPedidos;
 
         /// <summary>
         /// Control rptCarritoCuenta.
