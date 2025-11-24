@@ -3,9 +3,13 @@ using Negocio;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
+using System.Net;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Text;
+using System.Globalization;
 
 namespace WebAppEcommerce
 {
@@ -26,21 +30,7 @@ namespace WebAppEcommerce
                     {
                         // Traemos el artículo completo
                         Articulo art = negocio.ListarPorIDArticulo(Convert.ToInt32(i.IdArticulo));
-
-                        /*
-                        if (art == null)
-                        {
-                            return new
-                            {
-                                IdArticulo = i.IdArticulo,
-                                ImagenUrl = "src=\"//acdn-us.mitiendanube.com/stores/002/936/119/themes/common/logo-22781428-1736359691-1181e8b8417134564b3585ce75180c481736359691-480-0.webp\"", // imagen por defecto
-                                Nombre = "Artículo no encontrado",
-                                PrecioUnitario = i.PrecioUnitario,
-                                Cantidad = i.Cantidad,
-                                Subtotal = i.Cantidad * i.PrecioUnitario
-                            };
-                        }
-                        */
+                                                
                         return new
                         {
                             IdArticulo = art.IdArticulo,
@@ -75,12 +65,20 @@ namespace WebAppEcommerce
 
             long idArticulo = Convert.ToInt64(e.CommandArgument);
 
+            Articulo art;
+            ArticuloNegocio artNegocio = new ArticuloNegocio();
+
+           
+
             var item = carrito.Items.FirstOrDefault(x => x.IdArticulo == idArticulo);
             if (item == null) return;
 
+           art = artNegocio.ListarPorIDArticulo(Convert.ToInt32(item.IdArticulo));
+          
             switch (e.CommandName)
             {
                 case "Sumar":
+                    if(art.Stock != 0 && art != null) 
                     item.Cantidad++;
                     break;
 
@@ -153,14 +151,79 @@ namespace WebAppEcommerce
 
             // Paso 5: marcar carrito como finalizado
             carrito.Estado = "Finalizado";
-            Session["Carrito"] = null;
+            //despues de enviar el correo se pone el carrito como null
 
             // Paso 6: mostrar solo SweetAlert de éxito
             ScriptManager.RegisterStartupScript(this, GetType(),
                 Guid.NewGuid().ToString(),
                 "Swal.fire({ title: 'Compra realizada', text: 'Tu pedido fue registrado correctamente', icon: 'success', confirmButtonText: 'Aceptar' });",
                 true);
-            
+
+
+            //Paso 7: envío de correo
+          Dominio.Carrito carro =  ordenNegocio.BuscarCarritoPorId(carrito.IdCarrito);
+           List <ElementoCarrito> ListaDeelementosDelCarro = new List<ElementoCarrito> ();
+            ListaDeelementosDelCarro = ordenNegocio.ListarElementosPorCarrito(carrito.IdCarrito);
+
+
+            // Construir detalle de la compra
+            StringBuilder detalleCompra = new StringBuilder();
+            detalleCompra.AppendLine("¡Gracias por comprar en ARSUMO!\n");
+            detalleCompra.AppendLine("=== Detalle de la compra ===");
+            decimal TOTAL = 0;
+            ArticuloNegocio articuloNegocio = new ArticuloNegocio();
+            foreach (var item in carrito.Items)
+            {
+                detalleCompra.AppendLine(
+                   $"Artículo: {articuloNegocio.ListarPorIDArticulo(Convert.ToInt32(item.IdArticulo)).Nombre} | " +
+                   $"Cantidad: {item.Cantidad} |" +
+                   $" Precio: {item.PrecioUnitario.ToString("C", new CultureInfo("es-AR"))} |" +
+                   $" Subtotal: {(item.Cantidad * item.PrecioUnitario).ToString("C", new CultureInfo("es-AR"))}"
+                );
+                   TOTAL +=  item.Cantidad * item.PrecioUnitario;
+            }
+            detalleCompra.AppendLine("============================");
+            detalleCompra.AppendLine($"TOTAL: {TOTAL.ToString("C", new CultureInfo("es-AR"))}\n");
+            detalleCompra.AppendLine("Estamos esperando la confirmación del pago, que puede demorar hasta 72 hs hábiles " +
+                "(esto puede variar dependiendo del medio de pago elegido).\n\n" +
+                "Seguí el estado de envío de tu pedido desde el siguiente enlace:\n" +
+                "https://www.correoargentino.com.ar/formularios/e-commerce \n\n" +
+                "Además de nuestra web puedes encontrarnos en Valparaíso 1051 - Ing. Pablo Nogués - Malvinas Argentinas - Buenos Aires\n"
+                );
+            MailMessage mail = new MailMessage();
+            mail.From = new MailAddress("franbueno681@gmail.com"); // tu dirección Gmail
+            mail.To.Add(usuario.Mail); // destinatario real
+            mail.Subject = "Detalle de compra";
+
+// Cuerpo del correo con datos de contacto + detalle de compra
+mail.Body =
+    "Cliente: " + usuario.Nombre + " " + usuario.Apellido + "\n" +
+
+    detalleCompra.ToString();
+            SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
+            smtp.Credentials = new NetworkCredential("franbueno681@gmail.com", "udhp zgut mjcp kngu");
+            smtp.EnableSsl = true;
+
+
+
+            Session["Carrito"] = null;
+            Response.Redirect("FinDeCompra.aspx");
+
+            try
+            {
+                smtp.Send(mail);
+
+                // Enviar mensaje a la consola del navegador
+                ClientScript.RegisterStartupScript(this.GetType(), "correoOk",
+                    "console.log('Correo enviado correctamente.');", true);
+            }
+            catch (Exception ex)
+            {
+                // Enviar mensaje de error a la consola del navegador
+                ClientScript.RegisterStartupScript(this.GetType(), "correoError",
+                    $"console.error('Error al enviar: {ex.Message}');", true);
+            }
+
 
         }
 

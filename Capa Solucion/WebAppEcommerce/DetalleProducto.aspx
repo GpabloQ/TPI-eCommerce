@@ -76,6 +76,7 @@
                             <h5 style="font-family: Poppins, sans-serif; color: #333333CC; "> $<%# Eval("Precio", "{0:N2}") %></h5>
       <h6 style="font-family: Poppins, sans-serif; color: #EC6746; ">$<%# string.Format("{0:N2}", Convert.ToDecimal(Eval("Precio")) * 0.97m) %> CON TRANSFERENCIA O DEPÓSITO</h6>
                           <p><strong>Cantidad:</strong> <%# Eval("Cantidad") %></p>
+
                          <p><strong>Descripción:</strong> <%# Eval("Descripcion") %></p>
                      </div>
               </div>

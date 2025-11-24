@@ -41,22 +41,6 @@ namespace WebAppEcommerce
         }
 
 
-
-        private void cargarArticulos()
-        {
-            try
-            {
-                ArticuloNegocio negocio = new ArticuloNegocio();
-                listaArticulo = negocio.Listar2();
-
-                rptArticulos.DataSource = listaArticulo;
-                rptArticulos.DataBind();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
         protected void rptArticulos_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
             /*
@@ -136,8 +120,15 @@ namespace WebAppEcommerce
                             Cantidad = 1, // o lo que seleccione el usuario
                             PrecioUnitario = artnegocio.ObtenerPrecioArticulo(idArticulo)
                         };
-
+                        if (artnegocio.ListarPorIDArticulo(idArticulo).Cantidad > 0) { 
                         carrito.Items.Add(item);
+                        }
+                        else
+                        {
+                            ScriptManager.RegisterStartupScript(this, GetType(),
+                 "msg", "Swal.fire({ text: 'No hay stock de este producto.', position: 'top', timer: 2000, showConfirmButton: false });", true);
+
+                        }
                     }
                     // Guardar carrito en sesión
                     Session["Carrito"] = carrito;

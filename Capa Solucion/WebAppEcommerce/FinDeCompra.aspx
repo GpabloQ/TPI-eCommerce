@@ -12,7 +12,7 @@
      <p>Le enviaremos por correo electrónico el link para realizar el pago.</p>
 
      <!-- Botón para volver a inicio o a otra página -->
-     <asp:HyperLink ID="btnVolver" runat="server" CssClass="btn btn-primary mt-3" NavigateUrl="Home.aspx">
+     <asp:HyperLink ID="btnVolver" runat="server" CssClass="btn btn-primary mt-3" NavigateUrl="Default.aspx">
          Volver al inicio
      </asp:HyperLink>
  </div>
