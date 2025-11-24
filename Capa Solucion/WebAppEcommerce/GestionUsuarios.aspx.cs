@@ -1,4 +1,5 @@
-﻿using Negocio;
+﻿using Dominio;
+using Negocio;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,27 @@ using System.Web.UI.WebControls;
 namespace WebAppEcommerce
 {
     public partial class GestionUsuarios : System.Web.UI.Page
-    {        
+    {
         protected void Page_Load(object sender, EventArgs e)
         {
+            // Validación de acceso
+            Usuario user = Session["Usuario"] as Usuario;
+
+            // Si NO está logueado Chau
+            if (user == null)
+            {
+                Response.Redirect("Signin.aspx");
+                return;
+            }
+
+            // Si NO es ADMIN (TipoUsuario = 1) Chau
+            if (user.TipoUsuario != 1)
+            {
+                Response.Redirect("Default.aspx");
+                return;
+            }
+
+            // Si es ADMIN Adentro
             if (!IsPostBack)
             {
                 UsuarioNegocio negocio = new UsuarioNegocio();
@@ -19,6 +38,7 @@ namespace WebAppEcommerce
                 dgvUsuarios.DataBind();
             }
         }
+
 
         protected void dgvUsuarios_SelectedIndexChanged(object sender, EventArgs e)
         {

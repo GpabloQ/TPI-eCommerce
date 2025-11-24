@@ -11,6 +11,7 @@ namespace WebAppEcommerce
         {
             if (!IsPostBack)
             {
+                // Si viene con ID  se está modificando
                 if (Request.QueryString["id"] != null)
                 {
                     int id = int.Parse(Request.QueryString["id"]);
@@ -23,6 +24,21 @@ namespace WebAppEcommerce
                     lblTitulo.Text = "Registrarse";
                     divPass.Visible = true;
                 }
+
+                Usuario user = Session["Usuario"] as Usuario;
+
+                //  Solo un ADMIN puede ver y elegir el tipo de usuario
+                if (user != null && user.TipoUsuario == 1)
+                {
+                    divTipoUsuario.Visible = true;
+                }
+                else
+                {
+                    divTipoUsuario.Visible = false;
+                }
+
+                // Cliente por defecto
+                ddlTipoUsuario.SelectedValue = "2";
             }
         }
 
@@ -40,7 +56,6 @@ namespace WebAppEcommerce
             if (u.FechaNacimiento != DateTime.MinValue)
                 txtFechaNacimiento.Text = u.FechaNacimiento.ToString("yyyy-MM-dd");
 
-            
             if (ddlTipoUsuario.Items.FindByValue(u.TipoUsuario.ToString()) != null)
                 ddlTipoUsuario.SelectedValue = u.TipoUsuario.ToString();
         }
@@ -66,7 +81,7 @@ namespace WebAppEcommerce
                     return;
                 }
 
-                // Validar mail duplicado (solo en alta)
+                // Validar mail duplicado en alta
                 if (u.IdUsuario == 0 && negocio.ExisteMail(txtMail.Text))
                 {
                     lblMensaje.Text = "El mail ya está registrado.";
@@ -85,17 +100,29 @@ namespace WebAppEcommerce
                     return;
                 }
 
-                // Seteo de propiedades
+                // Seteo propiedades
                 u.Nombre = txtNombre.Text;
                 u.Apellido = txtApellido.Text;
                 u.Mail = txtMail.Text;
                 u.Telefono = txtTelefono.Text;
                 u.DNI = txtDNI.Text;
                 u.FechaNacimiento = fecha;
-                u.TipoUsuario = int.Parse(ddlTipoUsuario.SelectedValue);
                 u.Estado = true;
 
-                          
+                // 🔥 Asignación correcta de TipoUsuario
+                Usuario log = Session["Usuario"] as Usuario;
+
+                if (log == null || log.TipoUsuario != 1)
+                {
+                    // NO es admin → siempre CLIENTE
+                    u.TipoUsuario = 2;
+                }
+                else
+                {
+                    // Admin decide
+                    u.TipoUsuario = int.Parse(ddlTipoUsuario.SelectedValue);
+                }
+
                 // ALTA
                 if (u.IdUsuario == 0)
                 {
@@ -110,7 +137,7 @@ namespace WebAppEcommerce
                     u.Contrasenia = txtContrasenia.Text;
                     negocio.AgregarUsuario(u);
 
-                    // SweetAlert de creación + redireccion
+                    // SweetAlert + redirect
                     ClientScript.RegisterStartupScript(
                         this.GetType(),
                         "UsuarioCreado",
@@ -121,7 +148,7 @@ namespace WebAppEcommerce
                     return;
                 }
 
-                // MODIFICACION
+                // MODIFICACIÓN
                 negocio.ModificarUsuario(u);
 
                 ClientScript.RegisterStartupScript(
@@ -142,10 +169,10 @@ namespace WebAppEcommerce
             }
         }
 
-
         protected void btnCancelar_Click(object sender, EventArgs e)
         {
-            Response.Redirect("GestionUsuarios.aspx");
+            Response.Redirect("Default.aspx");
         }
     }
+
 }

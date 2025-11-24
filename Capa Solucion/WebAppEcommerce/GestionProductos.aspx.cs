@@ -13,11 +13,30 @@ namespace WebAppEcommerce
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            // Validación de acceso
+            Usuario user = Session["Usuario"] as Usuario;
+
+            // Si NO está logueado CHAU
+            if (user == null)
+            {
+                Response.Redirect("Signin.aspx");
+                return;
+            }
+
+            // Si NO es ADMIN (TipoUsuario = 1) CHAU
+            if (user.TipoUsuario != 1)
+            {
+                Response.Redirect("Default.aspx");
+                return;
+            }
+
+            // Si es admin, ADENTRO
             if (!IsPostBack)
             {
                 cargarArticulos();
             }
         }
+
 
         private void cargarArticulos()
         {

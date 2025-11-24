@@ -14,11 +14,11 @@ body {
 }
 
 /* ---- Sección contacto ---- */
-    .contenedor-contacto {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-    }
+.contenedor-contacto {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
 
     .izquierda,
     .derecha {

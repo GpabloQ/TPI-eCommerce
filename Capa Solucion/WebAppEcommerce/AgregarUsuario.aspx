@@ -52,14 +52,15 @@
         <asp:TextBox ID="txtContrasenia" runat="server" TextMode="Password" CssClass="form-control" />
     </div>
 
-    <!-- TIPO DE USUARIO -->
-    <div class="mb-3">
+     <!-- TIPO DE USUARIO (OCULTO POR DEFECTO) -->
+    <div class="mb-3" id="divTipoUsuario" runat="server" Visible="false">
         <label>Tipo Usuario:</label>
         <asp:DropDownList ID="ddlTipoUsuario" runat="server" CssClass="form-select">
             <asp:ListItem Value="1">ADMINISTRADOR</asp:ListItem>
             <asp:ListItem Value="2">CLIENTE</asp:ListItem>
         </asp:DropDownList>
     </div>
+
 
     <!-- BOTONES -->
     <asp:Button ID="btnAceptar" runat="server" CssClass="btn btn-success" Text="Guardar" OnClick="btnAceptar_Click" />
