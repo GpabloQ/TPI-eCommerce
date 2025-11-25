@@ -354,7 +354,6 @@ body {
 .filtros-sidebar {
     width: 260px;
     position: relative;
-    z-index: 2; /* evita que bootstrap lo tape */
 }
 
 /* Contenedor scrolleable REAL */
@@ -367,16 +366,6 @@ body {
     border-radius: 8px;
     border: 1px solid #ddd;
 }
-
-    /* Forzar scroll siempre visible */
-    .filtro-scroll::-webkit-scrollbar {
-        width: 8px;
-    }
-
-    .filtro-scroll::-webkit-scrollbar-thumb {
-        background: #bbb;
-        border-radius: 4px;
-    }
 
 .filtro h3 {
     font-weight: 700;
@@ -396,7 +385,89 @@ body {
     color: #222;
 }
 
-    .tag:hover {
-        background: #e1e1e1;
+.tag:hover {
+    background: #e1e1e1;
+}
+
+
+/* =================== FILTROS SUPERIORES TIENDA ============================ */
+
+
+.filtros-superiores {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+/* Caja del buscador */
+.search-box {
+    width: 350px;
+}
+
+/* Icono del buscador */
+.search-box .input-group-text {
+    border-radius: 20px 0 0 20px;
+    padding-left: 14px;
+    padding-right: 14px;
+    border: 1px solid #ccc;
+}
+
+    /* Input del buscador */
+    .search-box .form-control {
+        border-radius: 0 20px 20px;
+        border: 1px solid #ccc;
+        height: 40px;
+        font-size: 14px;
     }
+
+/* Botones general de filtros */
+.btn-filtro {
+    height: 40px;
+    border-radius: 20px;
+    padding: 0px 20px;
+    font-size: 14px;
+    width: auto;
+}
+
+
+.filtro-inferior {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+/* Contenedor del dropdown */
+.dropdown-container {
+    width: 260px;
+    text-align: center;
+}
+
+/* Contenedor del botón Limpiar */
+.limpiar-container {
+    width: 260px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Dropdown orden de precios */
+.ddlOrdenPrecio {
+    width: 100%;
+    height: 40px;
+    border-radius: 20px;
+    padding-left: 10px;
+    border: 1px solid #ccc;
+    background-color: white;
+    text-align: center;
+    font-size: 14px;
+}
+
+/* Botón Limpiar Filtros debajo del dropdown */
+.limpiar-container .btn-filtro {
+    width: 100% ;
+    border-radius: 20px ;
+}
 

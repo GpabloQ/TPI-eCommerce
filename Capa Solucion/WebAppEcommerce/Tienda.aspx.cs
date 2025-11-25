@@ -10,26 +10,36 @@ using System.Web.UI.WebControls.WebParts;
 
 
 namespace WebAppEcommerce
-{
+{   
+
     public partial class Tienda : System.Web.UI.Page
     {
+       
         public List<Articulo> listaArticulo { get; set; }
 
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
-            {
+            {   
                 CargarCategoria();
                 CargarMarca();
                 CargarArticulos();
+            }
 
-                //string idCategoriaStr = Request.QueryString["id"];
-                //int idCategoria = Convert.ToInt32(idCategoriaStr);
+            btnLimpiar.Visible = Filtros();
 
+
+        }
+
+        private void CargarArticulos() {
+            try
+            {
                 ArticuloNegocio negocio = new ArticuloNegocio();
                 List<Articulo> lista = negocio.Listar2();
 
+                
                 // FILTRAR POR MARCA
+             
                 if (Request.QueryString["marca"] != null)
                 {
                     int idMarca = int.Parse(Request.QueryString["marca"]);
@@ -37,35 +47,47 @@ namespace WebAppEcommerce
                 }
 
                 // FILTRAR POR CATEGORIA
+                
                 if (Request.QueryString["categoria"] != null)
                 {
                     int idCategoria = int.Parse(Request.QueryString["categoria"]);
                     lista = lista.Where(x => x.Categoria.IdCategoria == idCategoria).ToList();
                 }
 
-
-                // Validar imágenes de cada artículo
-                foreach (var art in lista)
+              
+                // FILTRAR POR BÚSQUEDA
+                if (!string.IsNullOrEmpty(txtBuscar.Value))
                 {
-                    if (string.IsNullOrEmpty(art.UrlImagen) && art.ListaUrls != null && art.ListaUrls.Count > 0)
-                    {
-                        art.UrlImagen = art.ListaUrls[0];
-                        art.ListaUrls.RemoveAt(0); // opcional, para no duplicar
-                    }
+                    string txt = txtBuscar.Value.ToLower();
+                    lista = lista.Where(a => a.Nombre.ToLower().Contains(txt)).ToList();
                 }
 
+               
+                // ORDENAR POR PRECIO
+                if (!string.IsNullOrEmpty(ddlOrdenPrecio.SelectedValue))
+                {
+                    if (ddlOrdenPrecio.SelectedValue == "ASC")
+                        lista = lista.OrderBy(a => a.Precio).ToList();
+                    else
+                        lista = lista.OrderByDescending(a => a.Precio).ToList();
+                }
+
+               
+                // PROCESAR IMÁGENES
+                foreach (var art in lista)
+                {
+                    if (string.IsNullOrEmpty(art.UrlImagen) &&
+                        art.ListaUrls != null &&
+                        art.ListaUrls.Count > 0)
+                    {
+                        art.UrlImagen = art.ListaUrls[0];
+                        art.ListaUrls.RemoveAt(0);
+                    }
+                }
+                
+                
+
                 rptArticulos.DataSource = lista;
-                rptArticulos.DataBind();
-            }
-        }
-
-        private void CargarArticulos() {
-            try
-            {
-                ArticuloNegocio negocio = new ArticuloNegocio();
-                listaArticulo = negocio.Listar2();
-
-                rptArticulos.DataSource = listaArticulo;
                 rptArticulos.DataBind();
             }
             catch (Exception ex)
@@ -163,7 +185,14 @@ namespace WebAppEcommerce
             rptArticulos.DataBind();
         }
 
+        private bool Filtros() {
+            bool hayBusqueda = !string.IsNullOrWhiteSpace(txtBuscar.Value);
+            bool hayOrden = !string.IsNullOrWhiteSpace(ddlOrdenPrecio.SelectedValue);
+            bool hayMarca = Request.QueryString["marca"] != null;
+            bool hayCategoria = Request.QueryString["categoria"] != null;
 
+            return hayBusqueda || hayOrden || hayMarca || hayCategoria;
+        }
 
         protected void rptArticulos_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
@@ -279,6 +308,26 @@ namespace WebAppEcommerce
             Response.Redirect("DetalleProducto.aspx?id=" + idArticulo, false);
         }
 
+        protected void btnBuscar_Click(object sender, EventArgs e)
+        {
+            CargarArticulos();
+        }
+
+        protected void btnLimpiar_Click(object sender, EventArgs e)
+        {
+            txtBuscar.Value = "";
+            ddlOrdenPrecio.SelectedIndex = 0;
+
+            Response.Redirect("Tienda.aspx");
+        }
+
+
+        protected void ddlOrdenPrecio_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            CargarArticulos();
+        }
+
+
         /*
         protected void btnAgregarCarrito_Click(object sender, EventArgs e)
         {
@@ -326,7 +375,7 @@ namespace WebAppEcommerce
             Session["Carrito"] = carrito;
         }
         */
-       
+
 
 
 
