@@ -39,10 +39,31 @@ namespace WebAppEcommerce
                         lblDireccion.Text =
                             $"{usuario.Domicilio.Calle} {usuario.Domicilio.Numero}, {usuario.Domicilio.Piso} {usuario.Domicilio.Departamento}, " +
                             $"{usuario.Domicilio.Ciudad}, {usuario.Domicilio.Provincia}, CP: {usuario.Domicilio.CodigoPostal}";
+                        // CAMBIAR TEXTO DEL BOTÓN
+                            btnAgregarDomicilio.Text = "Actualizar Domicilio";
+                            btnEliminarDomicilio.Visible = true;   // <-- MOSTRAR EL ÍCONO
+
+                        // Generar script con valores pre-cargados
+                        string script = $@"
+                                        abrirModalDomicilio(
+                                            '{usuario.Domicilio.Calle}',
+                                            '{usuario.Domicilio.Numero}',
+                                            '{usuario.Domicilio.Piso}',
+                                            '{usuario.Domicilio.Departamento}',
+                                            '{usuario.Domicilio.Ciudad}',
+                                            '{usuario.Domicilio.Provincia}',
+                                            '{usuario.Domicilio.CodigoPostal}'
+                                        ); return false;";
+
+                        btnAgregarDomicilio.OnClientClick = script;
                     }
                     else
                     {
                         lblDireccion.Text = "Sin domicilio registrado";
+                        // TEXTO POR DEFECTO
+                        btnEliminarDomicilio.Visible = false;  // <-- OCULTARLO
+                        btnAgregarDomicilio.Text = "Agregar Domicilio";
+                        btnAgregarDomicilio.OnClientClick = "abrirModalDomicilio(); return false;";
                     }
 
                     // Cargar pedidos del usuario
@@ -135,6 +156,97 @@ namespace WebAppEcommerce
                 Response.Redirect("AgregarUsuario.aspx?id=" + usuario.IdUsuario);
             }
         }
+
+        protected void btnGuardarDomicilio_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // 1) Crear objeto domicilio
+                Domicilio nuevo = new Domicilio
+                {
+                    Calle = txtCalle.Text.Trim(),
+                    Numero = txtNumero.Text.Trim(),
+                    Piso = txtPiso.Text.Trim(),
+                    Departamento = txtDepto.Text.Trim(),
+                    Ciudad = txtCiudad.Text.Trim(),
+                    Provincia = txtProvincia.Text.Trim(),
+                    CodigoPostal = txtCP.Text.Trim(),
+                    Estado = true
+                };
+
+                DomicilioNegocio domNeg = new DomicilioNegocio();
+                UsuarioNegocio userNeg = new UsuarioNegocio();
+
+                // 2) Guardar domicilio en BD
+                long idDom = domNeg.Agregar(nuevo);
+
+                // 3) Obtener usuario en sesión
+                Usuario usuario = Session["Usuario"] as Usuario;
+
+                // 4) Asignar domicilio al usuario en BD
+                userNeg.ActualizarDomicilio(usuario.IdUsuario, idDom);
+
+                // 5) REFRESCAR USUARIO en sesión
+                usuario = userNeg.buscarPorId((int)usuario.IdUsuario);
+                usuario.Domicilio = nuevo; // por si el buscarPorId no trae join
+
+                Session["Usuario"] = usuario;
+
+                // 6) Mensaje OK + cerrar modal
+                ScriptManager.RegisterStartupScript(this, GetType(), "ok",
+                    "Swal.fire('Domicilio agregado', 'Se actualizó correctamente.', 'success');", true);
+
+                ScriptManager.RegisterStartupScript(this, GetType(), "cerrar",
+                    "cerrarModalDomicilio();", true);
+
+                // 7) Recargar la página para ver los cambios
+                Response.Redirect("CuentaUsuario.aspx");
+            }
+            catch (Exception ex)
+            {
+                ScriptManager.RegisterStartupScript(this, GetType(), "error",
+                    $"Swal.fire('Error', '{ex.Message}', 'error');", true);
+            }
+        }
+
+        protected void btnEliminarDomicilio_Click(object sender, EventArgs e)
+{
+    try
+    {
+        Usuario usuario = Session["Usuario"] as Usuario;
+
+        if (usuario?.Domicilio == null)
+            return;
+
+        long idDom = usuario.Domicilio.IdDomicilio;
+
+        // 1) Quitar domicilio del usuario
+        UsuarioNegocio un = new UsuarioNegocio();
+        un.ActualizarDomicilio(usuario.IdUsuario, 0); // Lo limpiamos
+
+        // 2) Eliminar domicilio de la tabla
+        DomicilioNegocio dn = new DomicilioNegocio();
+        dn.Eliminar(idDom);
+
+        // 3) Actualizar Session
+        usuario.Domicilio = null;
+        Session["Usuario"] = usuario;
+
+        // 4) Mostrar mensaje
+        ScriptManager.RegisterStartupScript(this, GetType(), "ok",
+            "Swal.fire('Domicilio eliminado', 'Se quitó correctamente.', 'success');",
+            true);
+
+        // 5) Refrescar pantalla
+        Response.Redirect("CuentaUsuario.aspx");
+    }
+    catch (Exception ex)
+    {
+        ScriptManager.RegisterStartupScript(this, GetType(), "error",
+            $"Swal.fire('Error', '{ex.Message}', 'error');", true);
+    }
+}
+
 
     }
 }

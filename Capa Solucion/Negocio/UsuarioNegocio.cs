@@ -319,5 +319,30 @@ namespace Negocio
 
             datos.ejecutarAccion();
         }
+
+        public void ActualizarDomicilio(long idUsuario, long? idDomicilio)
+        {
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setearConsulta("UPDATE USUARIOS SET IdDomicilio = @idDom WHERE IdUsuario = @id");
+
+                if (idDomicilio.HasValue && idDomicilio.Value > 0)
+                    datos.setearParametro("@idDom", idDomicilio.Value);
+                else
+                    datos.setearParametro("@idDom", DBNull.Value);
+
+                datos.setearParametro("@id", idUsuario);
+
+                datos.ejecutarAccion();
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
+
     }
 }

@@ -3,9 +3,21 @@
 
 /* ---------- FUNCION PARA VENTANA EMERGENTE PARA AGREGAR UN DOMICILIO ---------- */
 
-    function abrirModalDomicilio() {
-        document.getElementById("modalDomicilio").style.display = "flex";
-    }
+function abrirModalDomicilio(calle, numero, piso, depto, ciudad, provincia, cp) {
+
+    // Si NO se pasan datos → dejar todo vacío
+    document.getElementById('<%= txtCalle.ClientID %>').value = calle || "";
+    document.getElementById('<%= txtNumero.ClientID %>').value = numero || "";
+    document.getElementById('<%= txtPiso.ClientID %>').value = piso || "";
+    document.getElementById('<%= txtDepto.ClientID %>').value = depto || "";
+    document.getElementById('<%= txtCiudad.ClientID %>').value = ciudad || "";
+    document.getElementById('<%= txtProvincia.ClientID %>').value = provincia || "";
+    document.getElementById('<%= txtCP.ClientID %>').value = cp || "";
+
+    // Mostrar modal
+    document.getElementById("modalDomicilio").style.display = "flex";
+}
+
 
     function cerrarModalDomicilio() {
         document.getElementById("modalDomicilio").style.display = "none";

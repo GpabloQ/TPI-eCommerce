@@ -59,5 +59,21 @@ namespace Negocio
             finally { datos.cerrarConexion(); }
         }
 
+        public void Eliminar(long id)
+        {
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setearConsulta("DELETE FROM DOMICILIOS WHERE IdDomicilio = @id");
+                datos.setearParametro("@id", id);
+                datos.ejecutarAccion();
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
     }
 }

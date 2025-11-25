@@ -2,6 +2,10 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">      
 
+     <%--Libreria de JS SweetAlert, para mostrar carteles copados--%>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="Javascript/FuncionesJS.js"></script>
+
     <main class="container mt-4">
         <h2 class="text-center mb-4">MI CUENTA</h2>
         <hr />
@@ -21,7 +25,25 @@
                         <p><strong>Email:</strong> <asp:Label ID="lblEmail" runat="server" /></p>
                         <p><strong>Tipo de Usuario:</strong> <asp:Label ID="lblTipoUsuario" runat="server" /></p>
                         <p><strong>Teléfono:</strong> <asp:Label ID="lblTelefono" runat="server" /></p>
-                        <p><strong>Dirección:</strong> <asp:Label ID="lblDireccion" runat="server" /></p>
+                        <p><strong>Dirección:</strong><asp:Label ID="lblDireccion" runat="server" />    
+                            <!-- ÍCONO DE ELIMINAR DOMICILIO -->
+                            <asp:LinkButton ID="btnEliminarDomicilio" runat="server"
+                                            OnClick="btnEliminarDomicilio_Click"
+                                            CssClass="text-danger ms-2"
+                                            ToolTip="Eliminar domicilio"
+                                            Visible="false">
+                                <i class="fa fa-trash"></i>
+                            </asp:LinkButton>
+                        </p>
+
+
+
+                         <!-- BOTÓN PARA AGREGAR DOMICILIO -->
+                         <asp:Button ID="btnAgregarDomicilio" runat="server"
+                                     Text="Agregar Domicilio"
+                                     CssClass="btn btn-info mt-2"
+                                     OnClientClick="abrirModalDomicilio(); return false;" />
+
                         <asp:Button ID="btnEditarCuenta" runat="server" 
                                 Text="Editar Datos" 
                                 CssClass="btn btn-outline-dark mt-3"
@@ -126,4 +148,58 @@
             </div>
         </asp:Panel>
     </main>
+        <!-- MODAL DOMICILIO -->
+<div id="modalDomicilio" class="modal" style="display:none;
+     position:fixed; top:0; left:0; width:100%; height:100%;
+     background:rgba(0,0,0,0.6); justify-content:center; align-items:center;">
+
+    <div class="card p-4" style="width:450px;">
+        <h4>Agregar Domicilio</h4>
+
+        <div class="mb-3">
+            <label>Calle:</label>
+            <asp:TextBox ID="txtCalle" runat="server" CssClass="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label>Número:</label>
+            <asp:TextBox ID="txtNumero" runat="server" CssClass="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label>Piso (opcional):</label>
+            <asp:TextBox ID="txtPiso" runat="server" CssClass="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label>Departamento:</label>
+            <asp:TextBox ID="txtDepto" runat="server" CssClass="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label>Ciudad:</label>
+            <asp:TextBox ID="txtCiudad" runat="server" CssClass="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label>Provincia:</label>
+            <asp:TextBox ID="txtProvincia" runat="server" CssClass="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label>Código Postal:</label>
+            <asp:TextBox ID="txtCP" runat="server" CssClass="form-control" />
+        </div>
+
+        <!-- BOTONES DEL MODAL -->
+        <div class="text-end">
+            <asp:Button ID="btnGuardarDomicilio" runat="server"
+                        Text="Guardar"
+                        CssClass="btn btn-success"
+                        OnClick="btnGuardarDomicilio_Click" />
+
+            <button type="button" class="btn btn-secondary" onclick="cerrarModalDomicilio()">Cerrar</button>
+        </div>
+    </div>
+</div>
 </asp:Content>
