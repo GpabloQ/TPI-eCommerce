@@ -205,9 +205,8 @@ mail.Body =
             smtp.EnableSsl = true;
 
 
-
             Session["Carrito"] = null;
-            Response.Redirect("FinDeCompra.aspx");
+           
 
             try
             {
@@ -216,6 +215,7 @@ mail.Body =
                 // Enviar mensaje a la consola del navegador
                 ClientScript.RegisterStartupScript(this.GetType(), "correoOk",
                     "console.log('Correo enviado correctamente.');", true);
+                Response.Redirect("FinDeCompra.aspx");
             }
             catch (Exception ex)
             {

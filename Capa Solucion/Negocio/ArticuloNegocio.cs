@@ -428,7 +428,7 @@ namespace Negocio
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
             finally
             {
@@ -567,6 +567,169 @@ namespace Negocio
                 datos.cerrarConexion();
             }
         }
+
+  
+        public List<Articulo> ListarArticulosPorMarca(int idMarca)
+        {
+            List<Articulo> lista = new List<Articulo>();
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setearConsulta(@"
+    SELECT 
+        A.IdArticulo,
+        A.Codigo,
+        A.Nombre,
+        A.Descripcion,
+        A.Precio,
+        A.Cantidad,
+        A.Estado,
+        M.IdMarca,
+        M.Nombre AS Marca,
+        C.IdCategoria,
+        C.Nombre AS Categoria,
+        I.UrlImagen
+    FROM ARTICULOS A
+    INNER JOIN MARCAS M ON M.IdMarca = A.IdMarca
+    INNER JOIN CATEGORIAS C ON C.IdCategoria = A.IdCategoria
+    LEFT JOIN IMAGENES I ON I.IdArticulo = A.IdArticulo
+    WHERE A.IdMarca = @idMarca
+    ORDER BY A.Nombre ASC
+");
+                datos.setearParametro("@idMarca", idMarca);
+
+                datos.ejecutarLectura();
+
+                while (datos.Lector.Read())
+                {
+                    int idArt = (int)datos.Lector["IdArticulo"];
+
+                    Articulo art = lista.FirstOrDefault(x => x.IdArticulo == idArt);
+
+                    if (art == null)
+                    {
+                        art = new Articulo();
+                        art.IdArticulo = idArt;
+                        art.Codigo = datos.Lector["Codigo"].ToString();
+                        art.Nombre = datos.Lector["Nombre"].ToString();
+                        art.Descripcion = datos.Lector["Descripcion"].ToString();
+                        art.Precio = (decimal)datos.Lector["Precio"];
+                        art.Cantidad = (int)datos.Lector["Cantidad"];
+                        art.Estado = (bool)datos.Lector["Estado"];
+
+                        art.Marca = new Marca
+                        {
+                            IdMarca = (int)datos.Lector["IdMarca"],
+                            Nombre = datos.Lector["Marca"].ToString()
+                        };
+
+                        art.Categoria = new Categoria
+                        {
+                            IdCategoria = (int)datos.Lector["IdCategoria"],
+                            Nombre = datos.Lector["Categoria"].ToString()
+                        };
+
+                        art.ListaUrls = new List<string>();
+                        lista.Add(art);
+                    }
+
+                    if (!(datos.Lector["UrlImagen"] is DBNull))
+                        art.ListaUrls.Add(datos.Lector["UrlImagen"].ToString());
+                }
+
+                return lista;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
+        public List<Articulo> ListarArticulosPorCategoriaYMarca(int idCategoria, int idMarca)
+        {
+            List<Articulo> lista = new List<Articulo>();
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setearConsulta(@"
+    SELECT 
+        A.IdArticulo,
+        A.Codigo,
+        A.Nombre,
+        A.Descripcion,
+        A.Precio,
+        A.Cantidad,
+        A.Estado,
+        M.IdMarca,
+        M.Nombre AS Marca,
+        C.IdCategoria,
+        C.Nombre AS Categoria,
+        I.UrlImagen
+    FROM ARTICULOS A
+    INNER JOIN MARCAS M ON M.IdMarca = A.IdMarca
+    INNER JOIN CATEGORIAS C ON C.IdCategoria = A.IdCategoria
+    LEFT JOIN IMAGENES I ON I.IdArticulo = A.IdArticulo
+    WHERE A.IdCategoria = @idCategoria AND A.IdMarca = @idMarca
+    ORDER BY A.Nombre ASC
+");
+
+                datos.setearParametro("@idCategoria", idCategoria);
+                datos.setearParametro("@idMarca", idMarca);
+
+                datos.ejecutarLectura();
+
+                while (datos.Lector.Read())
+                {
+                    int idArt = (int)datos.Lector["IdArticulo"];
+
+                    Articulo art = lista.FirstOrDefault(x => x.IdArticulo == idArt);
+
+                    if (art == null)
+                    {
+                        art = new Articulo();
+                        art.IdArticulo = idArt;
+                        art.Codigo = datos.Lector["Codigo"].ToString();
+                        art.Nombre = datos.Lector["Nombre"].ToString();
+                        art.Descripcion = datos.Lector["Descripcion"].ToString();
+                        art.Precio = (decimal)datos.Lector["Precio"];
+                        art.Cantidad = (int)datos.Lector["Cantidad"];
+                        art.Estado = (bool)datos.Lector["Estado"];
+
+                        art.Marca = new Marca
+                        {
+                            IdMarca = (int)datos.Lector["IdMarca"],
+                            Nombre = datos.Lector["Marca"].ToString()
+                        };
+
+                        art.Categoria = new Categoria
+                        {
+                            IdCategoria = (int)datos.Lector["IdCategoria"],
+                            Nombre = datos.Lector["Categoria"].ToString()
+                        };
+
+                        art.ListaUrls = new List<string>();
+                        lista.Add(art);
+                    }
+
+                    if (!(datos.Lector["UrlImagen"] is DBNull))
+                        art.ListaUrls.Add(datos.Lector["UrlImagen"].ToString());
+                }
+
+                return lista;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
+
+
+
+
+
 
 
         public List<Articulo> BuscarProducto(string nombre)

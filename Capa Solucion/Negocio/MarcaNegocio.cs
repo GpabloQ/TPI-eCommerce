@@ -54,6 +54,43 @@ namespace Negocio
             }
         }
 
+        public List<Marca> ListarConConteo()
+        {
+            List<Marca> lista = new List<Marca>();
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setearConsulta("SELECT m.IdMarca, m.Nombre, COUNT(a.IdArticulo) AS CantidadProductos " +
+                                    "FROM MARCAS m LEFT JOIN ARTICULOS a ON a.IdMarca = m.IdMarca " +
+                                    "GROUP BY m.IdMarca, m.Nombre ORDER BY m.Nombre");
+                datos.ejecutarLectura();
+
+                while (datos.Lector.Read())
+                {
+                    Marca m = new Marca();
+                    m.IdMarca = Convert.ToInt32(datos.Lector["IdMarca"]);   // ← FIX
+                    m.Nombre = datos.Lector["Nombre"].ToString();
+                    m.Cantidad = Convert.ToInt32(datos.Lector["CantidadProductos"]);  // ← FIX
+
+                    lista.Add(m);
+                }
+
+                return lista;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
+
+
+
         public void agregar(Marca nueva)
         {
             AccesoDatos datos = new AccesoDatos();

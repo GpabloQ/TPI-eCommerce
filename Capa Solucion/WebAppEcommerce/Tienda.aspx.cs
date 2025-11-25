@@ -19,11 +19,30 @@ namespace WebAppEcommerce
         {
             if (!IsPostBack)
             {
-                string idCategoriaStr = Request.QueryString["id"];
-                int idCategoria = Convert.ToInt32(idCategoriaStr);
+                CargarCategoria();
+                CargarMarca();
+                CargarArticulos();
+
+                //string idCategoriaStr = Request.QueryString["id"];
+                //int idCategoria = Convert.ToInt32(idCategoriaStr);
 
                 ArticuloNegocio negocio = new ArticuloNegocio();
-                List<Articulo> lista = negocio.ListarArticulosPorCategoria(idCategoria);
+                List<Articulo> lista = negocio.Listar2();
+
+                // FILTRAR POR MARCA
+                if (Request.QueryString["marca"] != null)
+                {
+                    int idMarca = int.Parse(Request.QueryString["marca"]);
+                    lista = lista.Where(x => x.Marca.IdMarca == idMarca).ToList();
+                }
+
+                // FILTRAR POR CATEGORIA
+                if (Request.QueryString["categoria"] != null)
+                {
+                    int idCategoria = int.Parse(Request.QueryString["categoria"]);
+                    lista = lista.Where(x => x.Categoria.IdCategoria == idCategoria).ToList();
+                }
+
 
                 // Validar imágenes de cada artículo
                 foreach (var art in lista)
@@ -39,6 +58,111 @@ namespace WebAppEcommerce
                 rptArticulos.DataBind();
             }
         }
+
+        private void CargarArticulos() {
+            try
+            {
+                ArticuloNegocio negocio = new ArticuloNegocio();
+                listaArticulo = negocio.Listar2();
+
+                rptArticulos.DataSource = listaArticulo;
+                rptArticulos.DataBind();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
+
+        private void CargarCategoria()
+        {
+            try
+            {
+                CategoriaNegocio negocio = new CategoriaNegocio();
+                var lista = negocio.listar();
+                rptCategorias.DataSource = lista;
+                rptCategorias.DataBind();
+
+            }
+            catch (Exception ex)
+            {
+
+                  throw ex;
+            }
+        }
+        protected void repCategorias_ItemCommand(object source, RepeaterCommandEventArgs e)
+        {
+            if (e.CommandName == "FiltrarCategoria")
+            {
+                int idCat = int.Parse(e.CommandArgument.ToString());
+                ArticuloNegocio negocio = new ArticuloNegocio();
+
+                rptArticulos.DataSource = negocio.Listar2()
+                    .Where(x => x.Categoria.IdCategoria == idCat)
+                    .ToList();
+
+                rptArticulos.DataBind();
+            }
+        }
+
+
+
+        private void CargarMarca()
+        {
+            try
+            {
+                MarcaNegocio Negocio = new MarcaNegocio();
+                var lista = Negocio.ListarConConteo();
+                rptMarcas.DataSource = lista;
+                rptMarcas.DataBind();
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
+
+        protected void repMarcas_ItemCommand(object source, RepeaterCommandEventArgs e)
+        {
+            if (e.CommandName == "FiltrarMarca")
+            {
+                int idMarca = int.Parse(e.CommandArgument.ToString());
+                ArticuloNegocio negocio = new ArticuloNegocio();
+
+                rptArticulos.DataSource = negocio.Listar2()
+                    .Where(x => x.Marca.IdMarca == idMarca)
+                    .ToList();
+
+                rptArticulos.DataBind();
+            }
+        }
+
+        private void FiltrarPorCategoria()
+        {
+            int idCat = int.Parse(Request.QueryString["categoria"]);
+            ArticuloNegocio negocio = new ArticuloNegocio();
+
+            var lista = negocio.Listar2().Where(x => x.Categoria.IdCategoria == idCat).ToList();
+
+            rptArticulos.DataSource = lista;
+            rptArticulos.DataBind();
+        }
+
+        private void FiltrarPorMarca()
+        {
+            int idMarca = int.Parse(Request.QueryString["marca"]);
+            ArticuloNegocio negocio = new ArticuloNegocio();
+
+            var lista = negocio.Listar2().Where(x => x.Marca.IdMarca == idMarca).ToList();
+
+            rptArticulos.DataSource = lista;
+            rptArticulos.DataBind();
+        }
+
 
 
         protected void rptArticulos_ItemCommand(object source, RepeaterCommandEventArgs e)

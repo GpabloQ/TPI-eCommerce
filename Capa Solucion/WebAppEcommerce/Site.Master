@@ -68,8 +68,12 @@
                         <li class="nav-item"><a class="nav-link text-white" runat="server" href="~/Default.aspx#contacto">Contacto</a></li>
                         <li id="navAdmin" runat="server"><a href="PanelAdmin.aspx">PANEL ADMINISTRATIVO</a></li>
                         <li class="nav-item"><a class="nav-link text-white" runat="server" href="~/AgregarUsuario.aspx">Registrarse</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" runat="server" href="~/Tienda.aspx">Tienda</a></li>
+
+                    </ul>
+
  <!-- Dropdown Tienda -->
-        <li class="nav-item dropdown">
+     <%--   <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle text-white" href="#" id="tiendaDropdown" role="button"
                data-bs-toggle="dropdown" aria-expanded="false">
                 Tienda
@@ -80,8 +84,7 @@
                <!-- <li><a class="dropdown-item text-white" runat="server" href="~/Categoria.aspx?id=2">Filamentos</a></li>
                 <li><a class="dropdown-item text-white" runat="server" href="~/Categoria.aspx?id=3">Accesorios</a></li>  -->
             </ul>
-        </li>
-                    </ul>
+        </li>--%>
                 </div>
 
 
@@ -123,6 +126,7 @@
 
 </body>
     
+</html>
 
 
 <!-- FOOTER -->
@@ -167,4 +171,3 @@
     </div>
 </footer>
 
-</html>
