@@ -7,7 +7,7 @@ using System.Web.UI;
 namespace WebAppEcommerce
 {
     public partial class FormularioProducto : Page
-    {
+    {        
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -40,7 +40,6 @@ namespace WebAppEcommerce
                 }
             }
         }
-
         private void cargarListas()
         {
             MarcaNegocio marcaNegocio = new MarcaNegocio();
@@ -56,7 +55,6 @@ namespace WebAppEcommerce
             ddlCategoria.DataValueField = "IdCategoria";    
             ddlCategoria.DataBind();
         }
-
         private void CargarFormulario(Articulo art)
         {
             txtCodigo.Text = art.Codigo;
@@ -68,7 +66,6 @@ namespace WebAppEcommerce
             ddlMarca.SelectedValue = art.Marca.IdMarca.ToString();
             ddlCategoria.SelectedValue = art.Categoria.IdCategoria.ToString();
         }
-
         protected void btnAceptar_Click(object sender, EventArgs e)
         {
             ArticuloNegocio negocio = new ArticuloNegocio();
@@ -147,7 +144,6 @@ namespace WebAppEcommerce
         {
             Response.Redirect("GestionProductos.aspx", false);
         }
-
         protected void btnVerImagen_Click(object sender, EventArgs e)
         {
             string url = txtUrlImagen.Text.Trim();

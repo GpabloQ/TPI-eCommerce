@@ -21,6 +21,9 @@ namespace WebAppEcommerce
             {
                 Dominio.Carrito carrito = Session["Carrito"] as Dominio.Carrito;
 
+                // 👉 NUEVO: controlar visibilidad del botón
+                btnFinalizarCompra.Visible = (carrito != null && carrito.Items.Any());
+
                 if (carrito != null && carrito.Items.Any())
                 {
                     ArticuloNegocio negocio = new ArticuloNegocio();
@@ -30,7 +33,7 @@ namespace WebAppEcommerce
                     {
                         // Traemos el artículo completo
                         Articulo art = negocio.ListarPorIDArticulo(Convert.ToInt32(i.IdArticulo));
-                                                
+
                         return new
                         {
                             IdArticulo = art.IdArticulo,
@@ -55,6 +58,7 @@ namespace WebAppEcommerce
                 }
             }
         }
+
 
 
 

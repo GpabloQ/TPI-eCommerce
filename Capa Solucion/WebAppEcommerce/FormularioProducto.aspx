@@ -39,14 +39,7 @@
                             Text="VER IMAGEN"
                             OnClick="btnVerImagen_Click" />
             </div>
-        </div>
-
-                            
-                            
-                            
-                            
-
-
+        </div>           
         <!-- Vista previa de la imagen -->
         <div class="mt-3">
             <asp:Image ID="imgPreview" runat="server"
@@ -54,8 +47,6 @@
                        Height="220px"
                        Style="object-fit:cover; border-radius:8px; border:1px solid #ddd; display:none;" />
         </div>
-
-
         <div class="form-group">
             <label>Marca:</label>
             <asp:DropDownList ID="ddlMarca" runat="server" CssClass="form-control"></asp:DropDownList>

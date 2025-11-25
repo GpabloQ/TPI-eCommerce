@@ -18,7 +18,8 @@
     <%--Vinculación a estilos CSS --%>
     <link href="~/Estilos/Estilos.css" rel="stylesheet" />
     <%--Vinculación a Funciones JS --%>
-    <script src="/Javascript/FuncionesJS.js"></script>
+    <script src="<%= ResolveUrl("~/JavaScript/FuncionesJS.js") %>"></script>
+
      
     
 

@@ -24,12 +24,13 @@
                         <p><strong>Descripción:</strong> <%# Eval("Descripcion") %></p>
                         <p><strong>Marca:</strong> <%# Eval("Marca") %></p>                        
                         <p><strong>Categoria:</strong> <%# Eval("Categoria") %></p>     
-
-                        <p><strong>Imagen:</strong><br />
-                            <img src='<%# Eval("UrlImagen") %>' alt="Imagen del producto"
-                                 style="max-width: 150px; height: auto;" />
-                        </p>
-
+                                                
+                        <asp:Repeater ID="rptDetalleImagenes" runat="server" DataSource='<%# Eval("Imagenes") %>'>
+                            <ItemTemplate>
+                                <img src='<%# Container.DataItem %>' 
+                                     style="width:200px;height:200px;object-fit:cover;margin:5px;border-radius:8px;border:1px solid #ddd;" />
+                            </ItemTemplate>
+                        </asp:Repeater>
                         <p><strong>Cantidad:</strong> <%# Eval("Cantidad") %></p>
                         <p><strong>Precio Unitario:</strong> $ <%# Eval("PrecioUnitario") %></p>
 

@@ -95,3 +95,48 @@
         });
     }
 
+/* ---------- Formulario Producto - Confirmar Guardado ---------- */
+    function confirmarGuardado() {
+                return Swal.fire({
+        title: '¿Confirmar guardado?',
+    text: 'Se va a guardar el articulo.',
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonText: 'Sí, guardar',
+    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+
+        __doPostBack('<%= btnAceptar.UniqueID %>', '');
+                    }
+                }), false; 
+            }
+            }
+/* ---------- Formulario Producto - Confirmar Eliminación ---------- */
+function confirmarEliminacionProducto(boton) {
+    event.preventDefault();
+    Swal.fire({
+        title: "¿Eliminar producto?",
+        text: "Esta acción no se puede deshacer",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "
+Sí, eliminar",
+        cancelButtonText: "Cancelar"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var href = boton.getAttribute("href");
+                var match = href && href.match(/__doPostBack\('([^']+)'/);
+                if (match && match[1]) {
+                    var postBackID = match[1];
+                    __doPostBack(postBackID, "");
+                }
+            }
+        });
+    return false;
+}
+
+
+            

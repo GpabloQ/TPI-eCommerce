@@ -5,36 +5,32 @@
     <main class="container mt-4">
         <h2 class="text-center mb-4">MI CUENTA</h2>
         <hr />
-
         <!-- Si no hay usuario logueado -->
         <asp:Panel ID="pnlNoLogueado" runat="server" Visible="false" CssClass="text-center">
             <h4>Para ver tu cuenta necesitás iniciar sesión.</h4>
             <a href="Signin.aspx" class="btn btn-primary mt-3">IR A LOGIN</a>
         </asp:Panel>
-
         <!-- Si hay usuario logueado -->
         <asp:Panel ID="pnlLogueado" runat="server" Visible="false">
-
             <div class="row">
-
                 <!-- DATOS DEL USUARIO -->
                 <div class="col-md-6">
                     <h4>Datos del Usuario</h4>
                     <div class="card p-3">
-
                         <p><strong>Nombre:</strong> <asp:Label ID="lblNombre" runat="server" /></p>
                         <p><strong>Email:</strong> <asp:Label ID="lblEmail" runat="server" /></p>
                         <p><strong>Tipo de Usuario:</strong> <asp:Label ID="lblTipoUsuario" runat="server" /></p>
                         <p><strong>Teléfono:</strong> <asp:Label ID="lblTelefono" runat="server" /></p>
                         <p><strong>Dirección:</strong> <asp:Label ID="lblDireccion" runat="server" /></p>
-
-                        <asp:Button ID="btnEditarCuenta" runat="server" Text="Editar Datos" CssClass="btn btn-outline-dark mt-3" />
+                        <asp:Button ID="btnEditarCuenta" runat="server" 
+                                Text="Editar Datos" 
+                                CssClass="btn btn-outline-dark mt-3"
+                                OnClick="btnEditarCuenta_Click" />
                     </div>
                 </div>
-
                 <!-- MIS PEDIDOS -->
                 <div class="col-md-6">                    
-                    <h4 class="mt-4">Historial de Pedidos</h4>                    
+                    <h4 class="mt-4">Historial de Pedidos</h4>                   
 
                     <asp:Repeater ID="rptPedidos" runat="server" OnItemCommand="rptPedidos_ItemCommand">
                         <ItemTemplate>
@@ -124,7 +120,7 @@
                                     CssClass="btn btn-success mt-3"
                                     Visible="false"
                                     OnClick="btnFinalizarCompra_Click"
-                                    OnClientClick="return confirmarCompra();" />
+                                    OnClientClick="return confirmarCompra();" />                   
                     </div>
                 </div>
             </div>

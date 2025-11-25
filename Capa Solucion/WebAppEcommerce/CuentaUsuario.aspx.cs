@@ -91,7 +91,6 @@ namespace WebAppEcommerce
         {
             Response.Redirect("FinDeCompra.aspx");
         }
-
         // -------------------------------
         // MÉTODO PARA CARGAR PEDIDOS
         // -------------------------------
@@ -124,6 +123,16 @@ namespace WebAppEcommerce
             {
                 long idCarrito = Convert.ToInt64(e.CommandArgument);
                 Response.Redirect("DetallePedido.aspx?idCarrito=" + idCarrito);
+            }
+        }
+
+        protected void btnEditarCuenta_Click(object sender, EventArgs e)
+        {
+            Usuario usuario = Session["Usuario"] as Usuario;
+
+            if (usuario != null)
+            {
+                Response.Redirect("AgregarUsuario.aspx?id=" + usuario.IdUsuario);
             }
         }
 
