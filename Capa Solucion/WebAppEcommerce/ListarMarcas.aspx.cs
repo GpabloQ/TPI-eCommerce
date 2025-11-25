@@ -1,11 +1,13 @@
-﻿using System;
+﻿using Dominio;
+using Negocio;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Negocio;
+
 
 namespace WebAppEcommerce
 {
@@ -14,15 +16,36 @@ namespace WebAppEcommerce
     
         protected void Page_Load(object sender, EventArgs e)
         {
+            // Validación de acceso (igual que en GestionUsuarios)
+            Usuario user = Session["Usuario"] as Usuario;
 
-            MarcaNegocio negocio = new MarcaNegocio();
-            dgvMarcas.DataSource = negocio.listar();
-            dgvMarcas.DataBind();
+            if (user == null)
+            {
+                Response.Redirect("Signin.aspx");
+                return;
+            }
+
+            if (user.TipoUsuario != 1)
+            {
+                Response.Redirect("Default.aspx");
+                return;
+            }
+
+            // Si es admin, cargamos la grilla
+            if (!IsPostBack)
+            {
+                MarcaNegocio negocio = new MarcaNegocio();
+                dgvMarcas.DataSource = negocio.listar();
+                dgvMarcas.DataBind();
+            }
         }
 
         protected void dgvMarcas_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
             dgvMarcas.PageIndex = e.NewPageIndex;
+
+            MarcaNegocio negocio = new MarcaNegocio();
+            dgvMarcas.DataSource = negocio.listar();
             dgvMarcas.DataBind();
         }
 
@@ -35,6 +58,23 @@ namespace WebAppEcommerce
         protected void btnAgregarMarca_Click(object sender, EventArgs e)
         {
             Response.Redirect("AgregarMarca.aspx", false);
-        }      
+        }
+
+        protected void dgvMarcas_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName == "Eliminar")
+            {
+                int id = Convert.ToInt32(e.CommandArgument);
+
+                MarcaNegocio negocio = new MarcaNegocio();
+                negocio.eliminacionFisica(id);
+
+                dgvMarcas.DataSource = negocio.listar();
+                dgvMarcas.DataBind();
+            }
+        }
+
+
+
     }
 }

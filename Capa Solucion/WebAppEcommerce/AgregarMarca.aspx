@@ -12,28 +12,35 @@
          }
 
     </style>
-    <asp:Label ID="lblTitulo" runat="server" CssClass="h2"></asp:Label>
-    <br />
-    <br />
-    <asp:Label ID="lblNombreMarca" runat="server" Text="Nombre de la marca:"></asp:Label>
-    <br />
-    <asp:TextBox ID="txtNombre" runat="server"></asp:TextBox>
-    <br />
-    <div class="botonera">
-    <asp:Button ID="btnAceptarMarca" runat="server"  CssClass="btn btn-primary mt-3" Text="Aceptar" OnClick="btnAceptar_Click"   />  
-    <asp:Button ID="btnCancelarMarca" runat="server"  CssClass="btn btn-primary mt-3" Text="Cancelar" OnClick="btnCancelar_Click"   />
-    </div>
-       <div class="botonera">
-       <asp:Button ID="btnEliminarMarca" runat="server" Text="Eliminar" CssClass="btn btn-danger mt-3" OnClick="btnEliminarMarca_Click"/>
-       </div>
-   <br />
+    
+   <h2 id="titulo" runat="server"></h2>
 
+    <div class="mb-3">
+       <label>ID</label>
+       <asp:TextBox ID="txtId" runat="server" CssClass="form-control" Enabled="false" Visible="false" />
+   </div>
 
-      <%if (ConfirmaEliminacion) {  %>       
-  <div class="botonera">
-  <asp:CheckBox ID="ChkConfirmaEliminacion" runat="server" Text="Confirmar Eliminación" CssClass="checkbox-align"/>
-  <asp:Button ID="btnConfirmarEliminar" runat="server" Text="Eliminar" CssClass="btn btn-outline-danger mt-3"
-      OnClick="btnEliminar_Click"/>
-  </div>
-       <%  } %>
+   <div class="mb-3">
+       <label>Nombre</label>
+       <asp:TextBox ID="txtNombre" runat="server" CssClass="form-control" />
+   </div>
+
+   <div class="d-flex gap-2">
+       <asp:Button ID="btnAceptar" runat="server" Text="Guardar" CssClass="btn btn-primary" OnClick="btnAceptar_Click" />
+       <asp:Button ID="btnCancelar" runat="server" Text="Cancelar" CssClass="btn btn-secondary" OnClick="btnCancelar_Click" />
+
+       <asp:Button ID="btnEliminarMarca" runat="server" Text="Eliminar"
+           CssClass="btn btn-danger"
+           Visible="false"
+           OnClick="btnEliminar_Click" />
+   </div>
+
+   <div class="mt-3" id="panelConfirmacion" runat="server" visible="false">
+       <label>Confirma eliminar</label>
+       <asp:CheckBox ID="chkConfirma" runat="server" />
+       <asp:Button ID="btnEliminar" runat="server"
+           Text="Confirmar"
+           CssClass="btn btn-danger"
+           OnClick="btnEliminar_Click" />
+   </div>
 </asp:Content>

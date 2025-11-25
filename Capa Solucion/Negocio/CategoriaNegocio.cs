@@ -128,6 +128,29 @@ namespace Negocio
             }
         }
 
+        public void eliminacionLogica(Categoria modificar)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.setearConsulta("UPDATE CATEGORIA SET Estado = @estado WHERE IdCategoria = @idcategoria");
+                datos.setearParametro("@idcategoria", modificar.IdCategoria);
+                datos.setearParametro("@nombre", modificar.Nombre);
+                datos.setearParametro("@estado", modificar.Estado);
+
+                datos.ejecutarAccion();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
 
         public bool ExisteCategoriaEnArticulos(int idCategoria)
         {

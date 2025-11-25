@@ -12,29 +12,37 @@ namespace WebAppEcommerce
 {
     public partial class AgregarMarca : System.Web.UI.Page
     {
-        public bool ConfirmaEliminacion { get; set; }
         protected void Page_Load(object sender, EventArgs e)
         {
             //txtId.Enabled = false;
-            ConfirmaEliminacion = false;
-
+            
             try
             {
                 //Configuración si estamos modificando
-                if (Request.QueryString["id"] != null && !IsPostBack)
+                if (!IsPostBack)
                 {
-                    lblTitulo.Text = "Modificar Marca";
-                    MarcaNegocio negocio = new MarcaNegocio();
-                    List<Marca> lista = negocio.listar(Request.QueryString["id"].ToString());
-                    Marca seleccionada = lista[0];
+                    string id = Request.QueryString["id"];
 
-                    //pre cargar todos los campos...
-                    txtNombre.Text = seleccionada.Nombre;
+                    if (!string.IsNullOrEmpty(id))
+                    {
+                        // Modo modificar
+                        titulo.InnerText = "Modificar Marca";
 
-                }
-                else
-                {
-                    lblTitulo.Text = "Agregar Marca";
+                        MarcaNegocio negocio = new MarcaNegocio();
+                        Marca seleccionada = negocio.listar(id)[0];
+
+                        txtId.Text = seleccionada.IdMarca.ToString();
+                        txtId.Visible = true;
+                        txtNombre.Text = seleccionada.Nombre;
+
+                        btnEliminar.Visible = true;
+                    }
+                    else
+                    {
+                        // Modo agregar
+                        titulo.InnerText = "Agregar Marca";
+                        btnEliminar.Visible = false;
+                    }
                 }
             }
             catch (Exception)
@@ -48,35 +56,23 @@ namespace WebAppEcommerce
         {
             try
             {
-                if (!string.IsNullOrWhiteSpace(txtNombre.Text))
-                {
-                    
-                    // El TextBox tiene contenido válido
-                Marca nuevo = new Marca();
                 MarcaNegocio negocio = new MarcaNegocio();
-
+                Marca nuevo = new Marca();
 
                 nuevo.Nombre = txtNombre.Text;
                 nuevo.Estado = true;
 
-                    if (Request.QueryString["id"] != null)
-                    {
-                        nuevo.IdMarca = long.Parse(Request.QueryString["id"].ToString());
-                        negocio.modificar(nuevo);
-                    }
-                    else
-                    {
-                        negocio.agregar(nuevo);
-                    }
-
-
-                Response.Redirect("ListarMarcas.aspx", false);
+                if (!string.IsNullOrEmpty(txtId.Text))
+                {
+                    nuevo.IdMarca = int.Parse(txtId.Text);
+                    negocio.modificar(nuevo);
                 }
                 else
                 {
-                    return;
-                    // Está vacío o solo tiene espacios
+                    negocio.agregar(nuevo);
                 }
+
+                Response.Redirect("ListarMarcas.aspx");
 
             }
             catch (Exception ex)
@@ -94,35 +90,26 @@ namespace WebAppEcommerce
 
         protected void btnEliminarMarca_Click(object sender, EventArgs e)
         {
-            ConfirmaEliminacion = true;
+            panelConfirmacion.Visible = true;
         }
 
         protected void btnEliminar_Click(object sender, EventArgs e)
         {
             try
             {
-                if (ChkConfirmaEliminacion.Checked)
+                if (chkConfirma.Checked)
                 {
-                MarcaNegocio negocio = new MarcaNegocio();
-                Marca modificar = new Marca();
-                    long id = long.Parse(Request.QueryString["id"]);
-                //negocio.eliminacionFisica(id);
+                    MarcaNegocio negocio = new MarcaNegocio();
+                    int id = int.Parse(txtId.Text);
 
+                    negocio.eliminacionLogica(new Marca
+                    {
+                        IdMarca = id,
+                        Nombre = txtNombre.Text,
+                        Estado = false
+                    });
 
-                    if (!string.IsNullOrWhiteSpace(txtNombre.Text))
-                    { 
-                        // El TextBox tiene contenido válido
-
-                        modificar.Nombre = txtNombre.Text;
-                        modificar.Estado = false;
-
-                        if (Request.QueryString["id"] != null)
-                        {
-                            modificar.IdMarca = long.Parse(Request.QueryString["id"].ToString());
-                            negocio.eliminacionLogica(modificar);
-                            Response.Redirect("ListarMarcas.aspx", false);
-                        }
-                    }
+                    Response.Redirect("ListarMarcas.aspx");
                 }
             }
             catch (Exception ex )

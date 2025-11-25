@@ -1,66 +1,81 @@
-﻿using System;
+﻿using Dominio;
+using Negocio;
+using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Dominio;
-using Negocio;
 
 namespace WebAppEcommerce
 {
     public partial class GestionCategoria : System.Web.UI.Page
     {
-        public bool   ConfirmarEliminacion { get; set; }
       
         protected void Page_Load(object sender, EventArgs e)
         {
-           
-            string id = Request.QueryString["id"] != null ? Request.QueryString["id"].ToString() : "";
-            if (id != ""  && !IsPostBack)
+
+            if (!IsPostBack)
             {
-                ConfirmarEliminacion = false;
-                
-                //precarga de datos
-                CategoriaNegocio categoriaNegocio = new CategoriaNegocio();
-                Categoria seleccionado = (categoriaNegocio.listar(id))[0];
-               
+                string id = Request.QueryString["id"];
 
-                txtId.Text = seleccionado.IdCategoria.ToString();
-                txtNombreCategoria.Text = seleccionado.Nombre;
-            
+                if (!string.IsNullOrEmpty(id))
+                {
+                    titulo.InnerText = "Modificar Categoría";
+
+                    CategoriaNegocio negocio = new CategoriaNegocio();
+                    Categoria seleccionada = negocio.listar(id)[0];
+
+                    txtId.Text = seleccionada.IdCategoria.ToString();
+                    txtId.Visible = true;
+                    txtNombreCategoria.Text = seleccionada.Nombre;
+
+                    btnEliminar.Visible = true;
+                }
+                else
+                {
+                    titulo.InnerText = "Agregar Categoría";
+                    btnEliminar.Visible = false;
+                }
             }
-            
-
         }
+
+
 
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
             try
             {
-                if (!string.IsNullOrWhiteSpace(txtNombreCategoria.Text))
+                CategoriaNegocio negocio = new CategoriaNegocio();
+                Categoria nuevo = new Categoria();
+
+                nuevo.Nombre = txtNombreCategoria.Text;
+                nuevo.Estado = true;
+
+                if (!string.IsNullOrEmpty(txtId.Text))
                 {
-                    Categoria nuevo = new Categoria();
-                    CategoriaNegocio categoriaNegocio = new CategoriaNegocio();
-
-                    nuevo.Nombre = txtNombreCategoria.Text;
-                    nuevo.Estado = true;
-
-                    categoriaNegocio.agregar(nuevo);
-                    Response.Redirect("ListaCategorias.aspx");
+                    nuevo.IdCategoria = int.Parse(txtId.Text);
+                    negocio.modificar(nuevo);
                 }
-                else {
-                    return;
+                else
+                {
+                    negocio.agregar(nuevo);
                 }
 
+                Response.Redirect("ListaCategorias.aspx"); 
+
+                return;
             }
+
             catch (Exception)
             {
 
                 throw;
             }
+    }
 
-        }
+        
 
         protected void btnModificar_Click(object sender, EventArgs e)
         {
@@ -95,18 +110,18 @@ namespace WebAppEcommerce
 
         protected void btnEliminar_Click(object sender, EventArgs e)
         {
-            ConfirmarEliminacion = true;
+            panelConfirmacion.Visible = true;
         }
 
         protected void btnConfirmacion_Click(object sender, EventArgs e)
         {
             try
             {
-                if (chkConfimaEliminacion.Checked) { 
-                    CategoriaNegocio  negocio = new CategoriaNegocio();
+                if (chkConfirmaEliminacion.Checked)
+                {
+                    CategoriaNegocio negocio = new CategoriaNegocio();
                     negocio.eliminar(int.Parse(txtId.Text));
                     Response.Redirect("ListaCategorias.aspx");
-                
                 }
 
             }
