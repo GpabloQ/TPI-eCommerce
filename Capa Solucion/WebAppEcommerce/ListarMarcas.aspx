@@ -8,7 +8,7 @@
     <br />
    
     <asp:GridView ID="dgvMarcas" runat="server" AutoGenerateColumns="false"
-        CssClass="table"
+        CssClass="table table table-striped "
         DataKeyNames="IdMarca"
         AllowPaging="true"
         PageSize="8"

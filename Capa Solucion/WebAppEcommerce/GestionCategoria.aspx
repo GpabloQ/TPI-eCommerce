@@ -1,7 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="GestionCategoria.aspx.cs" Inherits="WebAppEcommerce.GestionCategoria" %>
 
-
-
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
 

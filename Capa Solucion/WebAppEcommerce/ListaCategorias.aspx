@@ -2,8 +2,11 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
+    
+    <h2>Listado de Categorias.</h2>
+
     <asp:GridView ID="dgvCategorias" runat="server" AutoGenerateColumns="false"
-        CssClass="table"
+        CssClass="table table table-striped "
         DataKeyNames="IdCategoria"
         AllowPaging="true"
         PageSize="8"

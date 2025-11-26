@@ -9,7 +9,8 @@
      <h1 class="text-success">¡Operación de compra exitosa!</h1>
 
      <!-- Mensaje adicional -->
-     <p>Le enviaremos por correo electrónico el link para realizar el pago.</p>
+    <p>Hemos registrado tu pedido y te enviamos el detalle de compra por correo electrónico.</p>
+    <p>Necesitamos que registres tu dirección de envío en tu perfil para coordinar la entrega.</p>
 
      <!-- Botón para volver a inicio o a otra página -->
      <asp:HyperLink ID="btnVolver" runat="server" CssClass="btn btn-primary mt-3" NavigateUrl="Default.aspx">
