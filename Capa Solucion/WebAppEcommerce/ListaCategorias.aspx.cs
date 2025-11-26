@@ -13,7 +13,9 @@ namespace WebAppEcommerce
     {
  
         protected void Page_Load(object sender, EventArgs e)
-        {
+        {   
+            
+
             Usuario user = Session["Usuario"] as Usuario;
 
             if (user == null)
@@ -31,6 +33,15 @@ namespace WebAppEcommerce
             // Si es admin, cargamos la grilla
             if (!IsPostBack)
             {
+                var master = (SiteMaster)Master;
+                master.SetBreadcrumb(new List<(string, string)>
+                {
+                    ("Inicio", "Default.aspx"),
+                    ("Panel Administrativo", "PanelAdmin.aspx"),
+                    ("Lista Categoria", null),
+                });
+
+
                 CategoriaNegocio negocio = new CategoriaNegocio();
                 dgvCategorias.DataSource = negocio.listar();
                 dgvCategorias.DataBind();

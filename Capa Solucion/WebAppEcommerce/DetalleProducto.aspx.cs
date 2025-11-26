@@ -17,6 +17,14 @@ namespace WebAppEcommerce
         {
             if (!IsPostBack)
             {
+                var master = (SiteMaster)Master;
+                master.SetBreadcrumb(new List<(string, string)>
+                {
+                    ("Inicio", "Default.aspx"),
+                    ("Tienda", "Tienda.aspx"),
+                    ("Detalle de Producto", null),
+                });
+
                 string idArticuloStr = Request.QueryString["id"];
                 if (!string.IsNullOrEmpty(idArticuloStr))
                 {

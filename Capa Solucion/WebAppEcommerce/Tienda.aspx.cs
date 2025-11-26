@@ -10,17 +10,24 @@ using System.Web.UI.WebControls.WebParts;
 
 
 namespace WebAppEcommerce
-{   
+{
 
     public partial class Tienda : System.Web.UI.Page
     {
-       
+
         public List<Articulo> listaArticulo { get; set; }
 
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
-            {   
+            {
+                var master = (SiteMaster)Master;
+                master.SetBreadcrumb(new List<(string, string)>
+                {
+                    ("Inicio", "Default.aspx"),
+                    ("Tienda", null)
+                });
+
                 CargarCategoria();
                 CargarMarca();
                 CargarArticulos();
@@ -31,15 +38,16 @@ namespace WebAppEcommerce
 
         }
 
-        private void CargarArticulos() {
+        private void CargarArticulos()
+        {
             try
             {
                 ArticuloNegocio negocio = new ArticuloNegocio();
                 List<Articulo> lista = negocio.Listar2();
 
-                
+
                 // FILTRAR POR MARCA
-             
+
                 if (Request.QueryString["marca"] != null)
                 {
                     int idMarca = int.Parse(Request.QueryString["marca"]);
@@ -47,14 +55,14 @@ namespace WebAppEcommerce
                 }
 
                 // FILTRAR POR CATEGORIA
-                
+
                 if (Request.QueryString["categoria"] != null)
                 {
                     int idCategoria = int.Parse(Request.QueryString["categoria"]);
                     lista = lista.Where(x => x.Categoria.IdCategoria == idCategoria).ToList();
                 }
 
-              
+
                 // FILTRAR POR BÚSQUEDA
                 if (!string.IsNullOrEmpty(txtBuscar.Value))
                 {
@@ -62,7 +70,7 @@ namespace WebAppEcommerce
                     lista = lista.Where(a => a.Nombre.ToLower().Contains(txt)).ToList();
                 }
 
-               
+
                 // ORDENAR POR PRECIO
                 if (!string.IsNullOrEmpty(ddlOrdenPrecio.SelectedValue))
                 {
@@ -72,7 +80,7 @@ namespace WebAppEcommerce
                         lista = lista.OrderByDescending(a => a.Precio).ToList();
                 }
 
-               
+
                 // PROCESAR IMÁGENES
                 foreach (var art in lista)
                 {
@@ -84,8 +92,8 @@ namespace WebAppEcommerce
                         art.ListaUrls.RemoveAt(0);
                     }
                 }
-                
-                
+
+
 
                 rptArticulos.DataSource = lista;
                 rptArticulos.DataBind();
@@ -110,7 +118,7 @@ namespace WebAppEcommerce
             catch (Exception ex)
             {
 
-                  throw ex;
+                throw ex;
             }
         }
         protected void repCategorias_ItemCommand(object source, RepeaterCommandEventArgs e)
@@ -185,7 +193,8 @@ namespace WebAppEcommerce
             rptArticulos.DataBind();
         }
 
-        private bool Filtros() {
+        private bool Filtros()
+        {
             bool hayBusqueda = !string.IsNullOrWhiteSpace(txtBuscar.Value);
             bool hayOrden = !string.IsNullOrWhiteSpace(ddlOrdenPrecio.SelectedValue);
             bool hayMarca = Request.QueryString["marca"] != null;
@@ -257,7 +266,7 @@ namespace WebAppEcommerce
                     }
 
                     // Buscar si ya existe el artículo en el carrito
-        var existente = carrito.Items.FirstOrDefault(x => x.IdArticulo == idArticulo);
+                    var existente = carrito.Items.FirstOrDefault(x => x.IdArticulo == idArticulo);
                     if (existente != null)
                     {
                         // Si ya existe, solo aumento la cantidad
@@ -273,8 +282,9 @@ namespace WebAppEcommerce
                             Cantidad = 1, // o lo que seleccione el usuario
                             PrecioUnitario = artnegocio.ObtenerPrecioArticulo(idArticulo)
                         };
-                        if (artnegocio.ListarPorIDArticulo(idArticulo).Cantidad > 0) { 
-                        carrito.Items.Add(item);
+                        if (artnegocio.ListarPorIDArticulo(idArticulo).Cantidad > 0)
+                        {
+                            carrito.Items.Add(item);
                         }
                         else
                         {

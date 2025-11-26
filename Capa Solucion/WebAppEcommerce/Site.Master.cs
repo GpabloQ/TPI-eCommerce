@@ -86,5 +86,28 @@ namespace WebAppEcommerce
             Session.Abandon(); // Termina la sesión (propiedad interna de ASP.NET)
             Response.Redirect("~/Default.aspx"); // Redirige al usuario a la página de inicio
         }
+
+
+        public void SetBreadcrumb(List<(string Texto, string Url)> rutas)
+        {
+            string html = "";
+
+            for (int i = 0; i < rutas.Count; i++)
+            {
+                var r = rutas[i];
+
+                if (!string.IsNullOrEmpty(r.Url))
+                    html += $"<a href='{r.Url}'>{r.Texto}</a>";
+                else
+                    html += $"<span class='current'>{r.Texto}</span>";
+
+                if (i < rutas.Count - 1)
+                    html += " <span class='bc-sep'>›</span> ";
+            }
+
+            litBreadcrumb.Text = html;
+        }
+
+
     }
 }

@@ -51,7 +51,7 @@
             </div>
         </div>
 
-        <asp:Repeater ID="rptArticulos" runat="server">
+        <%--<asp:Repeater ID="rptArticulos" runat="server">
             <ItemTemplate>
                 <div style="border: 1px solid #ccc; border-radius: 10px; padding: 15px; margin: 10px; display: inline-block; width: 300px; vertical-align: top; box-shadow: 2px 2px 6px rgba(0,0,0,0.1);">
 
@@ -71,10 +71,10 @@
                     </asp:Repeater>
                 </div>
             </ItemTemplate>
-        </asp:Repeater>
+        </asp:Repeater>--%>
 
         <%-- Seccion de contacto--%>
-        <section id="contacto" class="arsumo-contacto py-5 text-white" style="background: #111;">
+        <section id="contacto" class="arsumo-contacto py-5 text-white" style="background: #000;">
             <div class="container">
 
                 <h2 class="mb-4">Contacto</h2>

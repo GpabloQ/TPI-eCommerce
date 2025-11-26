@@ -34,6 +34,14 @@ namespace WebAppEcommerce
             // Si es admin, cargamos la grilla
             if (!IsPostBack)
             {
+                var master = (SiteMaster)Master;
+                master.SetBreadcrumb(new List<(string, string)>
+                {
+                    ("Inicio", "Default.aspx"),
+                    ("Panel Administrativo", "PanelAdmin.aspx"),
+                    ("Lista Marca", null),
+                });
+
                 MarcaNegocio negocio = new MarcaNegocio();
                 dgvMarcas.DataSource = negocio.listar();
                 dgvMarcas.DataBind();

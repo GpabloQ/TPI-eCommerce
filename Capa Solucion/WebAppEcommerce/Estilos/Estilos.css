@@ -471,3 +471,28 @@ body {
     border-radius: 20px ;
 }
 
+/* ======== RUTA DE NAVEGACION ===========*/
+
+.breadcrumb-container {
+    margin: 25px 0;
+    font-size: 14px;
+    
+}
+
+.breadcrumb-container .current {
+    font-weight: 600;
+    color: #495057; /* gris más fuerte */
+}
+
+.bc-sep {
+    margin: 0 6px;
+    color: #6c757d;
+    font-weight: 700;
+}
+
+.breadcrumb-container a,
+.breadcrumb-container a:visited,
+.breadcrumb-container a:link {
+    color: #6c757d; 
+    text-decoration: none;
+}

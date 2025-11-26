@@ -1,5 +1,7 @@
 ﻿<%--<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Tienda.aspx.cs" Inherits="WebAppEcommerce.Tienda" %>--%>
-<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Tienda.aspx.cs" Inherits="WebAppEcommerce.Tienda" MaintainScrollPositionOnPostback="true"%>
+
+<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Tienda.aspx.cs" Inherits="WebAppEcommerce.Tienda" MaintainScrollPositionOnPostback="true" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
 
@@ -14,7 +16,7 @@
         </div>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-       
+
 
         <div class="filtros-superiores">
 
@@ -51,7 +53,7 @@
                 </asp:DropDownList>
             </div>
 
-           
+
             <!-- BOTÓN LIMPIAR FILTROS -->
             <div class="limpiar-container">
                 <asp:Button ID="btnLimpiar" runat="server"
@@ -105,7 +107,7 @@
                     </div>
                     <!-- cierre filtros-sidebar -->
                 </div>
-    
+
 
 
 

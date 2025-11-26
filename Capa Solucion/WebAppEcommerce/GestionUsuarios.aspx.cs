@@ -33,6 +33,14 @@ namespace WebAppEcommerce
             // Si es ADMIN Adentro
             if (!IsPostBack)
             {
+                var master = (SiteMaster)Master;
+                master.SetBreadcrumb(new List<(string, string)>
+                {
+                    ("Inicio", "Default.aspx"),
+                    ("Panel Administrativo", "PanelAdmin.aspx"),
+                    ("Gestion de Productos", null),
+                });
+
                 UsuarioNegocio negocio = new UsuarioNegocio();
                 dgvUsuarios.DataSource = negocio.listar();
                 dgvUsuarios.DataBind();

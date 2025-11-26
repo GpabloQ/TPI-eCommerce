@@ -138,7 +138,7 @@ namespace Negocio
                             Categoria = new Categoria
                             {
                                 IdCategoria = (int)Convert.ToInt64(value: datos.Lector["IdCategoria"]),
-                                
+
                                 Nombre = datos.Lector["Categoria"].ToString()
                             },
                             ListaUrls = new List<string>()
@@ -290,7 +290,7 @@ namespace Negocio
 
             try
             {
-                
+
                 datos.setearConsulta(@"UPDATE ARTICULOS SET Codigo = @cod, Nombre = @nom, IdMarca = @idmarca, IdCategoria = @idcategoria, 
                 Descripcion = @desc, Precio = @precio
                 WHERE IdArticulo = @Id");
@@ -305,7 +305,7 @@ namespace Negocio
                 datos.setearParametro("@Id", articulo.IdArticulo);
 
                 datos.ejecutarAccion();
-                
+
                 if (!string.IsNullOrEmpty(articulo.UrlImagen))
                 {
                     datos = new AccesoDatos();
@@ -363,8 +363,8 @@ namespace Negocio
                 datos.setearParametro("@IdArticulo", articulo.IdArticulo);
 
                 datos.ejecutarAccion();
-                datos.cerrarConexion(); 
-                datos = null;           
+                datos.cerrarConexion();
+                datos = null;
 
                 //Si hay una imagen vieja y una nueva → la actualiza
                 if (!string.IsNullOrEmpty(urlVieja) && !string.IsNullOrEmpty(urlNueva))
@@ -438,7 +438,7 @@ namespace Negocio
                 datos.cerrarConexion();
             }
         }
-                
+
         public void AgregarImagen(int idArticulo, string urlImagen)
         {
             AccesoDatos datos = new AccesoDatos();
@@ -465,7 +465,7 @@ namespace Negocio
             try
             {
                 datos.setearConsulta("SELECT IdArticulo FROM ARTICULOS WHERE IdArticulo = @id");
-                 datos.setearParametro("@id", id);
+                datos.setearParametro("@id", id);
                 datos.ejecutarLectura();
 
                 return datos.Lector.Read();
@@ -548,7 +548,7 @@ namespace Negocio
             }
         }
 
-  
+
         public List<Articulo> ListarArticulosPorMarca(int idMarca)
         {
             List<Articulo> lista = new List<Articulo>();
@@ -557,26 +557,26 @@ namespace Negocio
             try
             {
                 datos.setearConsulta(@"
-    SELECT 
-        A.IdArticulo,
-        A.Codigo,
-        A.Nombre,
-        A.Descripcion,
-        A.Precio,
-        A.Cantidad,
-        A.Estado,
-        M.IdMarca,
-        M.Nombre AS Marca,
-        C.IdCategoria,
-        C.Nombre AS Categoria,
-        I.UrlImagen
-    FROM ARTICULOS A
-    INNER JOIN MARCAS M ON M.IdMarca = A.IdMarca
-    INNER JOIN CATEGORIAS C ON C.IdCategoria = A.IdCategoria
-    LEFT JOIN IMAGENES I ON I.IdArticulo = A.IdArticulo
-    WHERE A.IdMarca = @idMarca
-    ORDER BY A.Nombre ASC
-");
+                    SELECT 
+                        A.IdArticulo,
+                        A.Codigo,
+                        A.Nombre,
+                        A.Descripcion,
+                        A.Precio,
+                        A.Cantidad,
+                        A.Estado,
+                        M.IdMarca,
+                        M.Nombre AS Marca,
+                        C.IdCategoria,
+                        C.Nombre AS Categoria,
+                        I.UrlImagen
+                    FROM ARTICULOS A
+                    INNER JOIN MARCAS M ON M.IdMarca = A.IdMarca
+                    INNER JOIN CATEGORIAS C ON C.IdCategoria = A.IdCategoria
+                    LEFT JOIN IMAGENES I ON I.IdArticulo = A.IdArticulo
+                    WHERE A.IdMarca = @idMarca
+                    ORDER BY A.Nombre ASC
+                ");
                 datos.setearParametro("@idMarca", idMarca);
 
                 datos.ejecutarLectura();
@@ -634,26 +634,26 @@ namespace Negocio
             try
             {
                 datos.setearConsulta(@"
-    SELECT 
-        A.IdArticulo,
-        A.Codigo,
-        A.Nombre,
-        A.Descripcion,
-        A.Precio,
-        A.Cantidad,
-        A.Estado,
-        M.IdMarca,
-        M.Nombre AS Marca,
-        C.IdCategoria,
-        C.Nombre AS Categoria,
-        I.UrlImagen
-    FROM ARTICULOS A
-    INNER JOIN MARCAS M ON M.IdMarca = A.IdMarca
-    INNER JOIN CATEGORIAS C ON C.IdCategoria = A.IdCategoria
-    LEFT JOIN IMAGENES I ON I.IdArticulo = A.IdArticulo
-    WHERE A.IdCategoria = @idCategoria AND A.IdMarca = @idMarca
-    ORDER BY A.Nombre ASC
-");
+                SELECT 
+                    A.IdArticulo,
+                    A.Codigo,
+                    A.Nombre,
+                    A.Descripcion,
+                    A.Precio,
+                    A.Cantidad,
+                    A.Estado,
+                    M.IdMarca,
+                    M.Nombre AS Marca,
+                    C.IdCategoria,
+                    C.Nombre AS Categoria,
+                    I.UrlImagen
+                FROM ARTICULOS A
+                INNER JOIN MARCAS M ON M.IdMarca = A.IdMarca
+                INNER JOIN CATEGORIAS C ON C.IdCategoria = A.IdCategoria
+                LEFT JOIN IMAGENES I ON I.IdArticulo = A.IdArticulo
+                WHERE A.IdCategoria = @idCategoria AND A.IdMarca = @idMarca
+                ORDER BY A.Nombre ASC
+                ");
 
                 datos.setearParametro("@idCategoria", idCategoria);
                 datos.setearParametro("@idMarca", idMarca);
@@ -862,7 +862,7 @@ namespace Negocio
 
         public Articulo ListarPorIDArticulo(int idarticulo)
         {
-            
+
             AccesoDatos datos = new AccesoDatos();
             Articulo art = null;
 
@@ -927,7 +927,7 @@ namespace Negocio
                 }
 
                 return art;
-               
+
             }
             catch (Exception ex)
             {

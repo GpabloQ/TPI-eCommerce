@@ -25,8 +25,8 @@ namespace WebAppEcommerce
                
                 if (!IsPostBack)
                 {
-                    rptArticulos.DataSource = listaArticulo;
-                    rptArticulos.DataBind();
+                    //rptArticulos.DataSource = listaArticulo;
+                    //rptArticulos.DataBind();
                 }
             }
             catch (Exception ex)
@@ -40,9 +40,9 @@ namespace WebAppEcommerce
         {
             MailMessage mail = new MailMessage();
             mail.From = new MailAddress("franbueno681@gmail.com"); // tu dirección Gmail
-            mail.To.Add(txtEmailContact.Text); // o cualquier destinatario real
+            mail.To.Add("franbueno681@gmail.com"); // o cualquier destinatario real
             mail.Subject = txtMensajeContact.Text;
-            mail.Body = "Nombre: " + txtNombreContact.Text + "\n" +
+            mail.Body = "Nombre del cliente: " + txtNombreContact.Text + "\n" +
                         "Email: " + txtEmailContact.Text + "\n" +
                         "Teléfono: " + txtTelefonoContact.Text + "\n" +
                         "Mensaje: " + txtMensajeContact.Text;
@@ -54,11 +54,26 @@ namespace WebAppEcommerce
             try
             {
                 smtp.Send(mail);
-                lblMensajeContact.Text = "Correo del formulario del contacto enviado correctamente.";
+
+                // SweetAlert en éxito
+                ClientScript.RegisterStartupScript(this.GetType(),
+                    "alert",
+                    "Swal.fire('Correo enviado','Correo del formulario de contacto enviado correctamente.','success');",
+                    true);
+
+                txtNombreContact.Text = string.Empty;
+                txtEmailContact.Text = string.Empty;
+                txtTelefonoContact.Text = string.Empty;
+                txtMensajeContact.Text = string.Empty;
+
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                lblMensajeContact.Text = "Error al enviar: " + ex.Message;
+                // SweetAlert en error
+                ClientScript.RegisterStartupScript(this.GetType(),
+                    "alert",
+                    "Swal.fire('Error','Error al enviar el correo. Por favor, contáctenos por WhatsApp o email, gracias.','error');",
+                    true);
             }
         }
 

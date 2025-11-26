@@ -14,6 +14,14 @@ namespace WebAppEcommerce
         {
             if (!IsPostBack)
             {
+                var master = (SiteMaster)Master;
+                master.SetBreadcrumb(new List<(string, string)>
+                {
+                    ("Inicio", "Default.aspx"),
+                    ("Panel Administrador", null),
+                });
+
+
                 Usuario user = (Usuario)Session["usuario"];
 
                 if (user == null || user.TipoUsuario != 1) // 1 = ADMINISTRADOR
