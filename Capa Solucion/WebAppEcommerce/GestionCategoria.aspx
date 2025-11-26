@@ -3,7 +3,7 @@
 
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    
+
 
     <h2 id="titulo" runat="server"></h2>
 
@@ -16,6 +16,15 @@
         <label>Nombre</label>
         <asp:TextBox ID="txtNombreCategoria" runat="server" CssClass="form-control" />
     </div>
+
+    <asp:Label ID="lblError"
+        runat="server"
+        ForeColor="Red"
+        Font-Bold="true"
+        Visible="false"
+        CssClass="mt-2 d-block">
+    </asp:Label>
+
 
     <div class="d-flex gap-2">
         <asp:Button ID="btnAgregar" runat="server" Text="Guardar" CssClass="btn btn-primary" OnClick="btnAgregar_Click" />
@@ -36,6 +45,6 @@
             OnClick="btnConfirmacion_Click" />
     </div>
 
-       
+
 
 </asp:Content>

@@ -62,15 +62,25 @@ namespace WebAppEcommerce
 
         protected void dgvMarcas_RowCommand(object sender, GridViewCommandEventArgs e)
         {
-            if (e.CommandName == "Eliminar")
+            int id = Convert.ToInt32(e.CommandArgument);
+
+            MarcaNegocio negocio = new MarcaNegocio();
+
+            try
             {
-                int id = Convert.ToInt32(e.CommandArgument);
-
-                MarcaNegocio negocio = new MarcaNegocio();
-                negocio.eliminacionFisica(id);
-
+                negocio.eliminar(id);  // ← ✔ Usa la validación correcta
                 dgvMarcas.DataSource = negocio.listar();
                 dgvMarcas.DataBind();
+            }
+            catch (Exception ex)
+            {
+                ScriptManager.RegisterStartupScript(
+                    this,
+                    this.GetType(),
+                    "errorEliminarGrilla",
+                    $"Swal.fire('Error','{ex.Message}','error');",
+                    true
+                );
             }
         }
 

@@ -59,6 +59,14 @@ namespace WebAppEcommerce
                 MarcaNegocio negocio = new MarcaNegocio();
                 Marca nuevo = new Marca();
 
+                if (negocio.ExisteNombre(txtNombre.Text.Trim()))
+                {
+                    lblError.Text = "La marca ya existe.";
+                    lblError.Visible = true;  
+                    return;
+                }
+
+
                 nuevo.Nombre = txtNombre.Text;
                 nuevo.Estado = true;
 
@@ -97,25 +105,19 @@ namespace WebAppEcommerce
         {
             try
             {
-                if (chkConfirma.Checked)
-                {
-                    MarcaNegocio negocio = new MarcaNegocio();
-                    int id = int.Parse(txtId.Text);
-
-                    negocio.eliminacionLogica(new Marca
-                    {
-                        IdMarca = id,
-                        Nombre = txtNombre.Text,
-                        Estado = false
-                    });
-
-                    Response.Redirect("ListarMarcas.aspx");
-                }
+                MarcaNegocio negocio = new MarcaNegocio();
+                negocio.eliminar(long.Parse(txtId.Text));
+                Response.Redirect("Marcas.aspx");
             }
-            catch (Exception ex )
+            catch (Exception ex)
             {
-                Session.Add("error", ex);
-                throw;
+                ScriptManager.RegisterStartupScript(
+                    this,
+                    this.GetType(),
+                    "errorEliminar",
+                    $"Swal.fire('Error', '{ex.Message}', 'error');",
+                    true
+                );
             }
         }
 

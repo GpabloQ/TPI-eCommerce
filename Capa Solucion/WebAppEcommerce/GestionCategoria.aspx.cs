@@ -27,11 +27,12 @@ namespace WebAppEcommerce
                     CategoriaNegocio negocio = new CategoriaNegocio();
                     Categoria seleccionada = negocio.listar(id)[0];
 
+
                     txtId.Text = seleccionada.IdCategoria.ToString();
                     txtId.Visible = true;
                     txtNombreCategoria.Text = seleccionada.Nombre;
 
-                    btnEliminar.Visible = true;
+                    btnEliminar.Visible = false;
                 }
                 else
                 {
@@ -49,6 +50,13 @@ namespace WebAppEcommerce
             {
                 CategoriaNegocio negocio = new CategoriaNegocio();
                 Categoria nuevo = new Categoria();
+
+                if (negocio.ExisteNombre(txtNombreCategoria.Text.Trim()))
+                {
+                    lblError.Text = "La categoría ya existe.";
+                    lblError.Visible = true;
+                    return;
+                }
 
                 nuevo.Nombre = txtNombreCategoria.Text;
                 nuevo.Estado = true;

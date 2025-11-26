@@ -61,13 +61,25 @@ namespace WebAppEcommerce
         {
             if (e.CommandName == "Eliminar")
             {
-                int id = Convert.ToInt32(e.CommandArgument);
-
+                long id = Convert.ToInt64(e.CommandArgument);
                 CategoriaNegocio negocio = new CategoriaNegocio();
-                negocio.eliminar(id);
 
-                dgvCategorias.DataSource = negocio.listar();
-                dgvCategorias.DataBind();
+                try
+                {
+                    negocio.Eliminar(id);   // ← acá se lanza la excepción si tiene artículos
+                    dgvCategorias.DataSource = negocio.listar();
+                    dgvCategorias.DataBind();
+                }
+                catch (Exception ex)
+                {
+                    ScriptManager.RegisterStartupScript(
+                        this,
+                        this.GetType(),
+                        "errorEliminarCategoria",
+                        $"Swal.fire('Error', '{ex.Message}', 'error');",
+                        true
+                    );
+                }
             }
         }
 

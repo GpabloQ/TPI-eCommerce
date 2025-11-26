@@ -1,4 +1,4 @@
-﻿using System;
+﻿ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -88,6 +88,46 @@ namespace Negocio
             }
         }
 
+        public bool ExisteNombre(string nombre)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.setearConsulta("SELECT COUNT(*) FROM MARCAS WHERE Nombre = @nombre AND Estado = 1");
+                datos.setearParametro("@nombre", nombre);
+
+                datos.ejecutarLectura();
+                datos.Lector.Read();
+
+                int count = (int)datos.Lector[0];
+                return count > 0;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
+        public bool TieneArticulosRelacionados(long idMarca)
+        {
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setearConsulta("SELECT COUNT(*) FROM ARTICULOS WHERE IdMarca = @id");
+                datos.setearParametro("@id", idMarca);
+
+                datos.ejecutarLectura();
+                datos.Lector.Read();
+
+                int cantidad = (int)datos.Lector[0];
+                return cantidad > 0;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
 
 
 
@@ -136,6 +176,26 @@ namespace Negocio
                 datos.cerrarConexion();
             }
         }
+
+        public void eliminar(long id)
+        {
+            if (TieneArticulosRelacionados(id))
+                throw new Exception("No se pudo realizar la eliminación porque tiene artículos relacionados.");
+
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setearConsulta("UPDATE MARCAS SET Estado = 0 WHERE IdMarca = @id");
+                datos.setearParametro("@id", id);
+                datos.ejecutarAccion();
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
 
         public bool eliminacionFisica(long id)
         {
