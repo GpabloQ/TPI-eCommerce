@@ -56,8 +56,8 @@ namespace WebAppEcommerce
         // Maneja botones DETALLE / MODIFICAR / ELIMINAR
         protected void dgvProductos_RowCommand(object sender, GridViewCommandEventArgs e)
         {
-            int rowIndex = Convert.ToInt32(e.CommandArgument);
-            int idArticulo = Convert.ToInt32(dgvProductos.DataKeys[rowIndex].Value);
+            
+            int idArticulo = Convert.ToInt32(e.CommandArgument);
 
             ArticuloNegocio negocio = new ArticuloNegocio();
 
@@ -76,8 +76,19 @@ namespace WebAppEcommerce
                     cargarArticulos();
                     lblMensaje.Text = "ARTICULO ELIMINADO CORRECTAMENTE";
                     break;
+
+                case "SumarStock":
+                    negocio.ModificarStock(idArticulo, +1);
+                    cargarArticulos();
+                    break;
+
+                case "RestarStock":
+                    negocio.ModificarStock(idArticulo, -1);
+                    cargarArticulos();
+                    break;
             }
         }
+
 
         protected void btnAgregar_Click(object sender, EventArgs e)
         {

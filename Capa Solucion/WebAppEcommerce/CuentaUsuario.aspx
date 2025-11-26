@@ -4,7 +4,7 @@
 
      <%--Libreria de JS SweetAlert, para mostrar carteles copados--%>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        <script src="Javascript/FuncionesJS.js"></script>
+        <script src="/Javascript/FuncionesJS.js"></script>
 
     <main class="container mt-4">
         <h2 class="text-center mb-4">MI CUENTA</h2>
@@ -202,4 +202,26 @@
         </div>
     </div>
 </div>
+    <script type="text/javascript">
+    function abrirModalDomicilio(calle, numero, piso, depto, ciudad, provincia, cp) {
+
+    // Si NO se pasan datos → dejar todo vacío
+    document.getElementById('<%= txtCalle.ClientID %>').value = calle || "";
+    document.getElementById('<%= txtNumero.ClientID %>').value = numero || "";
+    document.getElementById('<%= txtPiso.ClientID %>').value = piso || "";
+    document.getElementById('<%= txtDepto.ClientID %>').value = depto || "";
+    document.getElementById('<%= txtCiudad.ClientID %>').value = ciudad || "";
+    document.getElementById('<%= txtProvincia.ClientID %>').value = provincia || "";
+    document.getElementById('<%= txtCP.ClientID %>').value = cp || "";
+
+    // Mostrar modal
+    document.getElementById("modalDomicilio").style.display = "flex";
+}
+
+
+    function cerrarModalDomicilio() {
+        document.getElementById("modalDomicilio").style.display = "none";
+    }
+
+    </script>
 </asp:Content>

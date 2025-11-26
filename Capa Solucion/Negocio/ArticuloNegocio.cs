@@ -96,6 +96,7 @@ namespace Negocio
                 A.IdArticulo,
                 A.Codigo,
                 A.Nombre,
+                A.Cantidad, 
                 M.IdMarca,
                 M.Nombre AS Marca,
                 C.IdCategoria,
@@ -127,6 +128,8 @@ namespace Negocio
                             Descripcion = datos.Lector["Descripcion"] is DBNull ? "" : datos.Lector["Descripcion"].ToString(),
                             Precio = datos.Lector["Precio"] is DBNull ? 0 : Convert.ToDecimal(datos.Lector["Precio"]),
                             Estado = datos.Lector["Estado"] is DBNull ? true : Convert.ToBoolean(datos.Lector["Estado"]),
+                            Cantidad = datos.Lector["Cantidad"] is DBNull ? 0 : Convert.ToInt32(datos.Lector["Cantidad"]),
+
                             Marca = new Marca
                             {
                                 IdMarca = Convert.ToInt64(datos.Lector["IdMarca"]),
@@ -1096,6 +1099,31 @@ namespace Negocio
             }
         }
 
+        public void ModificarStock(int idArticulo, int cantidadSumar)
+        {
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setearConsulta(@"
+            UPDATE ARTICULOS 
+            SET Cantidad = CASE 
+                WHEN Cantidad + @mov < 0 THEN 0      -- evita stock negativo
+                ELSE Cantidad + @mov 
+            END
+            WHERE IdArticulo = @id;
+        ");
+
+                datos.setearParametro("@mov", cantidadSumar);
+                datos.setearParametro("@id", idArticulo);
+
+                datos.ejecutarAccion();
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
 
 
 

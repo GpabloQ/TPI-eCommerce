@@ -26,7 +26,30 @@
                 <asp:BoundField DataField="Nombre" HeaderText="Nombre" />
                 <asp:BoundField DataField="Marca.Nombre" HeaderText="Marca" />
                 <asp:BoundField DataField="Categoria.Nombre" HeaderText="Categoría" />
-                <asp:BoundField DataField="Cantidad" HeaderText="Stock" />
+                <asp:TemplateField HeaderText="Stock">
+                        <ItemTemplate>
+                            <div style="display:flex; align-items:center; gap:10px;">
+                                <%# Eval("Cantidad") %>
+
+                                <!-- Boton SUMAR STOCK -->
+                                <asp:LinkButton ID="btnSumar"
+                                    runat="server"
+                                    CssClass="btn btn-success btn-sm"
+                                    CommandName="SumarStock"
+                                    CommandArgument='<%# Eval("IdArticulo") %>'
+                                    Text="+" />
+
+                                <!-- Boton RESTAR STOCK -->
+                                <asp:LinkButton ID="btnRestar"
+                                    runat="server"
+                                    CssClass="btn btn-warning btn-sm"
+                                    CommandName="RestarStock"
+                                    CommandArgument='<%# Eval("IdArticulo") %>'
+                                    Text="-" />
+                            </div>
+                        </ItemTemplate>
+                </asp:TemplateField>
+
                 <asp:BoundField DataField="Precio" HeaderText="Precio" DataFormatString="ARS {0:N2}" HtmlEncode="false" />
 
     
