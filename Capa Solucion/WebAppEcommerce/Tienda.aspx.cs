@@ -67,7 +67,12 @@ namespace WebAppEcommerce
                 if (!string.IsNullOrEmpty(txtBuscar.Value))
                 {
                     string txt = txtBuscar.Value.ToLower();
-                    lista = lista.Where(a => a.Nombre.ToLower().Contains(txt)).ToList();
+
+                    lista = lista.Where(a =>
+                        (a.Nombre != null && a.Nombre.ToLower().Contains(txt)) ||
+                        (a.Marca != null && a.Marca.Nombre != null && a.Marca.Nombre.ToLower().Contains(txt)) ||
+                        (a.Categoria != null && a.Categoria.Nombre != null && a.Categoria.Nombre.ToLower().Contains(txt))
+                    ).ToList();
                 }
 
 
