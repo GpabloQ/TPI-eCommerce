@@ -24,7 +24,7 @@
             [DisplayName("CANTIDAD EN STOCK")]
             public int Cantidad { get; set; }
 
-        public int stock { get; set; }
+        
 
         public long Stock { get; set; } // corresponde a Cantidad en la BD
 
@@ -42,6 +42,8 @@
 
             [DisplayName("IMÁGENES ASOCIADAS")]
             public List<string> ListaUrls { get; set; }
+
+            
 
             public Articulo()
             {

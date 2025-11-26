@@ -435,30 +435,7 @@ namespace Negocio
                 datos.cerrarConexion();
             }
         }
-
-
-
-        public void EliminarImagen(int idArticulo, string urlImagen)
-        {
-            AccesoDatos datos = new AccesoDatos();
-            try
-            {
-                // Borra la imagen que coincida con el artículo y la URL
-                datos.setearConsulta("DELETE FROM IMAGENES WHERE IdArticulo = @idArticulo AND ImagenUrl = @urlImagen");
-                datos.setearParametro("@idArticulo", idArticulo);
-                datos.setearParametro("@urlImagen", urlImagen);
-                datos.ejecutarAccion();
-            }
-            catch (Exception)
-            {
-                throw new Exception("Error al eliminar la imagen.");
-            }
-            finally
-            {
-                datos.cerrarConexion();
-            }
-        }
-
+                
         public void AgregarImagen(int idArticulo, string urlImagen)
         {
             AccesoDatos datos = new AccesoDatos();
@@ -725,13 +702,6 @@ namespace Negocio
             }
         }
 
-
-
-
-
-
-
-
         public List<Articulo> BuscarProducto(string nombre)
         {
             List<Articulo> lista = new List<Articulo>();
@@ -887,8 +857,6 @@ namespace Negocio
             }
         }
 
-
-
         public Articulo ListarPorIDArticulo(int idarticulo)
         {
             
@@ -967,7 +935,6 @@ namespace Negocio
                 datos.cerrarConexion();
             }
         }
-
 
         public List<Articulo> ListarArticulosPorCategoria(int idcategoria)
         {
@@ -1048,7 +1015,6 @@ namespace Negocio
             }
         }
 
-
         public decimal ObtenerPrecioArticulo(int idArticulo)
         {
             AccesoDatos datos = new AccesoDatos();
@@ -1075,9 +1041,63 @@ namespace Negocio
                 datos.cerrarConexion();
             }
         }
-    
+
+        // using System.Collections.Generic;
+
+        public List<dynamic> ListarImagenesPorArticulo(int idArticulo)
+        {
+            List<dynamic> lista = new List<dynamic>();
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setearConsulta("SELECT IdImagen, UrlImagen FROM IMAGENES WHERE IdArticulo = @id");
+                datos.setearParametro("@id", idArticulo);
+                datos.ejecutarLectura();
+
+                while (datos.Lector.Read())
+                {
+                    int idImagen = datos.Lector["IdImagen"] != DBNull.Value
+                        ? Convert.ToInt32(datos.Lector["IdImagen"])
+                        : 0;
+
+                    string url = datos.Lector["UrlImagen"] != DBNull.Value
+                        ? datos.Lector["UrlImagen"].ToString()
+                        : string.Empty;
+
+                    lista.Add(new
+                    {
+                        IdImagen = idImagen,
+                        UrlImagen = url
+                    });
+                }
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+
+            return lista;
+        }
+
+        public void EliminarImagen(int idImagen)
+        {
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setearConsulta("DELETE FROM IMAGENES WHERE IdImagen = @id");
+                datos.setearParametro("@id", idImagen);
+                datos.ejecutarAccion();
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
 
 
 
-}
+
+    }
 }

@@ -150,5 +150,30 @@ Sí, eliminar",
     return false;
 }
 
+function confirmarEliminacionMarca(boton, id) {
+    event.preventDefault();
 
+    Swal.fire({
+        title: "¿Eliminar marca?",
+        text: "Esta acción no se puede deshacer",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "Sí, eliminar",
+        cancelButtonText: "Cancelar"
+    }).then((result) => {
+        if (result.isConfirmed) {
+
+            var href = boton.getAttribute("href");
+            var match = href && href.match(/__doPostBack\('([^']+)'/);
+
+            if (match && match[1]) {
+                var postBackID = match[1];
+                __doPostBack(postBackID, "");
+            }
+        }
+    });
+    return false;
+}
             

@@ -30,6 +30,27 @@
             <asp:TextBox ID="txtPrecio" runat="server" CssClass="form-control" />
         </div>
 
+
+
+        <h4>IMAGENES ACTUALES</h4>
+
+    <asp:Repeater ID="repImagenes" runat="server" OnItemCommand="repImagenes_ItemCommand">
+        <ItemTemplate>
+            <div style="display:flex; gap:12px; align-items:center; margin-bottom:10px;">
+                <img src='<%# Eval("UrlImagen") %>'
+                     style="width:100px;height:100px;border-radius:6px;object-fit:cover;" />
+
+                <asp:LinkButton ID="btnEliminarImg"
+                    runat="server"
+                    Text="🗑️"
+                    CssClass="btn btn-danger btn-sm"
+                    CommandName="EliminarImg"
+                    CommandArgument='<%# Eval("IdImagen") %>'
+                    OnClientClick="return confirmarEliminacion(this);" />
+            </div>
+        </ItemTemplate>
+    </asp:Repeater>
+
         <div class="form-group">
             <label>URL Imagen:</label>
             <div class="input-group">
@@ -87,8 +108,34 @@
                     }
                 }), false; 
             }
+        
+         </script>
+        <script type="text/javascript">
+            function confirmarEliminacion(boton) {
+                event.preventDefault();
+
+                Swal.fire({
+                    title: "¿Eliminar Imagen?",
+                    text: "Esta acción no se puede deshacer",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#d33",
+                    cancelButtonColor: "#3085d6",
+                    confirmButtonText: "Sí, eliminar",
+                    cancelButtonText: "Cancelar"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+
+                        var href = boton.getAttribute("href");
+                        var match = href && href.match(/__doPostBack\('([^']+)'/);
+
+                        if (match && match[1]) {
+                            __doPostBack(match[1], "");
+                        }
+                    }
+                });
+                return false;
+            }
         </script>
-
-
     </main>
 </asp:Content>

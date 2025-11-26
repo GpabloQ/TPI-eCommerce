@@ -41,7 +41,8 @@ namespace WebAppEcommerce
                             Nombre = art.Nombre,
                             PrecioUnitario = i.PrecioUnitario,
                             Cantidad = i.Cantidad,
-                            Subtotal = i.Cantidad * i.PrecioUnitario
+                            Subtotal = i.Cantidad * i.PrecioUnitario,
+                            stock = art.Cantidad
                         };
                     });
 
@@ -59,8 +60,48 @@ namespace WebAppEcommerce
             }
         }
 
+        //protected void rptCarrito_ItemCommand(object source, RepeaterCommandEventArgs e)
+        //{
+        //    Dominio.Carrito carrito = Session["Carrito"] as Dominio.Carrito;
+        //    if (carrito == null) return;
+
+        //    long idArticulo = Convert.ToInt64(e.CommandArgument);
+
+        //    Articulo art;
+        //    ArticuloNegocio artNegocio = new ArticuloNegocio();
 
 
+
+        //    var item = carrito.Items.FirstOrDefault(x => x.IdArticulo == idArticulo);
+        //    if (item == null) return;
+
+        //   art = artNegocio.ListarPorIDArticulo(Convert.ToInt32(item.IdArticulo));
+
+        //    switch (e.CommandName)
+        //    {
+        //        case "Sumar":
+        //            if(art.Stock != 0 && art != null) 
+        //            item.Cantidad++;
+        //            break;
+
+        //        case "Restar":
+        //            if (item.Cantidad > 1)
+        //                item.Cantidad--;
+        //            else
+        //                carrito.Items.Remove(item); // si llega a 0, lo eliminamos
+        //            break;
+
+        //        case "Eliminar":
+        //            carrito.Items.Remove(item);
+        //            break;
+        //    }
+
+        //    // Guardar cambios en sesión
+        //    Session["Carrito"] = carrito;
+
+        //    // Recalcular y mostrar
+        //    ActualizarCarrito(carrito);
+        //}
 
         protected void rptCarrito_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
@@ -72,18 +113,16 @@ namespace WebAppEcommerce
             Articulo art;
             ArticuloNegocio artNegocio = new ArticuloNegocio();
 
-           
-
             var item = carrito.Items.FirstOrDefault(x => x.IdArticulo == idArticulo);
             if (item == null) return;
 
-           art = artNegocio.ListarPorIDArticulo(Convert.ToInt32(item.IdArticulo));
-          
+            art = artNegocio.ListarPorIDArticulo(Convert.ToInt32(item.IdArticulo));
+
             switch (e.CommandName)
             {
                 case "Sumar":
-                    if(art.Stock != 0 && art != null) 
-                    item.Cantidad++;
+                    if (item.Cantidad + 1 <= art.Cantidad && art != null)
+                        item.Cantidad++;
                     break;
 
                 case "Restar":
@@ -129,7 +168,6 @@ namespace WebAppEcommerce
             decimal total = carrito.Items.Sum(x => x.Cantidad * x.PrecioUnitario);
             lblTotal.Text = "Total: $" + total.ToString("N2");
         }
-
 
         protected void btnFinalizarCompra_Click(object sender, EventArgs e)
         {

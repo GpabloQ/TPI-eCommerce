@@ -21,18 +21,13 @@
             CssClass="table table-striped table-bordered table-hover"
             DataKeyNames="IdArticulo"
             OnRowCommand="dgvProductos_RowCommand">
-
-            
-
             <Columns>
-
                 <asp:BoundField DataField="Codigo" HeaderText="Código" />
                 <asp:BoundField DataField="Nombre" HeaderText="Nombre" />
                 <asp:BoundField DataField="Marca.Nombre" HeaderText="Marca" />
                 <asp:BoundField DataField="Categoria.Nombre" HeaderText="Categoría" />
                 <asp:BoundField DataField="Cantidad" HeaderText="Stock" />
-                <asp:BoundField DataField="Precio" HeaderText="Precio"
-                                DataFormatString="ARS {0:N2}" HtmlEncode="false" />
+                <asp:BoundField DataField="Precio" HeaderText="Precio" DataFormatString="ARS {0:N2}" HtmlEncode="false" />
 
     
                 <asp:TemplateField HeaderText="Editar">

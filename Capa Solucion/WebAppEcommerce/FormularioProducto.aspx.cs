@@ -2,17 +2,19 @@
 using Negocio;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.UI;
+using System.Web.UI.WebControls;
 
 namespace WebAppEcommerce
 {
     public partial class FormularioProducto : Page
-    {        
+    {
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
-                cargarListas(); 
+                cargarListas();
 
                 string id = Request.QueryString["id"];
                 if (!string.IsNullOrEmpty(id))
@@ -28,6 +30,13 @@ namespace WebAppEcommerce
                         Session["articuloSeleccionado"] = seleccionado;
                         CargarFormulario(seleccionado);
                         lblModo.Text = "EDITAR PRODUCTO";
+
+                        // CARGAR IMAGENES DEL ARTICULO (IdImagen + UrlImagen)
+                        int idArticulo = (int)seleccionado.IdArticulo;
+                        var listaImagenes = negocio.ListarImagenesPorArticulo(idArticulo);
+
+                        repImagenes.DataSource = listaImagenes;
+                        repImagenes.DataBind();
                     }
                     else
                     {
@@ -167,6 +176,24 @@ namespace WebAppEcommerce
                 lblError.Text = "LA URL NO ES VALIDA O LA IMAGEN NO SE CARGÓ.";
             }
         }
+        protected void repImagenes_ItemCommand(object source, RepeaterCommandEventArgs e)
+        {
+            if (e.CommandName == "EliminarImg")
+            {
+                int idImagen = int.Parse(e.CommandArgument.ToString());
+                int idArticulo = int.Parse(Request.QueryString["id"]);
 
+                ArticuloNegocio negocio = new ArticuloNegocio();
+                negocio.EliminarImagen(idImagen);
+
+                // Recargar imágenes actualizadas
+                var listaImagenes = negocio.ListarImagenesPorArticulo(idArticulo);
+                repImagenes.DataSource = listaImagenes;
+                repImagenes.DataBind();
+
+                ScriptManager.RegisterStartupScript(this, GetType(), "ok",
+                    "Swal.fire('Eliminada','La imagen se eliminó correctamente','success');", true);
+            }
+        }
     }
 }

@@ -6,7 +6,7 @@
 
     <h2>Listado de marcas.</h2>
     <br />
-    <%--  Listar usando SP --%>
+   
     <asp:GridView ID="dgvMarcas" runat="server" AutoGenerateColumns="false"
         CssClass="table"
         DataKeyNames="IdMarca"
@@ -15,18 +15,11 @@
         OnPageIndexChanging="dgvMarcas_PageIndexChanging"
         OnSelectedIndexChanged="dgvMarcas_SelectedIndexChanged"
         OnRowCommand="dgvMarcas_RowCommand">
-
-        <Columns>
-
-         
-            <asp:BoundField HeaderText="Marca" DataField="Nombre" />
-
-           
+        <Columns>         
+            <asp:BoundField HeaderText="Marca" DataField="Nombre" />           
             <asp:CommandField HeaderText="Editar"
                 ShowSelectButton="true"
-                SelectText="✏️" />
-
-          
+                SelectText="✏️" />          
             <asp:TemplateField HeaderText="Eliminar">
                 <ItemTemplate>
                     <asp:LinkButton ID="btnEliminarMarca"
